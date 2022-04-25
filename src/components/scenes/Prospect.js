@@ -1,4 +1,4 @@
-import { LinearFilter, OrthographicCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
+import { LinearFilter, OrthographicCamera, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { FristSheet, Serene } from "../images";
 import Player from "../player/player";
@@ -135,10 +135,10 @@ class Prospect extends Scene {
         this.player.setPosition(this.width / 2, 3, 0);
 
         // Camera
-        this.camera = new OrthographicCamera();
+        this.camera = new PerspectiveCamera();
         // Set up camera
-        this.camera.position.set(this.width / 2, 10, 1000);
-        this.camera.lookAt(new Vector3(this.width / 2, 10, 0));
+        this.camera.position.set(this.width / 2, 6, 1.6);
+        this.camera.lookAt(new Vector3(this.width / 2, 6, 0));
         this.camera.zoom = 0.12;
 
         // Window resize handler for scene
@@ -154,7 +154,7 @@ class Prospect extends Scene {
             if (event.code === 'ArrowUp') {
                 const playerPos = this.player.sprite.position;
                 // If past map, don't move
-                if (Math.round(playerPos.y) >= 30) {
+                if (Math.round(playerPos.y) >= 32) {
                     return;
                 }
                 // Update player position and camera if tile is walkable
@@ -162,7 +162,7 @@ class Prospect extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x, playerPos.y + speed, playerPos.z, "up");
                     this.add(this.player.sprite);
-                    if (this.camera.position.y <= this.height - 18) {
+                    if (this.camera.position.y <= this.height - 14) {
                         this.camera.position.y += speed;
                     }
                 }
@@ -170,7 +170,7 @@ class Prospect extends Scene {
             if (event.code === 'ArrowDown') {
                 const playerPos = this.player.sprite.position;
                 // If past map, don't move
-                if (Math.round(playerPos.y) <= 2) {
+                if (Math.round(playerPos.y) <= 0.8) {
                     if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y + 0.3 + speed)][Math.round(playerPos.x)])) {
                         Scenes.switchScene(1);
                     }
@@ -181,7 +181,7 @@ class Prospect extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x, playerPos.y - speed, playerPos.z, "down");
                     this.add(this.player.sprite);
-                    if (this.camera.position.y >= 10) {
+                    if (this.camera.position.y >= 6) {
                         this.camera.position.y -= speed;
                     }
                 }
@@ -193,7 +193,7 @@ class Prospect extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x - speed, playerPos.y, playerPos.z, "left");
                     this.add(this.player.sprite);
-                    if (this.camera.position.x >= 8) {
+                    if (this.camera.position.x >= 11) {
                         this.camera.position.x -= speed;
                     }
                 }
@@ -205,7 +205,7 @@ class Prospect extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x + speed, playerPos.y, playerPos.z, "right");
                     this.add(this.player.sprite);
-                    if (this.camera.position.x <= this.width - 3) {
+                    if (this.camera.position.x <= this.width - 6) {
                         this.camera.position.x += speed;
                     }
                 }

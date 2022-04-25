@@ -13,6 +13,7 @@ class Scenes {
     // Create scenes
     create() {
         this.renderer = new WebGLRenderer({ antialias: true });
+        this.renderer.setSize(640, 480);
         // Initialize array of scenes
         this.scenes[0] = new Title();
         this.scenes[1] = new Frist();

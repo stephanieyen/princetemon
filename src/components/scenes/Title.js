@@ -1,4 +1,4 @@
-import { BoxGeometry, Color, FontLoader, Mesh, MeshBasicMaterial, MeshPhongMaterial, OrthographicCamera, Scene, TextGeometry, TextureLoader, Vector3 } from "three";
+import { BoxGeometry, Color, FontLoader, Mesh, MeshBasicMaterial, MeshPhongMaterial, OrthographicCamera, PerspectiveCamera, Scene, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { PixelFont } from "../fonts";
 import { TitleBackground, WoodBlock } from "../images";
@@ -11,7 +11,7 @@ class Title extends Scene {
         // Camera
         this.camera = new OrthographicCamera();
         // Set up camera
-        this.camera.position.set(0, 0, 10);
+        this.camera.position.set(0, 0, 2.5);
         this.camera.lookAt(new Vector3(0, 0, 0));
 
         // Set background to a nice color
@@ -23,7 +23,7 @@ class Title extends Scene {
         this.background = bgTexture;
 
         // Add cube to back
-        const boxGeometry = new BoxGeometry(1.5, 1, 1);
+        const boxGeometry = new BoxGeometry(1.5, 1, 0.001);
         const boxTexture = new TextureLoader().load(WoodBlock);
         const boxMaterial = new MeshBasicMaterial({map: boxTexture});
         // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
@@ -45,7 +45,7 @@ class Title extends Scene {
                     }
                 );
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                textMesh.position.set(-0.45, 0, 0.1);
+                textMesh.position.set(-0.45, 0, 0);
                 // Cannot use this.add since inside new function
                 Scenes.scenes[0].add(textMesh);
             }
