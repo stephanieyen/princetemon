@@ -15,7 +15,7 @@ class Title extends Scene {
         this.camera.lookAt(new Vector3(0, 0, 0));
 
         // Set background to a nice color
-        this.background = new Color(0x7ec0ee);
+        // this.background = new Color(0x7ec0ee);
 
         // Set background to background image
         const bgLoader = new TextureLoader();

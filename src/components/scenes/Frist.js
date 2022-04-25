@@ -44,6 +44,7 @@ class Frist extends Scene {
         this.createTile(1, Serene, 4, -25);
         // Better grass
         this.createTile(8, Serene, 1, -25);
+
         // House
         this.createTile(10, Serene, 0, -9);
         this.createTile(11, Serene, 1, -9);
