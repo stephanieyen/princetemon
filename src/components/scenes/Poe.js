@@ -3,7 +3,7 @@ import { Scenes } from ".";
 import { FristSheet, Serene } from "../images";
 import Player from "../player/player";
 
-class Frist extends Scene {
+class Poe extends Scene {
     constructor() {
         // Call parent Scene() constructor
         super();
@@ -73,6 +73,8 @@ class Frist extends Scene {
         this.createTile(33, Serene, 1, -20);
         this.createTile(34, Serene, 0, -19);
         this.createTile(35, Serene, 1, -19);
+        // Sign for game
+        this.createTile(36, Serene, 5, -20);
 
         // Walkable Tiles List
         this.walkable = new Set();
@@ -86,19 +88,20 @@ class Frist extends Scene {
         this.sceneChangers.add(3);
         this.sceneChangers.add(2);
         this.sceneChangers.add(1);
+        this.sceneChangers.add(8);
 
         // Actual tiles for level
         this.tiles = [
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 36, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
             [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8,10,11,12,13,14, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
             [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8,15,16,17,18,19, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
             [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8,20,21,22,23,24, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
@@ -107,10 +110,10 @@ class Frist extends Scene {
             [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
             [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
             [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 2, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 5, 5, 4, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 5, 5, 6, 5, 5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 5, 5, 7, 5, 5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 2, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+            [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 2, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
             [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
             [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
             [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
@@ -131,15 +134,15 @@ class Frist extends Scene {
 
 
         // Create player for scene
-        this.player = new Player(Frist);
+        this.player = new Player(Poe);
         this.add(this.player.sprite);
-        this.player.setPosition(this.width / 2, 3, 0);
+        this.player.setPosition(4, 19, 0);
 
         // Camera
         this.camera = new PerspectiveCamera();
         // Set up camera
-        this.camera.position.set(this.width / 2, 6, 1.6);
-        this.camera.lookAt(new Vector3(this.width / 2, 6, 0));
+        this.camera.position.set(4, 19, 1.6);
+        this.camera.lookAt(new Vector3(4, 19, 0));
         this.camera.zoom = 0.12;
 
         // Window resize handler for scene
@@ -156,9 +159,6 @@ class Frist extends Scene {
                 const playerPos = this.player.sprite.position;
                 // If past map, don't move
                 if (Math.round(playerPos.y) >= 32 ) {
-                    if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y + 0.3 + speed)][Math.round(playerPos.x)])) {
-                        Scenes.switchScene(2);
-                    }
                     return;
                 }
                 // Update player position and camera if tile is walkable
@@ -189,6 +189,13 @@ class Frist extends Scene {
             }
             if (event.code === 'ArrowLeft') {
                 const playerPos = this.player.sprite.position;
+                // If past map don't move or switch scene
+                if (Math.round(playerPos.x) <= 1) {
+                    if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x - speed - 0.3)])) {
+                        Scenes.switchScene(1);
+                    }
+                    return;
+                }
                 // Update player position and camera if tile is walkable
                 if (this.walkable.has(this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x - speed - 0.3)])) {
                     this.remove(this.player.sprite);
@@ -202,9 +209,6 @@ class Frist extends Scene {
             if (event.code === 'ArrowRight') {
                 const playerPos = this.player.sprite.position;
                 if (Math.round(playerPos.x) >= this.height - 2) {
-                    if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x + 0.3 + speed)])) {
-                        Scenes.switchScene(3);
-                    }
                     return;
                 }
                 // Update player position and camera if tile is walkable
@@ -215,6 +219,13 @@ class Frist extends Scene {
                     if (this.camera.position.x <= this.width - 6) {
                         this.camera.position.x += speed;
                     }
+                }
+            }
+
+            // Action button to get to minigame
+            if (event.code === 'Space') {
+                if (this.inActionSpace()) {
+                    Scenes.switchScene(4);
                 }
             }
         };
@@ -258,6 +269,16 @@ class Frist extends Scene {
         }
     }
 
+    // Check if right under action space
+    inActionSpace() {
+        const playerPos = this.player.sprite.position;
+        console.log(this.tiles[Math.round(playerPos.y + 1)][Math.round(playerPos.x)]);
+        if (this.tiles[Math.round(playerPos.y + 1)][Math.round(playerPos.x)] === 36) {
+            return true;
+        }
+        return false;
+    }
+
     // Adds events specific to Frist scene
     addEvents() {
         this.windowResizeHandler();
@@ -273,4 +294,4 @@ class Frist extends Scene {
     }
 }
 
-export default Frist;
+export default Poe;

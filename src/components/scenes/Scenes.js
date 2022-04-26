@@ -1,5 +1,8 @@
 import { WebGLRenderer } from "three";
 import Frist from "./Frist";
+import Poe from "./Poe";
+import PoeGame from "./PoeGame";
+import PoeGameInstructions from "./PoeGameInstructions";
 import Prospect from "./Prospect";
 import Title from "./Title";
 
@@ -18,6 +21,9 @@ class Scenes {
         this.scenes[0] = new Title();
         this.scenes[1] = new Frist();
         this.scenes[2] = new Prospect();
+        this.scenes[3] = new Poe();
+        this.scenes[4] = new PoeGameInstructions();
+        this.scenes[5] = new PoeGame();
 
         // Set current scene to title scene
         this.currentScene = this.scenes[0];

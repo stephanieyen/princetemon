@@ -3,7 +3,7 @@ import { Scenes } from ".";
 import { PixelFont } from "../fonts";
 import { TitleBackground, WoodBlock } from "../images";
 
-class Title extends Scene {
+class PoeGameInstructions extends Scene {
     constructor() {
         // Call parent Scene() constructor
         super();
@@ -23,7 +23,7 @@ class Title extends Scene {
         this.background = bgTexture;
 
         // Add cube to back
-        const boxGeometry = new BoxGeometry(1.5, 1, 0.001);
+        const boxGeometry = new BoxGeometry(2.5, 1, 0.001);
         const boxTexture = new TextureLoader().load(WoodBlock);
         const boxMaterial = new MeshBasicMaterial({map: boxTexture});
         // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
@@ -37,7 +37,7 @@ class Title extends Scene {
             PixelFont,
             function(font) {
                 const geometry = new TextGeometry(
-                "Princetemon",
+                "Poe Field Minigame",
                     {
                         font: font,
                         size: 0.1,
@@ -45,16 +45,33 @@ class Title extends Scene {
                     }
                 );
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                textMesh.position.set(-0.45, 0, 0.1);
+                textMesh.position.set(-0.6, 0.25, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[0].add(textMesh);
+                Scenes.scenes[4].add(textMesh);
             }
         );
         fontLoader.load(
             PixelFont,
             function(font) {
                 const geometry = new TextGeometry(
-                "Press space to begin!",
+                "Press the left/right arrow keys to move and dodge the rocks!",
+                    {
+                        font: font,
+                        size: 0.05,
+                        height: 0
+                    }
+                );
+                const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                textMesh.position.set(-1, -0.12, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes[4].add(textMesh);
+            }
+        );
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "Press space to continue!",
                     {
                         font: font,
                         size: 0.05,
@@ -64,7 +81,7 @@ class Title extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-0.37, -0.25, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[0].add(textMesh);
+                Scenes.scenes[4].add(textMesh);
             }
         );
 
@@ -78,8 +95,7 @@ class Title extends Scene {
 
         this.pressSpaceBar = (event) => {
             if (event.key === ' ' || event.code === 'Space') {
-                Scenes.switchScene(1);
-                // Scenes.switchScene(5);
+                Scenes.switchScene(5);
             }
         };
     }
@@ -99,4 +115,4 @@ class Title extends Scene {
     }
 }
 
-export default Title;
+export default PoeGameInstructions;
