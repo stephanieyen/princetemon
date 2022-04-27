@@ -1,6 +1,6 @@
 import { LinearFilter, OrthographicCamera, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
-import { FristSheet, Serene } from "../images";
+import { Street } from "../images";
 import Player from "../player/player";
 
 class Prospect extends Scene {
@@ -10,118 +10,90 @@ class Prospect extends Scene {
         // Adding in tiles
         // Hashmap for tiles
         this.tileset = new Map();
-        // Frist tileset details
-        this.imageX = 144;
-        this.imageY = 144;
+        // Street tileset details
+        this.imageX = 464;
+        this.imageY = 464;
         // Number of images per row/column
-        this.countX = 3;
-        this.countY = 3;
+        this.countX = 29;
+        this.countY = 29;
+
+        // Intersection tiles
+        this.createTile(0, Street, 14, -28)
+        this.createTile(1, Street, 15, -28);
+        this.createTile(2, Street, 16, -28);
+        this.createTile(3, Street, 17, -28);
+        this.createTile(4, Street, 14, -27);
+        this.createTile(5, Street, 15, -27);
+        this.createTile(6, Street, 16, -27);
+        this.createTile(7, Street, 17, -27);
+        this.createTile(8, Street, 14, -26);
+        this.createTile(9, Street, 15, -26);
+        this.createTile(10, Street, 16, -26);
+        this.createTile(11, Street, 17, -26);
+        this.createTile(12, Street, 14, -22);
+        this.createTile(13, Street, 15, -22);
+        this.createTile(14, Street, 16, -22);
+        this.createTile(15, Street, 17, -22);
+        this.createTile(16, Street, 12, -26);
+        this.createTile(17, Street, 13, -26);
+        this.createTile(18, Street, 12, -25);
+        this.createTile(19, Street, 13, -25);
+        this.createTile(20, Street, 12, -24);
+        this.createTile(21, Street, 13, -24);
+        this.createTile(22, Street, 12, -23);
+        this.createTile(23, Street, 13, -23);
+        this.createTile(24, Street, 18, -26);
+        this.createTile(25, Street, 19, -26);
+        this.createTile(26, Street, 18, -25);
+        this.createTile(27, Street, 19, -25);
+        this.createTile(28, Street, 18, -24);
+        this.createTile(29, Street, 19, -24);
+        this.createTile(30, Street, 18, -23);
+        this.createTile(31, Street, 19, -23);
+        // Sidewalk
+        this.createTile(32, Street, 23, -24)
+        // Street tiles
+        // Horizontal
+        this.createTile(33, Street, 16, -19);
+        this.createTile(34, Street, 16, -14);
+        this.createTile(35, Street, 16, -20);
+        this.createTile(36, Street, 16, -13);
+        // Vertical
+        this.createTile(37, Street, 14, -17);
+        this.createTile(38, Street, 13, -17);
+        this.createTile(39, Street, 12, -17);
+        this.createTile(40, Street, 19, -17);
+        // Bush
+        this.createTile(41, Street, 10, -19);
         // Grass
-        this.createTile(0, FristSheet, 1, 0);
-        // Tree 1
-        this.createTile(1, FristSheet, 1, -2);
-        // Tree 2
-        this.createTile(2, FristSheet, 1, -1);
-        // Path
-        this.createTile(3, FristSheet, 2, -2);
-        // Door
-        this.createTile(4, FristSheet, 0, 0);
-        // Window
-        this.createTile(5, FristSheet, 2, -1);
-        // Bottom front
-        this.createTile(6, FristSheet, 0, -1);
-        // Top front
-        this.createTile(7, FristSheet, 0, -2);
-
-        // Outdoors tileset details
-        this.imageX = 128;
-        this.imageY = 432;
-        this.countX = 8;
-        this.countY = 27;
-        // Better path
-        this.createTile(3, Serene, 2, -25);
-        this.createTile(2, Serene, 3, -25);
-        this.createTile(1, Serene, 4, -25);
-        // Better grass
-        this.createTile(8, Serene, 1, -25);
-        // House
-        this.createTile(10, Serene, 0, -9);
-        this.createTile(11, Serene, 1, -9);
-        this.createTile(12, Serene, 2, -9);
-        this.createTile(13, Serene, 3, -9);
-        this.createTile(14, Serene, 4, -9);
-        this.createTile(15, Serene, 0, -10);
-        this.createTile(16, Serene, 1, -10);
-        this.createTile(17, Serene, 2, -10);
-        this.createTile(18, Serene, 3, -10);
-        this.createTile(19, Serene, 4, -10);
-        this.createTile(20, Serene, 0, -11);
-        this.createTile(21, Serene, 1, -11);
-        this.createTile(22, Serene, 2, -11);
-        this.createTile(23, Serene, 3, -11);
-        this.createTile(24, Serene, 4, -11);
-        this.createTile(25, Serene, 0, -12);
-        this.createTile(26, Serene, 1, -12);
-        this.createTile(27, Serene, 2, -12);
-        this.createTile(28, Serene, 3, -12);
-        this.createTile(29, Serene, 4, -12);
-        // Better tree
-        this.createTile(30, Serene, 0, -21);
-        this.createTile(31, Serene, 1, -21);
-        this.createTile(32, Serene, 0, -20);
-        this.createTile(33, Serene, 1, -20);
-        this.createTile(34, Serene, 0, -19);
-        this.createTile(35, Serene, 1, -19);
-
+        this.createTile(42, Street, 8, -19);
+        
+        
         // Walkable Tiles List
         this.walkable = new Set();
-        this.walkable.add(3);
-        this.walkable.add(8);
-        this.walkable.add(2);
-        this.walkable.add(1);
-
+        for (let i = 0; i <= 36; i++) {
+            this.walkable.add(i);
+        }
+        this.walkable.add(42);
         // Scene changing tiles list
         this.sceneChangers = new Set();
-        this.sceneChangers.add(3);
-        this.sceneChangers.add(2);
-        this.sceneChangers.add(1);
+        this.sceneChangers.add(32);
 
         // Actual tiles for level
         this.tiles = [
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8,10,11,12,13,14, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8,15,16,17,18,19, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8,20,21,22,23,24, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8,25,26,27,28,29, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 2, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 5, 5, 4, 5, 5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 5, 5, 6, 5, 5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 5, 5, 7, 5, 5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 2, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35],
-            [32,33,32,33,32,33, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 32,33,32,33,32,33],
-            [30,31,30,31,30,31, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 30,31,30,31,30,31],
-            [34,35,34,35,34,35, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 34,35,34,35,34,35]
+            [ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 12, 13, 14, 15, 32, 32],
+            [ 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 22, 23,  8,  9, 10, 11, 32, 32],
+            [ 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 20, 21,  8,  9, 10, 11, 32, 32],
+            [ 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 18, 19,  8,  9, 10, 11, 32, 32],
+            [ 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 16, 17,  8,  9, 10, 11, 32, 32],
+            [ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,  4,  5,  6,  7, 32, 32],
+            [ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,  0,  1,  2,  3, 32, 32],
+            [ 41, 41, 41, 41, 41, 42, 42, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 42, 42, 41, 41, 41, 41, 41, 41, 41, 41, 41, 39, 38, 37, 40, 32, 32],
+            [ 41, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 41, 41, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 41, 39, 38, 37, 40, 32, 32],
+            [ 41, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 41, 41, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 41, 39, 38, 37, 40, 32, 32],
+            [ 41, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 41, 41, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 41, 39, 38, 37, 40, 32, 32],
+
+            
         ];
         this.width = this.tiles.length;
         this.height = this.tiles[0].length;
@@ -132,14 +104,14 @@ class Prospect extends Scene {
         // Create player for scene
         this.player = new Player(Prospect);
         this.add(this.player.sprite);
-        this.player.setPosition(this.width / 2, 3, 0);
+        this.player.setPosition(this.height - 1, 3, 0);
 
         // Camera
         this.camera = new PerspectiveCamera();
         // Set up camera
-        this.camera.position.set(this.width / 2, 6, 1.6);
-        this.camera.lookAt(new Vector3(this.width / 2, 6, 0));
-        this.camera.zoom = 0.12;
+        this.camera.position.set(this.height / 2, this.width / 2, 1.6);
+        this.camera.lookAt(new Vector3(this.height / 2, this.width / 2, 0));
+        this.camera.zoom = 0.05;
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {
@@ -171,9 +143,6 @@ class Prospect extends Scene {
                 const playerPos = this.player.sprite.position;
                 // If past map, don't move
                 if (Math.round(playerPos.y) <= 0.8) {
-                    if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y + 0.3 + speed)][Math.round(playerPos.x)])) {
-                        Scenes.switchScene(1);
-                    }
                     return;
                 }
                 // Update player position and camera if tile is walkable
@@ -200,6 +169,12 @@ class Prospect extends Scene {
             }
             if (event.code === 'ArrowRight') {
                 const playerPos = this.player.sprite.position;
+                if (Math.round(playerPos.x) >= this.height - 1) {
+                    if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x + 0.3 + speed)])) {
+                        Scenes.switchScene(1);
+                    }
+                    return;
+                }
                 // Update player position and camera if tile is walkable
                 if (this.walkable.has(this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x + 0.3 + speed)])) {
                     this.remove(this.player.sprite);
@@ -221,10 +196,10 @@ class Prospect extends Scene {
         const texture = new TextureLoader().load(source);
         texture.minFilter = LinearFilter;
         // Find tile
-        texture.offset.x = (1 * offsetX) / this.countX;
-        texture.offset.y = (-1 *  offsetY) / this.countY;
-        texture.repeat.x = (1 - eps * 3) / this.countX;
-        texture.repeat.y = (1 - eps * 5) / this.countY;
+        texture.offset.x = (1 * offsetX + 0.03 ) / this.countX;
+        texture.offset.y = (-1 *  offsetY + 0.05) / this.countY;
+        texture.repeat.x = (1 - eps * 10) / this.countX;
+        texture.repeat.y = (1 - eps * 10) / this.countY;
         // texture.wrapS = texture.wrapT = RepeatWrapping;
 
         const material = new SpriteMaterial({map: texture});
@@ -238,7 +213,7 @@ class Prospect extends Scene {
             for (let j = 0; j < this.width; j++) {
                 // Set tile and set grass background
                 const index = this.tiles[j][i];
-                const background = new Sprite(this.tileset.get(8));
+                const background = new Sprite(this.tileset.get(42));
                 const sprite = new Sprite(this.tileset.get(index));
                 // Set positions based on tile mapping
                 const xPosition = i;
