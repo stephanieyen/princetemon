@@ -62,7 +62,24 @@ class PoeGameInstructions extends Scene {
                     }
                 );
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                textMesh.position.set(-1, -0.12, 0.1);
+                textMesh.position.set(-1, -0, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes[4].add(textMesh);
+            }
+        );
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "If you get hit once, you have to start over!",
+                    {
+                        font: font,
+                        size: 0.05,
+                        height: 0
+                    }
+                );
+                const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                textMesh.position.set(-0.7, -0.12, 0.1);
                 // Cannot use this.add since inside new function
                 Scenes.scenes[4].add(textMesh);
             }

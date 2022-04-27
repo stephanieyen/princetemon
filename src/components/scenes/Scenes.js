@@ -1,9 +1,11 @@
 import { WebGLRenderer } from "three";
 import Frist from "./Frist";
+import GameOver from "./GameOver";
 import Poe from "./Poe";
 import PoeGame from "./PoeGame";
 import PoeGameInstructions from "./PoeGameInstructions";
 import Prospect from "./Prospect";
+import Success from "./Success";
 import Title from "./Title";
 
 class Scenes {
@@ -24,6 +26,8 @@ class Scenes {
         this.scenes[3] = new Poe();
         this.scenes[4] = new PoeGameInstructions();
         this.scenes[5] = new PoeGame();
+        this.scenes[6] = new GameOver();
+        this.scenes[7] = new Success();
 
         // Set current scene to title scene
         this.currentScene = this.scenes[0];
