@@ -86,7 +86,12 @@ class PoeGame extends Scene {
                 }
                 const playerPos = this.player.sprite.position;
                 // Update player position and camera if tile is walkable
-                if (playerPos.x <= 1.5) return;
+                if (playerPos.x <= 1.5) {
+                    this.remove(this.player.sprite);
+                    this.player.setPosition(17.5, playerPos.y, playerPos.z, "left");
+                    this.add(this.player.sprite);
+                    return;
+                }
                 this.remove(this.player.sprite);
                 this.player.setPosition(playerPos.x - speed, playerPos.y, playerPos.z, "left");
                 this.add(this.player.sprite);
@@ -98,7 +103,12 @@ class PoeGame extends Scene {
                 }
                 const playerPos = this.player.sprite.position;
                 // Update player position and camera if tile is walkable
-                if (playerPos.x >= 17.5) return;
+                if (playerPos.x >= 17.5) {
+                    this.remove(this.player.sprite);
+                    this.player.setPosition(1.5, playerPos.y, playerPos.z, "right");
+                    this.add(this.player.sprite);
+                    return;
+                }
                 this.remove(this.player.sprite);
                 this.player.setPosition(playerPos.x + speed, playerPos.y, playerPos.z, "right");
                 this.add(this.player.sprite);
@@ -180,7 +190,7 @@ class PoeGame extends Scene {
                 rocks[i].position.y -= speed;
                 time++;
                 // If you get hit, exit game
-                if (rocks[i].position.y <= 1.45) {
+                if (rocks[i].position.y <= 1.45 && rocks[i].position.y >= 0.55) {
                     if (Scenes.scenes[5].player.sprite.position.x > rocks[i].position.x - 0.5 &&
                         Scenes.scenes[5].player.sprite.position.x < rocks[i].position.x + 0.5) {
                         Scenes.scenes[5].gameStarted = false;
