@@ -47,7 +47,7 @@ class Title extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-0.45, 0, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[0].add(textMesh);
+                Scenes.scenes['title'].add(textMesh);
             }
         );
         fontLoader.load(
@@ -64,7 +64,7 @@ class Title extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-0.37, -0.25, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[0].add(textMesh);
+                Scenes.scenes['title'].add(textMesh);
             }
         );
 
@@ -78,7 +78,7 @@ class Title extends Scene {
 
         this.pressSpaceBar = (event) => {
             if (event.key === ' ' || event.code === 'Space') {
-                Scenes.switchScene(1);
+                Scenes.switchScene('frist');
             }
         };
     }

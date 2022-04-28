@@ -212,7 +212,7 @@ class Poe extends Scene {
                 // If past map, don't move
                 if (Math.round(playerPos.y) <= 1) {
                     if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y - speed - 0.3)][Math.round(playerPos.x)])) {
-                        Scenes.switchScene(1);
+                        Scenes.switchScene('frist');
                     }
                     return;
                 }
@@ -261,7 +261,7 @@ class Poe extends Scene {
             // Action button to get to minigame
             if (event.code === 'Space') {
                 if (this.inActionSpace()) {
-                    Scenes.switchScene(4);
+                    Scenes.switchScene('poegameinstructions');
                 }
             }
         };

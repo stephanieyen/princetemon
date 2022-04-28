@@ -175,7 +175,7 @@ class PoeGame extends Scene {
             else {   
                 if (Scenes.scenes[5].gameStarted) {
                     Scenes.scenes[5].gameStarted = false;
-                    Scenes.switchScene(7);
+                    Scenes.switchScene('success');
                 }
                 clearInterval(levelInterval);
             }
@@ -194,7 +194,7 @@ class PoeGame extends Scene {
                     if (Scenes.scenes[5].player.sprite.position.x > rocks[i].position.x - 0.5 &&
                         Scenes.scenes[5].player.sprite.position.x < rocks[i].position.x + 0.5) {
                         Scenes.scenes[5].gameStarted = false;
-                        Scenes.switchScene(6);
+                        Scenes.switchScene('gameover');
                     }
                 }
             }

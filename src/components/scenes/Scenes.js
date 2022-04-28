@@ -10,7 +10,7 @@ import Title from "./Title";
 
 class Scenes {
     constructor() {
-        this.scenes = [];
+        this.scenes = {};
         this.currentScene = undefined;
         this.renderer = undefined;
     }
@@ -19,25 +19,30 @@ class Scenes {
     create() {
         this.renderer = new WebGLRenderer({ antialias: true });
         this.renderer.setSize(640, 480);
-        // Initialize array of scenes
-        this.scenes[0] = new Title();
-        this.scenes[1] = new Frist();
-        this.scenes[2] = new Prospect();
-        this.scenes[3] = new Poe();
-        this.scenes[4] = new PoeGameInstructions();
-        this.scenes[5] = new PoeGame();
-        this.scenes[6] = new GameOver();
-        this.scenes[7] = new Success();
+        // Initialize dictionary of scenes
+        this.scenes['title'] = new Title();
+        this.scenes['frist'] = new Frist(); 
+
+        this.scenes['prospect'] = new Prospect();
+        // this.scenes['prospectgameinstructions'] = new ProspectGameInstructions();
+        // this.scenes['prospectgame'] = new ProspectGame();
+
+        this.scenes['poe'] = new Poe();
+        this.scenes['poegameinstructions'] = new PoeGameInstructions();
+        this.scenes['poegame'] = new PoeGame();
+        
+        this.scenes['gameover'] = new GameOver();
+        this.scenes['success'] = new Success();
 
         // Set current scene to title scene
-        this.currentScene = this.scenes[0];
+        this.currentScene = this.scenes['title'];
         this.currentScene.addEvents();
     }
 
     // Switches scenes
-    switchScene(sceneNumber) {
+    switchScene(sceneKey) {
         this.currentScene.removeEvents();
-        this.currentScene = this.scenes[sceneNumber];
+        this.currentScene = this.scenes[sceneKey];
         this.currentScene.addEvents();
     }
 }

@@ -170,7 +170,7 @@ class Frist extends Scene {
                 // If past map, don't move
                 if (Math.round(playerPos.y) >= this.width - 1 ) {
                     if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y + 0.3 + speed)][Math.round(playerPos.x)])) {
-                        Scenes.switchScene(3);
+                        Scenes.switchScene('poe');
                     }
                     return;
                 }
@@ -204,7 +204,7 @@ class Frist extends Scene {
                 const playerPos = this.player.sprite.position;
                 if (Math.round(playerPos.x) <= 1) {
                     if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x - 0.3 + speed)])) {
-                        Scenes.switchScene(2);
+                        Scenes.switchScene('prospect');
                     }
                     return;
                 }

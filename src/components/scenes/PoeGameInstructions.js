@@ -47,7 +47,7 @@ class PoeGameInstructions extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-0.6, 0.25, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[4].add(textMesh);
+                Scenes.scenes['poegameinstructions'].add(textMesh);
             }
         );
         fontLoader.load(
@@ -64,7 +64,7 @@ class PoeGameInstructions extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-1, -0, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[4].add(textMesh);
+                Scenes.scenes['poegameinstructions'].add(textMesh);
             }
         );
         fontLoader.load(
@@ -81,7 +81,7 @@ class PoeGameInstructions extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-0.7, -0.12, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[4].add(textMesh);
+                Scenes.scenes['poegameinstructions'].add(textMesh);
             }
         );
         fontLoader.load(
@@ -98,7 +98,7 @@ class PoeGameInstructions extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-0.37, -0.25, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[4].add(textMesh);
+                Scenes.scenes['poegameinstructions'].add(textMesh);
             }
         );
 
@@ -112,7 +112,7 @@ class PoeGameInstructions extends Scene {
 
         this.pressSpaceBar = (event) => {
             if (event.key === ' ' || event.code === 'Space') {
-                Scenes.switchScene(5);
+                Scenes.switchScene('poegame');
             }
         };
     }

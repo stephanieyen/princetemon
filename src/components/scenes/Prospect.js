@@ -1,4 +1,4 @@
-import { LinearFilter, OrthographicCamera, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
+import { LinearFilter, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { Street } from "../images";
 import Player from "../player/player";
@@ -111,7 +111,8 @@ class Prospect extends Scene {
         // Set up camera
         this.camera.position.set(this.height - 11, 3, 1.6);
         this.camera.lookAt(new Vector3(this.height - 11, 3, 0));
-        this.camera.zoom = 0.08;
+        // this.camera.zoom = 0.08;
+        this.camera.zoom = 0.04;
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {
@@ -171,7 +172,7 @@ class Prospect extends Scene {
                 const playerPos = this.player.sprite.position;
                 if (Math.round(playerPos.x) >= this.height - 1) {
                     if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x + 0.3 + speed)])) {
-                        Scenes.switchScene(1);
+                        Scenes.switchScene('frist');
                     }
                     return;
                 }
@@ -183,6 +184,13 @@ class Prospect extends Scene {
                     if (this.camera.position.x <= this.height - 10) {
                         this.camera.position.x += speed;
                     }
+                }
+            }
+
+            // Action button to get to minigame
+            if (event.code === 'Space') {
+                if (this.inActionSpace()) {
+                    // Scenes.switchScene('');
                 }
             }
         };
