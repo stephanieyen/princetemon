@@ -78,7 +78,7 @@ class Title extends Scene {
 
         this.pressSpaceBar = (event) => {
             if (event.key === ' ' || event.code === 'Space') {
-                Scenes.switchScene(2);
+                Scenes.switchScene(1);
             }
         };
     }
