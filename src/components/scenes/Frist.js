@@ -188,6 +188,9 @@ class Frist extends Scene {
                 const playerPos = this.player.sprite.position;
                 // If past map, don't move
                 if (Math.round(playerPos.y) <= 0.8) {
+                    if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y - 0.3 - speed)][Math.round(playerPos.x)])) {
+                        Scenes.switchScene('nassau');
+                    }
                     return;
                 }
                 // Update player position and camera if tile is walkable

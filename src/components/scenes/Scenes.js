@@ -1,6 +1,7 @@
 import { WebGLRenderer } from "three";
 import Frist from "./Frist";
 import GameOver from "./GameOver";
+import Nassau from "./Nassau";
 import Poe from "./Poe";
 import PoeGame from "./PoeGame";
 import PoeGameInstructions from "./PoeGameInstructions";
@@ -33,6 +34,7 @@ class Scenes {
         
         this.scenes['gameover'] = new GameOver();
         this.scenes['success'] = new Success();
+        this.scenes['nassau'] = new Nassau();
 
         // Set current scene to title scene
         this.currentScene = this.scenes['title'];

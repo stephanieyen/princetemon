@@ -1,11 +1,11 @@
 import { Group, LinearFilter, Sprite, SpriteMaterial, TextureLoader } from "three";
-import { SpritePton, Sprites } from "../images";
+import { Sprites } from "../images";
 
 class Player extends Group {
     constructor(parent) {
         super();
         this.scene = parent;
-        // Spritesheet details
+        // Sprite details
         this.imageX = 240;
         this.imageY = 128;
         // Number of images per row/column

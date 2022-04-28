@@ -16,3 +16,5 @@ export { default as Crane } from './crane.png';
 export { default as Cone } from './cone.png';
 export { default as Hole } from './hole.png';
 export { default as NewRes } from './new_building.png';
+export { default as Cannon } from './cannon.png';
+export { default as Nassau } from './nassau_hall.png';

@@ -33,7 +33,7 @@ class Success extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-1, 0, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[7].add(textMesh);
+                Scenes.scenes['success'].add(textMesh);
             }
         );
         fontLoader.load(
@@ -50,7 +50,7 @@ class Success extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-0.55, -0.25, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[7].add(textMesh);
+                Scenes.scenes['success'].add(textMesh);
             }
         );
 

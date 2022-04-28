@@ -159,22 +159,22 @@ class PoeGame extends Scene {
         // Number of times to replay final level
         var finalCount = 0;
         var levelInterval = setInterval(function() { 
-            if (level <= 16 && Scenes.scenes[5].gameStarted) { 
+            if (level <= 16 && Scenes.scenes['poegame'].gameStarted) { 
                 var randoms = [];
                 while(randoms.length < level){
                     var r = Math.floor(Math.random() * 17);
                     if(randoms.indexOf(r) === -1) randoms.push(r);
                 }
                 for (let i = 0; i < randoms.length; i++) {
-                    Scenes.scenes[5].rockFall(Scenes.scenes[5].rocks, randoms[i], levelInterval);
+                    Scenes.scenes['poegame'].rockFall(Scenes.scenes['poegame'].rocks, randoms[i], levelInterval);
                 }
                 if (level !== 15) level += 2;
                 else if (finalCount < 5) finalCount++;
                 else level += 2;
             }
             else {   
-                if (Scenes.scenes[5].gameStarted) {
-                    Scenes.scenes[5].gameStarted = false;
+                if (Scenes.scenes['poegame'].gameStarted) {
+                    Scenes.scenes['poegame'].gameStarted = false;
                     Scenes.switchScene('success');
                 }
                 clearInterval(levelInterval);
@@ -191,9 +191,9 @@ class PoeGame extends Scene {
                 time++;
                 // If you get hit, exit game
                 if (rocks[i].position.y <= 1.45 && rocks[i].position.y >= 0.55) {
-                    if (Scenes.scenes[5].player.sprite.position.x > rocks[i].position.x - 0.5 &&
-                        Scenes.scenes[5].player.sprite.position.x < rocks[i].position.x + 0.5) {
-                        Scenes.scenes[5].gameStarted = false;
+                    if (Scenes.scenes['poegame'].player.sprite.position.x > rocks[i].position.x - 0.5 &&
+                        Scenes.scenes['poegame'].player.sprite.position.x < rocks[i].position.x + 0.5) {
+                        Scenes.scenes['poegame'].gameStarted = false;
                         Scenes.switchScene('gameover');
                     }
                 }

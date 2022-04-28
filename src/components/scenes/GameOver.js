@@ -33,7 +33,7 @@ class GameOver extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-1.2, 0, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[6].add(textMesh);
+                Scenes.scenes['gameover'].add(textMesh);
             }
         );
         fontLoader.load(
@@ -50,7 +50,7 @@ class GameOver extends Scene {
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
                 textMesh.position.set(-0.37, -0.25, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes[6].add(textMesh);
+                Scenes.scenes['gameover'].add(textMesh);
             }
         );
 
