@@ -36,11 +36,12 @@ class Frist extends Scene {
         this.createTile(15, Serene, 1, -19);
 
         // Frist tile set
+        var currentIndex = 16;
+
         // this.imageX = 176;
         // this.imageY = 128;
         // this.countX = 11;
         // this.countY = 8;
-        var currentIndex = 16;
         // for (let i = 0; i >= -7; i--) {
         //     for (let j = 0; j <= 10; j++) {
         //         this.createTile(currentIndex, FristBig, j, i);
@@ -223,6 +224,12 @@ class Frist extends Scene {
             }
             if (event.code === 'ArrowRight') {
                 const playerPos = this.player.sprite.position;
+                if (Math.round(playerPos.x) >= this.height - 1) {
+                    if (this.sceneChangers.has(this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x + 0.3 + speed)])) {
+                        Scenes.switchScene('garden');
+                    }
+                    return;
+                }
                 // Update player position and camera if tile is walkable
                 if (this.walkable.has(this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x + 0.3 + speed)])) {
                     this.remove(this.player.sprite);
