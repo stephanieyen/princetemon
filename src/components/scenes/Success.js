@@ -64,7 +64,7 @@ class Success extends Scene {
 
         this.pressSpaceBar = (event) => {
             if (event.key === ' ' || event.code === 'Space') {
-                Scenes.switchScene(3);
+                Scenes.switchScene('poe');
             }
         };
     }
