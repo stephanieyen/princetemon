@@ -21,3 +21,5 @@ export { default as NassauImg } from './nassau_hall.png';
 export { default as CannonGreen } from './cannon_green.png';
 export { default as Flowers } from './flowers.png';
 export { default as Fountain } from './fountain.png'
+export { default as Nassau } from './nassau_hall.png';
+export { default as Ivy } from './prospect_ivy.png';

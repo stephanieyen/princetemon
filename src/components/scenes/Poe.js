@@ -130,7 +130,7 @@ class Poe extends Scene {
             this.walkable.add(i);
         }
         this.sceneChangers = new Set();
-        // Scene changing tiles lis
+        // Scene changing tiles list
         this.sceneChangers.add(4);
         this.sceneChangers.add(5);
         this.sceneChangers.add(6);
@@ -260,7 +260,7 @@ class Poe extends Scene {
 
             // Action button to get to minigame
             if (event.code === 'Space') {
-                if (this.inActionSpace()) {
+                if (this.inActionSpace(36)) {
                     Scenes.switchScene('poegameinstructions');
                 }
             }
@@ -312,10 +312,10 @@ class Poe extends Scene {
     }
 
     // Check if right under action space
-    inActionSpace() {
+    inActionSpace(tile) {
         const playerPos = this.player.sprite.position;
         console.log(this.tiles[Math.round(playerPos.y + 1)][Math.round(playerPos.x)]);
-        if (this.tiles[Math.round(playerPos.y + 1)][Math.round(playerPos.x)] === 36) {
+        if (this.tiles[Math.round(playerPos.y + 1)][Math.round(playerPos.x)] === tile) {
             return true;
         }
         return false;
