@@ -23,3 +23,4 @@ export { default as Flowers } from './flowers.png';
 export { default as Fountain } from './fountain.png'
 export { default as Nassau } from './nassau_hall.png';
 export { default as Ivy } from './prospect_ivy.png';
+export { default as IvyLogo } from './ivy.png';
