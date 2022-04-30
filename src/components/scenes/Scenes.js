@@ -1,13 +1,17 @@
 import { WebGLRenderer } from "three";
 import Frist from "./Frist";
 import GameOver from "./GameOver";
+import GameOverProspect from "./GameOverProspect";
 import Garden from "./Garden";
 import Nassau from "./Nassau";
 import Poe from "./Poe";
 import PoeGame from "./PoeGame";
 import PoeGameInstructions from "./PoeGameInstructions";
 import Prospect from "./Prospect";
+import ProspectGame from "./ProspectGame";
+import ProspectGameInstructions from "./ProspectGameInstructions";
 import Success from "./Success";
+import SuccessProspect from "./SuccessProspect";
 import Title from "./Title";
 
 class Scenes {
@@ -15,6 +19,8 @@ class Scenes {
         this.scenes = {};
         this.currentScene = undefined;
         this.renderer = undefined;
+        // Minigame/search successes for poe, prospect, nassau, and garden
+        this.successes = [0, 0, 1, 1];
     }
 
     // Create scenes
@@ -32,14 +38,20 @@ class Scenes {
         this.scenes['poe'] = new Poe();
         this.scenes['poegameinstructions'] = new PoeGameInstructions();
         this.scenes['poegame'] = new PoeGame();
-        
         this.scenes['gameover'] = new GameOver();
         this.scenes['success'] = new Success();
+
+        this.scenes['prospectgame'] = new ProspectGame();
+        this.scenes['prospectgameinstructions'] = new ProspectGameInstructions();
+        this.scenes['gameoverprospect'] = new GameOverProspect();
+        this.scenes['successprospect'] = new SuccessProspect();
+
         this.scenes['nassau'] = new Nassau();
         this.scenes['garden'] = new Garden();
 
+
         // Set current scene to title scene
-        this.currentScene = this.scenes['prospect'];
+        this.currentScene = this.scenes['title'];
         this.currentScene.addEvents();
     }
 

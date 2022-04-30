@@ -1,5 +1,5 @@
 import { Group, LinearFilter, Sprite, SpriteMaterial, TextureLoader } from "three";
-import { Sprites } from "../images";
+import { SpritePton, Sprites } from "../images";
 
 class Player extends Group {
     constructor(parent) {
@@ -12,63 +12,61 @@ class Player extends Group {
         this.countX = 15;
         this.countY = 8;
 
-        this.spritesheet = new Map();
-        // Standing up
-        this.createTile(0, Sprites, 1, -4);
-        // Walking up 1
-        this.createTile(1, Sprites, 0, -4);
-        // Walking up 2
-        this.createTile(2, Sprites, 2, -4);
-        // Standing right
-        this.createTile(3, Sprites, 1, -5);
-        // Walking right 1
-        this.createTile(4, Sprites, 0, -5);
-        // Walking right 2
-        this.createTile(5, Sprites, 2, -5);
-        // Standing left
-        this.createTile(6, Sprites, 1, -6);
-        // Walking left 1
-        this.createTile(7, Sprites, 0, -6);
-        // Walking left 2
-        this.createTile(8, Sprites, 2, -6);
-        // Standing down
-        this.createTile(9, Sprites, 1, -7);
-        // Walking down 1
-        this.createTile(10, Sprites, 0, -7);
-        // Walking down 2
-        this.createTile(11, Sprites, 2, -7);
-
-        // this.imageX = 48;
-        // this.imageY = 64;
-        // // Number of images per row/column
-        // this.countX = 3;
-        // this.countY = 4;
-
         // this.spritesheet = new Map();
         // // Standing up
-        // this.createTile(0, SpritePton, 1, 0);
+        // this.createTile(0, Sprites, 1, -4);
         // // Walking up 1
-        // this.createTile(1, SpritePton, 0, 0);
+        // this.createTile(1, Sprites, 0, -4);
         // // Walking up 2
-        // this.createTile(2, SpritePton, 2, 0);
+        // this.createTile(2, Sprites, 2, -4);
         // // Standing right
-        // this.createTile(3, SpritePton, 1, -1);
+        // this.createTile(3, Sprites, 1, -5);
         // // Walking right 1
-        // this.createTile(4, SpritePton, 0, -1);
+        // this.createTile(4, Sprites, 0, -5);
         // // Walking right 2
-        // this.createTile(5, SpritePton, 2, -1);
+        // this.createTile(5, Sprites, 2, -5);
         // // Standing left
-        // this.createTile(6, SpritePton, 1, -2);
+        // this.createTile(6, Sprites, 1, -6);
         // // Walking left 1
-        // this.createTile(7, SpritePton, 0, -2);
+        // this.createTile(7, Sprites, 0, -6);
         // // Walking left 2
-        // this.createTile(8, SpritePton, 2, -2);
+        // this.createTile(8, Sprites, 2, -6);
         // // Standing down
-        // this.createTile(9, SpritePton, 1, -3);
+        // this.createTile(9, Sprites, 1, -7);
         // // Walking down 1
-        // this.createTile(10, SpritePton, 0, -3);
+        // this.createTile(10, Sprites, 0, -7);
         // // Walking down 2
-        // this.createTile(11, SpritePton, 2, -3);
+        // this.createTile(11, Sprites, 2, -7);
+
+        // Number of images per row/column
+        this.countX = 3;
+        this.countY = 4;
+
+        this.spritesheet = new Map();
+        // Standing up
+        this.createTile(0, SpritePton, 1, 0);
+        // Walking up 1
+        this.createTile(1, SpritePton, 0, 0);
+        // Walking up 2
+        this.createTile(2, SpritePton, 2, 0);
+        // Standing right
+        this.createTile(3, SpritePton, 1, -1);
+        // Walking right 1
+        this.createTile(4, SpritePton, 0, -1);
+        // Walking right 2
+        this.createTile(5, SpritePton, 2, -1);
+        // Standing left
+        this.createTile(6, SpritePton, 1, -2);
+        // Walking left 1
+        this.createTile(7, SpritePton, 0, -2);
+        // Walking left 2
+        this.createTile(8, SpritePton, 2, -2);
+        // Standing down
+        this.createTile(9, SpritePton, 1, -3);
+        // Walking down 1
+        this.createTile(10, SpritePton, 0, -3);
+        // Walking down 2
+        this.createTile(11, SpritePton, 2, -3);
 
         this.sprites = new Map();
         for (let i = 0; i < this.spritesheet.size; i++) {

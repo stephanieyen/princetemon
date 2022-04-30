@@ -175,6 +175,7 @@ class PoeGame extends Scene {
             else {   
                 if (Scenes.scenes['poegame'].gameStarted) {
                     Scenes.scenes['poegame'].gameStarted = false;
+                    Scenes.successes[0] = 1;
                     Scenes.switchScene('success');
                 }
                 clearInterval(levelInterval);

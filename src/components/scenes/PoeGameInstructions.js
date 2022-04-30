@@ -101,6 +101,23 @@ class PoeGameInstructions extends Scene {
                 Scenes.scenes['poegameinstructions'].add(textMesh);
             }
         );
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "Press escape to go back",
+                    {
+                        font: font,
+                        size: 0.05,
+                        height: 0
+                    }
+                );
+                const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                textMesh.position.set(-0.4, -0.37, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes['poegameinstructions'].add(textMesh);
+            }
+        );
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {
@@ -113,6 +130,9 @@ class PoeGameInstructions extends Scene {
         this.pressSpaceBar = (event) => {
             if (event.key === ' ' || event.code === 'Space') {
                 Scenes.switchScene('poegame');
+            }
+            if (event.code === 'Escape') {
+                Scenes.switchScene('poe');
             }
         };
     }
