@@ -39,7 +39,7 @@ export { default as IvyLogo } from './prospect/ivy_logo.png';
 export { default as TigerInn } from './prospect/ti.png';
 export { default as TigerInnLogo } from './prospect/ti_logo.png';
 // export { default as Cottage } from './prospect/cottage.png';
-// export { default as CottageLogo } from './prospect/cottage_logo.png';
+export { default as CottageLogo } from './prospect/cottage_logo.png';
 // export { default as Cap } from './prospect/cap.png';
 export { default as CapLogo } from './prospect/cap_logo.png';
 // export { default as Cloister } from './prospect/Cloister.png';
