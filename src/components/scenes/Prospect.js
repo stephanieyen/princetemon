@@ -14,6 +14,7 @@ import {    Street,
             Vehicles
         } from "../images";
 import Player from "../player/player";
+import Maps from "./Maps";
 
 class Prospect extends Scene {
     constructor() {
@@ -301,6 +302,13 @@ class Prospect extends Scene {
                         this.camera.position.x += speed;
                     }
                 }
+            }
+            // Map event
+            if (event.code === 'KeyM' || event.key === 'm') {
+                const map = new Maps('prospect');
+                console.log(map);
+                Scenes.scenes['map'] = map;
+                Scenes.switchScene('map');
             }
 
             // Action button to get to minigame

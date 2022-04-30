@@ -1,12 +1,17 @@
-import { LinearFilter, OrthographicCamera, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
+import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
-import { FristBig, FristSheet, Serene } from "../images";
+import { PixelFont } from "../fonts";
+import { FristBig, Serene, Sprites } from "../images";
 import Player from "../player/player";
+import Maps from "./Maps";
 
 class Frist extends Scene {
     constructor() {
         // Call parent Scene() constructor
         super();
+        // Dialogue checker
+        this.dialogueHappened = false;
+
         // Adding in tiles
         // Hashmap for tiles
         this.tileset = new Map();
@@ -42,12 +47,21 @@ class Frist extends Scene {
         this.imageY = 128;
         this.countX = 11;
         this.countY = 8;
+        // 16 - 103
         for (let i = 0; i >= -7; i--) {
             for (let j = 0; j <= 10; j++) {
                 this.createTile(currentIndex, FristBig, j, i);
                 currentIndex++;
             }
         }
+
+        // Talking sprite
+        // Number of images per row/column
+        this.countX = 15;
+        this.countY = 8;
+        this.createTile(104, Sprites, 1, -7);
+
+        
         // this.imageX = 80;
         // this.imageY = 64;
         // this.countX = 5;
@@ -69,15 +83,13 @@ class Frist extends Scene {
             this.walkable.add(i);
         }
 
-   
-
         // Scene changing tiles list
         this.sceneChangers = new Set();
-        this.sceneChangers.add(2);
-        this.sceneChangers.add(4);
-        this.sceneChangers.add(5);
-        this.sceneChangers.add(6);
-        this.sceneChangers.add(8);
+        // this.sceneChangers.add(2);
+        // this.sceneChangers.add(4);
+        // this.sceneChangers.add(5);
+        // this.sceneChangers.add(6);
+        // this.sceneChangers.add(8);
 
         // Actual tiles for level
         this.tiles = [
@@ -89,7 +101,7 @@ class Frist extends Scene {
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11,  4,  5,  6, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  0,  0,  0,  0,  4,  5,  6,104,  0,  0,  0, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
             [ 8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8],
@@ -243,6 +255,18 @@ class Frist extends Scene {
                     }
                 }
             }
+            // Map event
+            if (event.code === 'KeyM' || event.key === 'm') {
+                const map = new Maps('frist');
+                Scenes.scenes['map'] = map;
+                Scenes.switchScene('map');
+            }
+            // Dialogue event
+            if (event.code === 'Space' || event.key === ' ') {
+                if (this.inActionSpace(104) && !this.dialogueHappened) {
+                    this.startDialogue();
+                }
+            }
         };
     }
     // Creates texture and material from spritesheet
@@ -283,6 +307,205 @@ class Frist extends Scene {
             }
         }
     }
+
+    // Check if right under action space
+    inActionSpace(tile) {
+        const playerPos = this.player.sprite.position;
+        if (this.tiles[Math.round(playerPos.y + 1)][Math.round(playerPos.x)] === tile) {
+            return true;
+        }
+        return false;
+    }
+
+    startDialogue() {
+        // Dialogue event handlers 
+        const playerPos = this.player.sprite.position;
+        // Add cube to back
+        const boxGeometry = new BoxGeometry(20, 8, 0.001);
+        const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
+        var cube = new Mesh(boxGeometry, boxMaterial);
+        cube.position.set(playerPos.x, playerPos.y + 10, 0.001);
+        this.add(cube);
+        var count = 0;
+        this.textMesh;
+        const fontLoader = new FontLoader();
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "You:\n\nHey, I need to get into Frist. What's going on?",
+                    {
+                        font: font,
+                        size: 0.5,
+                        height: 0
+                    }
+                );
+                Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
+            }
+        );  
+        this.dialogueContinue = (event) => {
+            if (count >= 7) {
+                this.remove(Scenes.scenes['frist'].textMesh);  
+                this.remove(cube);
+                window.addEventListener('keydown', this.move, false);
+                window.removeEventListener('keydown', this.dialogueContinue, false); 
+            }
+            else if (count === 0){
+                Scenes.scenes['frist'].remove(Scenes.scenes['frist'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Random Dude With Blue Hair:\n\nCHRISTOPHER NOLAN IS FILMING IN FRIST\nTODAY!!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 1){
+                Scenes.scenes['frist'].remove(Scenes.scenes['frist'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nI need to be in this movie. How do I get in?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 2){
+                Scenes.scenes['frist'].remove(Scenes.scenes['frist'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Still Has Blue Hair:\n\nWell, Christopher Nolan said he needed some\nmaterials, so maybe if you got those you could get\nin.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 3){
+                Scenes.scenes['frist'].remove(Scenes.scenes['frist'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nWhat materials?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 4){
+                Scenes.scenes['frist'].remove(Scenes.scenes['frist'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Blue Hair Man:\n\nHe said he needed a brick and water that is\ndefinitely not alcohol.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 5){
+                Scenes.scenes['frist'].remove(Scenes.scenes['frist'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nUmmmm, what movie is this for exactly?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 6){
+                Scenes.scenes['frist'].remove(Scenes.scenes['frist'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Blue Blue Blue Blue Blue:\n\nI think it's called Floppenheimer?\nAnyways, good luck!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
+                    }
+                );  
+            }
+            count++;
+        }
+        window.removeEventListener('keydown', this.move, false);
+        window.addEventListener('keydown', this.dialogueContinue, false); 
+        this.dialogueHappened = true;
+        // Allow user to switch maps once dialogue completed
+        this.sceneChangers.add(2);
+        this.sceneChangers.add(4);
+        this.sceneChangers.add(5);
+        this.sceneChangers.add(6);
+        this.sceneChangers.add(8);
+    }
+
 
     // Adds events specific to Frist scene
     addEvents() {

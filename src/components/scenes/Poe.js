@@ -2,6 +2,7 @@ import { LinearFilter, PerspectiveCamera, Scene, Sprite, SpriteMaterial, Texture
 import { Scenes } from ".";
 import { Bench, Cone, Crane, Dirt, FristSheet, NewRes, Serene } from "../images";
 import Player from "../player/player";
+import Maps from "./Maps";
 
 class Poe extends Scene {
     constructor() {
@@ -10,29 +11,6 @@ class Poe extends Scene {
         // Adding in tiles
         // Hashmap for tiles
         this.tileset = new Map();
-        // Frist tileset details
-        this.imageX = 144;
-        this.imageY = 144;
-        // Number of images per row/column
-        this.countX = 3;
-        this.countY = 3;
-        // Grass
-        this.createTile(0, FristSheet, 1, 0);
-        // Tree 1
-        this.createTile(1, FristSheet, 1, -2);
-        // Tree 2
-        this.createTile(2, FristSheet, 1, -1);
-        // Path
-        this.createTile(3, FristSheet, 2, -2);
-        // Door
-        this.createTile(4, FristSheet, 0, 0);
-        // Window
-        this.createTile(5, FristSheet, 2, -1);
-        // Bottom front
-        this.createTile(6, FristSheet, 0, -1);
-        // Top front
-        this.createTile(7, FristSheet, 0, -2);
-
         // Outdoors tileset details
         this.imageX = 128;
         this.imageY = 432;
@@ -257,6 +235,13 @@ class Poe extends Scene {
                     }
                 }
             }
+            // Map event
+            if (event.code === 'KeyM' || event.key === 'm') {
+                const map = new Maps('poe');
+                console.log(map);
+                Scenes.scenes['map'] = map;
+                Scenes.switchScene('map');
+            }
 
             // Action button to get to minigame
             if (event.code === 'Space') {
@@ -314,7 +299,6 @@ class Poe extends Scene {
     // Check if right under action space
     inActionSpace(tile) {
         const playerPos = this.player.sprite.position;
-        console.log(this.tiles[Math.round(playerPos.y + 1)][Math.round(playerPos.x)]);
         if (this.tiles[Math.round(playerPos.y + 1)][Math.round(playerPos.x)] === tile) {
             return true;
         }

@@ -1,13 +1,11 @@
 export { default as TitleBackground } from './title.png';
 export { default as WoodBlock } from './wood_block.jpg';
-export { default as FristSheet } from './frist_sheet.png';
 export { default as FristBig } from './frist_big.png';
 export { default as Serene } from './serene.png';
 export { default as Sprites } from './sprites.png';
 export { default as PoeGameTiles } from './poe_game.png';
 export { default as Rocks } from './rocks.png';
 export { default as SpritePton } from './player_sprite.png';
-export { default as FristSmall } from './Frist.png';
 export { default as PoeField } from './poe.png';
 export { default as Bench } from './bench.png';
 export { default as Dirt } from './terrain.png';
@@ -49,3 +47,9 @@ export { default as CloisterLogo } from './prospect/cloister_logo.png';
 // export { default as Charter } from './prospect/Charter.png';
 export { default as CharterLogo } from './prospect/charter_logo.png';
 
+// Map pictures
+export { default as MapFrist } from './map/map_frist.png';
+export { default as MapGardens } from './map/map_gardens.png';
+export { default as MapNassau } from './map/map_nassau.png';
+export { default as MapPoe } from './map/map_poe.png';
+export { default as MapProspect } from './map/map_prospect.png';

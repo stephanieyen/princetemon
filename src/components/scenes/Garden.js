@@ -2,6 +2,7 @@ import { LinearFilter, PerspectiveCamera, Scene, Sprite, SpriteMaterial, Texture
 import { Scenes } from ".";
 import { Bench, Cannon, CannonGreen, Flowers, Fountain, NassauImg, Serene } from "../images";
 import Player from "../player/player";
+import Maps from "./Maps";
 
 class Garden extends Scene {
     constructor() {
@@ -229,6 +230,13 @@ class Garden extends Scene {
                         this.camera.position.x += speed;
                     }
                 }
+            }
+            // Map event
+            if (event.code === 'KeyM' || event.key === 'm') {
+                const map = new Maps('garden');
+                console.log(map);
+                Scenes.scenes['map'] = map;
+                Scenes.switchScene('map');
             }
         };
     }

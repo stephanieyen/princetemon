@@ -32,23 +32,21 @@ class Scenes {
         this.scenes['frist'] = new Frist(); 
 
         this.scenes['prospect'] = new Prospect();
-        // this.scenes['prospectgameinstructions'] = new ProspectGameInstructions();
-        // this.scenes['prospectgame'] = new ProspectGame();
+        this.scenes['prospectgame'] = new ProspectGame();
+        this.scenes['prospectgameinstructions'] = new ProspectGameInstructions();
 
         this.scenes['poe'] = new Poe();
         this.scenes['poegameinstructions'] = new PoeGameInstructions();
         this.scenes['poegame'] = new PoeGame();
-        this.scenes['gameover'] = new GameOver();
-        this.scenes['success'] = new Success();
-
-        this.scenes['prospectgame'] = new ProspectGame();
-        this.scenes['prospectgameinstructions'] = new ProspectGameInstructions();
-        this.scenes['gameoverprospect'] = new GameOverProspect();
-        this.scenes['successprospect'] = new SuccessProspect();
 
         this.scenes['nassau'] = new Nassau();
         this.scenes['garden'] = new Garden();
 
+        this.scenes['gameover'] = new GameOver();
+        this.scenes['success'] = new Success();
+
+        this.scenes['gameoverprospect'] = new GameOverProspect();
+        this.scenes['successprospect'] = new SuccessProspect();
 
         // Set current scene to title scene
         this.currentScene = this.scenes['title'];
