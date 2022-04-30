@@ -29,23 +29,21 @@ export { default as Vehicles } from './vehicles.png';
 // Eating clubs
 // export { default as Tower } from './prospect/tower.png';
 export { default as TowerLogo } from './prospect/tower_logo.png';
-// export { default as Cannon } from './prospect/cannon.png';
+export { default as Cannon } from './prospect/cannon.png';
 export { default as CannonLogo } from './prospect/cannon_logo.png';
-// export { default as Quad } from './prospect/quad.png';
+export { default as Quad } from './prospect/quad.png';
 export { default as QuadLogo } from './prospect/quad_logo.png';
-// export { default as Colonial } from './prospect/colonial.png';
+export { default as Colonial } from './prospect/colonial.png';
 export { default as ColonialLogo } from './prospect/colonial_logo.png';
 export { default as Ivy } from './prospect/ivy.png';
 export { default as IvyLogo } from './prospect/ivy_logo.png';
 export { default as TigerInn } from './prospect/ti.png';
 export { default as TigerInnLogo } from './prospect/ti_logo.png';
-// export { default as Cottage } from './prospect/cottage.png';
+export { default as Cottage } from './prospect/cottage.png';
 export { default as CottageLogo } from './prospect/cottage_logo.png';
-// export { default as Cap } from './prospect/cap.png';
+export { default as Cap } from './prospect/cap.png';
 export { default as CapLogo } from './prospect/cap_logo.png';
-// export { default as Cloister } from './prospect/Cloister.png';
-export { default as CloisterLogo } from './prospect/cloister_logo.png';
-// export { default as Charter } from './prospect/Charter.png';
+export { default as Charter } from './prospect/Charter.png';
 export { default as CharterLogo } from './prospect/charter_logo.png';
 
 // Map pictures
