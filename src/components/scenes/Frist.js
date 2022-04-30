@@ -347,6 +347,7 @@ class Frist extends Scene {
             }
         );  
         this.dialogueContinue = (event) => {
+            if (event.key !== ' ') return;
             if (count >= 7) {
                 this.remove(Scenes.scenes['frist'].textMesh);  
                 this.remove(cube);

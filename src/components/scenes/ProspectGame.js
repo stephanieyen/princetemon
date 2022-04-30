@@ -202,6 +202,7 @@ class ProspectGame extends Scene {
                 if (Scenes.scenes['prospectgame'].gameStarted) {
                     Scenes.scenes['prospectgame'].gameStarted = false;
                     Scenes.successes[1] = 1;
+                    Scenes.scenes['prospectgame'].resetGame();
                     Scenes.switchScene('successprospect');
                 }
                 clearInterval(timeLoop);
@@ -220,6 +221,10 @@ class ProspectGame extends Scene {
     }
 
     resetGame() {
+        for (let i = 0; i < 8; i++) {
+            this.arrows[i].position.y = 10;
+            this.speeds[i] = 0;
+        } 
         this.gameStarted = false;
     }
 

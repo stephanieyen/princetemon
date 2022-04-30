@@ -49,8 +49,8 @@ class Scenes {
         this.scenes['successprospect'] = new SuccessProspect();
 
         // Set current scene to title scene
-        // this.currentScene = this.scenes['title'];
-        this.currentScene = this.scenes['prospect'];
+        this.currentScene = this.scenes['title'];
+        // this.currentScene = this.scenes['poe'];
         this.currentScene.addEvents();
     }
 

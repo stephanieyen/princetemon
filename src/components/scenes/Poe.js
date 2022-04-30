@@ -1,6 +1,7 @@
-import { LinearFilter, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
+import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
-import { Bench, Cone, Crane, Dirt, FristSheet, NewRes, Serene } from "../images";
+import { PixelFont } from "../fonts";
+import { Bench, Cone, ConstructionSprite, Crane, Dirt, FristSheet, NewRes, Serene } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
 
@@ -8,6 +9,10 @@ class Poe extends Scene {
     constructor() {
         // Call parent Scene() constructor
         super();
+
+        // Dialogue checker
+        this.dialogueHappened = false;
+
         // Adding in tiles
         // Hashmap for tiles
         this.tileset = new Map();
@@ -102,6 +107,14 @@ class Poe extends Scene {
         this.createTile(62, NewRes, 2, -3);
         this.createTile(63, NewRes, 3, -3);
 
+        // Talking Sprite
+        this.countX = 2;
+        this.countY = 2;
+        this.createTile(104, ConstructionSprite, 0, 0);
+        this.createTile(105, ConstructionSprite, 0, -1);
+        this.createTile(106, ConstructionSprite, 1, 0);
+        this.createTile(107, ConstructionSprite, 1, -1);
+
         // Walkable Tiles List
         this.walkable = new Set();
         for (let i = 0; i <= 22; i++) {
@@ -117,8 +130,8 @@ class Poe extends Scene {
         this.tiles = [
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 46, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 47, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 46, 10, 10, 10, 10, 10, 10,104,106, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 47, 10, 10, 10, 10, 10, 10,105,107, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
             [ 0,  0, 32,  0,  0,  0,  0,  0,  0,  0,  0, 32,  0,  0,  0,  0,  0,  7,  8,  8,  8,  8,  8, 20,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  5,  5,  5,  5,  5,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5, 21,  2,  2,  2,  2,  2,  3, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
@@ -245,7 +258,11 @@ class Poe extends Scene {
 
             // Action button to get to minigame
             if (event.code === 'Space') {
-                if (this.inActionSpace(36)) {
+                // Dialogue event
+                if ((this.inActionSpace(104) || this.inActionSpace(106)) && !this.dialogueHappened) {
+                    this.startDialogue();
+                }
+                if (this.inActionSpace(36) && this.dialogueHappened) {
                     Scenes.switchScene('poegameinstructions');
                 }
             }
@@ -304,6 +321,133 @@ class Poe extends Scene {
         }
         return false;
     }
+
+    startDialogue() {
+        // Dialogue event handlers 
+        const playerPos = this.player.sprite.position;
+        // Add cube to back
+        const boxGeometry = new BoxGeometry(20, 8, 0.001);
+        // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
+        const boxMaterial = new MeshBasicMaterial({color: 0xffffff});
+
+        var cube = new Mesh(boxGeometry, boxMaterial);
+        cube.position.set(playerPos.x - 3, playerPos.y + 10, 0.001);
+        this.add(cube);
+        var count = 0;
+        this.textMesh;
+        const fontLoader = new FontLoader();
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "You:\n\nHey, do you know where I could find some brick?",
+                    {
+                        font: font,
+                        size: 0.5,
+                        height: 0
+                    }
+                );
+                Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x000000}));
+                Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
+            }
+        );  
+        this.dialogueContinue = (event) => {
+            if (event.key !== ' ') return;
+            if (count >= 4) {
+                this.remove(Scenes.scenes['poe'].textMesh);  
+                this.remove(cube);
+                window.addEventListener('keydown', this.move, false);
+                window.removeEventListener('keydown', this.dialogueContinue, false); 
+            }
+            else if (count === 0){
+                Scenes.scenes['poe'].remove(Scenes.scenes['poe'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Construction Worker:\n\nOh, you're in luck! We just got a huge shipment of\nbrick.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 1){
+                Scenes.scenes['poe'].remove(Scenes.scenes['poe'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nWow, that sure is convenient and perhaps lazy writing!\nWhere can I get some?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 2){
+                Scenes.scenes['poe'].remove(Scenes.scenes['poe'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Construction Worker:\n\nLook up there, by the sign. We kept all our brick\nnear the extremely dangerous area where\nrocks are constantly falling in predictable\npatterns.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 3){
+                Scenes.scenes['poe'].remove(Scenes.scenes['poe'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nGreat, thanks...\n\nWait, what? The extremely dangerous place where\nwhat?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
+                    }
+                );  
+            }
+            count++;
+        }
+        window.removeEventListener('keydown', this.move, false);
+        window.addEventListener('keydown', this.dialogueContinue, false); 
+        this.dialogueHappened = true;
+    }
+
 
     // Adds events specific to Frist scene
     addEvents() {

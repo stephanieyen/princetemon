@@ -21,6 +21,7 @@ export { default as Nassau } from './nassau_hall.png';
 export { default as Disco } from './disco.png';
 export { default as Arrows } from './arrows.png';
 export { default as FilledArrrows } from './filled_arrows.png';
+export { default as ConstructionSprite } from './construction_sprite.png';
 
 export { default as Street } from './prospect/prospect.png';
 export { default as Vehicles } from './vehicles.png';
