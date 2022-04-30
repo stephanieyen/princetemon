@@ -81,6 +81,7 @@ class Prospect extends Scene {
         this.createTile(42, Street, 8, -19);
 
         // Cars
+        this.backgrounds = new Object(); // {} 
         // 22 x 19
         this.countX = 22;
         this.countY = 19;
@@ -90,6 +91,11 @@ class Prospect extends Scene {
         this.createTile(103, Vehicles, 1, -18);
         this.createTile(104, Vehicles, 2, -17);
         this.createTile(105, Vehicles, 2, -18);
+        // Car body on top of road background
+        for (let i = 100; i <= 105; i++) {
+            this.backgrounds[i] = 35;
+        }
+        this.backgrounds[101] = this.backgrounds[103] = this.backgrounds[105] = 32;
         // this.createTile(106, Vehicles, 3, -17);
         // this.createTile(107, Vehicles, 3, -18);
         
@@ -344,11 +350,11 @@ class Prospect extends Scene {
                 const index = this.tiles[j][i];
                 let background = new Sprite(this.tileset.get(42));
 
-                // Car on top of road background
-                if (index >= 100) {
-                    background = new Sprite(this.tileset.get(35));
+                // Apply backgrounds
+                if (index in this.backgrounds) { // check for key 
+                    background = new Sprite(this.tileset.get(this.backgrounds[index]));
                 }
-                
+
                 const sprite = new Sprite(this.tileset.get(index));
                 // Set positions based on tile mapping
                 const xPosition = i;
