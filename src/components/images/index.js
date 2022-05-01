@@ -29,7 +29,7 @@ export { default as Street } from './prospect/prospect.png';
 export { default as Vehicles } from './vehicles.png';
 
 // Eating clubs
-// export { default as Tower } from './prospect/tower.png';
+export { default as Tower } from './prospect/tower.png';
 export { default as TowerLogo } from './prospect/tower_logo.png';
 export { default as Cannon } from './prospect/cannon.png';
 export { default as CannonLogo } from './prospect/cannon_logo.png';
