@@ -4,6 +4,7 @@ import { PixelFont } from "../fonts";
 import { Bench, Cannon, CannonGreen, Flowers, Fountain, NassauImg, Serene, Sprites } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
+import Rewards from "./Rewards";
 
 class Garden extends Scene {
     constructor() {
@@ -248,6 +249,12 @@ class Garden extends Scene {
                 console.log(map);
                 Scenes.scenes['map'] = map;
                 Scenes.switchScene('map');
+            }
+            // Rewards event
+            if (event.code === 'KeyR' || event.key === 'r') {
+                const rewards = new Rewards('garden');
+                Scenes.scenes['rewards'] = rewards;
+                Scenes.switchScene('rewards');
             }
             // Game + dialogue event
             if (event.code === 'Space' || event.key === ' ') {

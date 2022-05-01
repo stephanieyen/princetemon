@@ -4,6 +4,7 @@ import { PixelFont } from "../fonts";
 import { Bench, Cone, ConstructionSprite, Crane, Dirt, FristSheet, NewRes, Serene } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
+import Rewards from "./Rewards";
 
 class Poe extends Scene {
     constructor() {
@@ -108,12 +109,12 @@ class Poe extends Scene {
         this.createTile(63, NewRes, 3, -3);
 
         // Talking Sprite
-        this.countX = 2;
-        this.countY = 2;
+        this.countX = 1;
+        this.countY = 1;
         this.createTile(104, ConstructionSprite, 0, 0);
-        this.createTile(105, ConstructionSprite, 0, -1);
-        this.createTile(106, ConstructionSprite, 1, 0);
-        this.createTile(107, ConstructionSprite, 1, -1);
+        // this.createTile(105, ConstructionSprite, 0, -1);
+        // this.createTile(106, ConstructionSprite, 1, 0);
+        // this.createTile(107, ConstructionSprite, 1, -1);
 
         // Walkable Tiles List
         this.walkable = new Set();
@@ -130,8 +131,8 @@ class Poe extends Scene {
         this.tiles = [
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 46, 10, 10, 10, 10, 10, 10,104,106, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 47, 10, 10, 10, 10, 10, 10,105,107, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 46, 10, 10, 10, 10, 10, 10,104, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 47, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
             [ 0,  0, 32,  0,  0,  0,  0,  0,  0,  0,  0, 32,  0,  0,  0,  0,  0,  7,  8,  8,  8,  8,  8, 20,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  5,  5,  5,  5,  5,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5, 21,  2,  2,  2,  2,  2,  3, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
@@ -255,7 +256,12 @@ class Poe extends Scene {
                 Scenes.scenes['map'] = map;
                 Scenes.switchScene('map');
             }
-
+            // Rewards event
+            if (event.code === 'KeyR' || event.key === 'r') {
+                const rewards = new Rewards('poe');
+                Scenes.scenes['rewards'] = rewards;
+                Scenes.switchScene('rewards');
+            }
             // Action button to get to minigame
             if (event.code === 'Space') {
                 // Dialogue event

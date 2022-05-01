@@ -21,6 +21,7 @@ import Player from "../player/player";
 import Car from "../player/car";
 import Maps from "./Maps";
 import { PixelFont } from "../fonts";
+import Rewards from "./Rewards";
 
 class Prospect extends Scene {
     constructor() {
@@ -415,7 +416,12 @@ class Prospect extends Scene {
                 Scenes.scenes['map'] = map;
                 Scenes.switchScene('map');
             }
-
+            // Rewards event
+            if (event.code === 'KeyR' || event.key === 'r') {
+                const rewards = new Rewards('prospect');
+                Scenes.scenes['rewards'] = rewards;
+                Scenes.switchScene('rewards');
+            }
             // Action button to get to minigame
             if (event.code === 'Space') {
                 if (this.inActionSpace(407) && !this.dialogueHappened) {

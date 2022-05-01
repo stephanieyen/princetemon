@@ -3,6 +3,7 @@ import { Scenes } from ".";
 import { Cannon, CannonGreen, NassauImg, Serene } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
+import Rewards from "./Rewards";
 
 class Nassau extends Scene {
     constructor() {
@@ -215,6 +216,12 @@ class Nassau extends Scene {
                 console.log(map);
                 Scenes.scenes['map'] = map;
                 Scenes.switchScene('map');
+            }
+            // Rewards event
+            if (event.code === 'KeyR' || event.key === 'r') {
+                const rewards = new Rewards('nassau');
+                Scenes.scenes['rewards'] = rewards;
+                Scenes.switchScene('rewards');
             }
         };
     }

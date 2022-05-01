@@ -23,7 +23,6 @@ export { default as Arrows } from './arrows.png';
 export { default as FilledArrrows } from './filled_arrows.png';
 export { default as ConstructionSprite } from './construction_sprite.png';
 export { default as Pirahna } from './pirahna.png';
-export { default as Coin } from './coin.png';
 export { default as WaterBackground } from './water_bg.png';
 
 export { default as Street } from './prospect/prospect.png';
@@ -56,3 +55,8 @@ export { default as MapGardens } from './map/map_gardens.png';
 export { default as MapNassau } from './map/map_nassau.png';
 export { default as MapPoe } from './map/map_poe.png';
 export { default as MapProspect } from './map/map_prospect.png';
+
+// Rewards pictures
+export { default as WaterGlass } from './waterglass.png';
+export { default as Brick } from './brick.png';
+export { default as Coin } from './coin.png';

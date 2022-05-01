@@ -140,10 +140,6 @@ class GardenGame extends Scene {
                 if (Scenes.scenes['gardengame'].gameStarted) {
                     this.resetGame();
                     Scenes.switchScene('gameovergarden');
-                    // Scenes.scenes['gardengame'].gameStarted = false;
-                    // Scenes.successes[2] = 1;
-                    // Scenes.scenes['gardengame'].resetGame();
-                    // Scenes.switchScene('successprospect');
                 }
                 clearInterval(timeLoop);
             }
@@ -170,6 +166,7 @@ class GardenGame extends Scene {
             if (playerPos.y >= this.coin.position.y - 0.5 && 
                 playerPos.y <= this.coin.position.y + 0.5) {
                     this.resetGame();
+                    Scenes.successes[2] = 1;
                     Scenes.switchScene('successgarden');
             }
         }

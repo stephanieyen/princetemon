@@ -4,6 +4,7 @@ import { PixelFont } from "../fonts";
 import { FristBig, Serene, Sprites } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
+import Rewards from "./Rewards";
 
 class Frist extends Scene {
     constructor() {
@@ -260,6 +261,12 @@ class Frist extends Scene {
                 const map = new Maps('frist');
                 Scenes.scenes['map'] = map;
                 Scenes.switchScene('map');
+            }
+            // Rewards event
+            if (event.code === 'KeyR' || event.key === 'r') {
+                const rewards = new Rewards('frist');
+                Scenes.scenes['rewards'] = rewards;
+                Scenes.switchScene('rewards');
             }
             // Dialogue event
             if (event.code === 'Space' || event.key === ' ') {
