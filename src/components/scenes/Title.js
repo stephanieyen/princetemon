@@ -1,4 +1,4 @@
-import { BoxGeometry, Color, FontLoader, Mesh, MeshBasicMaterial, MeshPhongMaterial, OrthographicCamera, PerspectiveCamera, Scene, TextGeometry, TextureLoader, Vector3 } from "three";
+import { BoxGeometry, FontLoader, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { PixelFont } from "../fonts";
 import { TitleBackground, WoodBlock } from "../images";
@@ -13,9 +13,6 @@ class Title extends Scene {
         // Set up camera
         this.camera.position.set(0, 0, 2.5);
         this.camera.lookAt(new Vector3(0, 0, 0));
-
-        // Set background to a nice color
-        // this.background = new Color(0x7ec0ee);
 
         // Set background to background image
         const bgLoader = new TextureLoader();
@@ -78,7 +75,7 @@ class Title extends Scene {
 
         this.pressSpaceBar = (event) => {
             if (event.key === ' ' || event.code === 'Space') {
-                Scenes.switchScene('frist');
+                Scenes.switchScene('instructions');
             }
         };
     }

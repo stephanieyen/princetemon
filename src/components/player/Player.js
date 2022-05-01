@@ -1,5 +1,5 @@
 import { Group, LinearFilter, Sprite, SpriteMaterial, TextureLoader } from "three";
-import { SpritePton, Sprites } from "../images";
+import { SpritePton } from "../images";
 
 class Player extends Group {
     constructor(parent) {
@@ -11,32 +11,6 @@ class Player extends Group {
         // Number of images per row/column
         this.countX = 15;
         this.countY = 8;
-
-        // this.spritesheet = new Map();
-        // // Standing up
-        // this.createTile(0, Sprites, 1, -4);
-        // // Walking up 1
-        // this.createTile(1, Sprites, 0, -4);
-        // // Walking up 2
-        // this.createTile(2, Sprites, 2, -4);
-        // // Standing right
-        // this.createTile(3, Sprites, 1, -5);
-        // // Walking right 1
-        // this.createTile(4, Sprites, 0, -5);
-        // // Walking right 2
-        // this.createTile(5, Sprites, 2, -5);
-        // // Standing left
-        // this.createTile(6, Sprites, 1, -6);
-        // // Walking left 1
-        // this.createTile(7, Sprites, 0, -6);
-        // // Walking left 2
-        // this.createTile(8, Sprites, 2, -6);
-        // // Standing down
-        // this.createTile(9, Sprites, 1, -7);
-        // // Walking down 1
-        // this.createTile(10, Sprites, 0, -7);
-        // // Walking down 2
-        // this.createTile(11, Sprites, 2, -7);
 
         // Number of images per row/column
         this.countX = 3;

@@ -1,7 +1,6 @@
-import { AmbientLight, BoxGeometry, Color, DirectionalLight, FontLoader, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, TextGeometry, TextureLoader, Vector3 } from "three";
+import { Color, FontLoader, Mesh, MeshPhongMaterial, PerspectiveCamera, Scene, TextGeometry, Vector3 } from "three";
 import { Scenes } from ".";
 import { PixelFont } from "../fonts";
-import { WoodBlock } from "../images";
 
 class SuccessProspect extends Scene {
     constructor() {

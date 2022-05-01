@@ -1,4 +1,4 @@
-import { BoxGeometry, FontLoader, LessStencilFunc, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
+import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import {    Street, 
                 // Tower, TowerLogo,
@@ -416,6 +416,16 @@ class Prospect extends Scene {
                 Scenes.scenes['map'] = map;
                 Scenes.switchScene('map');
             }
+            // Zoom out
+            if (event.code === 'KeyZ' || event.key === 'z') {
+                this.camera.zoom = 0.03;
+                this.windowResizeHandler();
+            }
+            // Zoom in
+            if (event.code === 'KeyX' || event.key === 'x') {
+                this.camera.zoom = 0.1;
+                this.windowResizeHandler();
+            }
             // Rewards event
             if (event.code === 'KeyR' || event.key === 'r') {
                 const rewards = new Rewards('prospect');
@@ -711,7 +721,7 @@ class Prospect extends Scene {
                     PixelFont,
                     function(font) {
                         const geometry = new TextGeometry(
-                            "Very Hydrated Guy:\n\nGOOD LUCK!!",
+                            "Very Hydrated Guy:\n\nANYWAYS, GOOD LUCK!!",
                             {
                                 font: font,
                                 size: 0.5,

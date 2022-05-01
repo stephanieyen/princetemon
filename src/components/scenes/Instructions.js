@@ -3,7 +3,7 @@ import { Scenes } from ".";
 import { PixelFont } from "../fonts";
 import { TitleBackground, WoodBlock } from "../images";
 
-class GardenGameInstructions extends Scene {
+class Instructions extends Scene {
     constructor() {
         // Call parent Scene() constructor
         super();
@@ -11,7 +11,7 @@ class GardenGameInstructions extends Scene {
         // Camera
         this.camera = new PerspectiveCamera();
         // Set up camera
-        this.camera.position.set(0, 0, 2.5);
+        this.camera.position.set(0, 0, 10);
         this.camera.lookAt(new Vector3(0, 0, 0));
 
         // Set background to a nice color
@@ -23,7 +23,7 @@ class GardenGameInstructions extends Scene {
         this.background = bgTexture;
 
         // Add cube to back
-        const boxGeometry = new BoxGeometry(2.5, 1, 0.001);
+        const boxGeometry = new BoxGeometry(10, 8, 0.001);
         const boxTexture = new TextureLoader().load(WoodBlock);
         const boxMaterial = new MeshBasicMaterial({map: boxTexture});
         // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
@@ -37,85 +37,119 @@ class GardenGameInstructions extends Scene {
             PixelFont,
             function(font) {
                 const geometry = new TextGeometry(
-                "Prospect Garden Minigame",
+                "Instructions",
                     {
                         font: font,
-                        size: 0.1,
+                        size: 0.8,
                         height: 0
                     }
                 );
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                textMesh.position.set(-0.85, 0.25, 0.1);
+                textMesh.position.set(-3, 2.5, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes['gardengameinstructions'].add(textMesh);
+                Scenes.scenes['instructions'].add(textMesh);
             }
         );
         fontLoader.load(
             PixelFont,
             function(font) {
                 const geometry = new TextGeometry(
-                "Press the up/down arrow keys to avoid the pirahnas!",
+                "- Use the arrow keys to move",
                     {
                         font: font,
-                        size: 0.05,
+                        size: 0.3,
                         height: 0
                     }
                 );
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                textMesh.position.set(-0.85, -0, 0.1);
+                textMesh.position.set(-4.5, 1.2, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes['gardengameinstructions'].add(textMesh);
+                Scenes.scenes['instructions'].add(textMesh);
             }
         );
         fontLoader.load(
             PixelFont,
             function(font) {
                 const geometry = new TextGeometry(
-                "If you get hit once, you have to start over!",
+                "- Press m to check the map",
                     {
                         font: font,
-                        size: 0.05,
+                        size: 0.3,
                         height: 0
                     }
                 );
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                textMesh.position.set(-0.7, -0.12, 0.1);
+                textMesh.position.set(-4.5, 0.4, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes['gardengameinstructions'].add(textMesh);
+                Scenes.scenes['instructions'].add(textMesh);
             }
         );
         fontLoader.load(
             PixelFont,
             function(font) {
                 const geometry = new TextGeometry(
-                "Grab the coin to win!",
+                "- Press r to check your rewards progress",
                     {
                         font: font,
-                        size: 0.05,
+                        size: 0.3,
                         height: 0
                     }
                 );
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                textMesh.position.set(-0.37, -0.25, 0.1);
+                textMesh.position.set(-4.5, -0.4, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes['gardengameinstructions'].add(textMesh);
+                Scenes.scenes['instructions'].add(textMesh);
             }
         );
         fontLoader.load(
             PixelFont,
             function(font) {
                 const geometry = new TextGeometry(
-                "Press space to start and escape to go back",
+                "- Press space to talk to NPCs or to interact\n  with special objects",
                     {
                         font: font,
-                        size: 0.05,
+                        size: 0.3,
                         height: 0
                     }
                 );
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                textMesh.position.set(-0.8, -0.37, 0.1);
+                textMesh.position.set(-4.5, -1.2, 0.1);
                 // Cannot use this.add since inside new function
-                Scenes.scenes['gardengameinstructions'].add(textMesh);
+                Scenes.scenes['instructions'].add(textMesh);
+            }
+        );
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "- Press z to zoom out and x to zoom in",
+                    {
+                        font: font,
+                        size: 0.3,
+                        height: 0
+                    }
+                );
+                const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                textMesh.position.set(-4.5, -2.4, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes['instructions'].add(textMesh);
+            }
+        );
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "Press space to begin!",
+                    {
+                        font: font,
+                        size: 0.3,
+                        height: 0
+                    }
+                );
+                const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                textMesh.position.set(-2.3, -3.7, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes['instructions'].add(textMesh);
             }
         );
 
@@ -129,10 +163,7 @@ class GardenGameInstructions extends Scene {
 
         this.pressSpaceBar = (event) => {
             if (event.key === ' ' || event.code === 'Space') {
-                Scenes.switchScene('gardengame');
-            }
-            if (event.code === 'Escape') {
-                Scenes.switchScene('garden');
+                Scenes.switchScene('frist');
             }
         };
     }
@@ -152,4 +183,4 @@ class GardenGameInstructions extends Scene {
     }
 }
 
-export default GardenGameInstructions;
+export default Instructions;

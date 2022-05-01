@@ -6,6 +6,7 @@ import GameOverProspect from "./GameOverProspect";
 import Garden from "./Garden";
 import GardenGame from "./GardenGame";
 import GardenGameInstructions from "./GardenGameInstructions";
+import Instructions from "./Instructions";
 import Nassau from "./Nassau";
 import Poe from "./Poe";
 import PoeGame from "./PoeGame";
@@ -33,6 +34,8 @@ class Scenes {
         this.renderer.setSize(640, 480);
         // Initialize dictionary of scenes
         this.scenes['title'] = new Title();
+        this.scenes['instructions'] = new Instructions();
+
         this.scenes['frist'] = new Frist(); 
 
         this.scenes['prospect'] = new Prospect();

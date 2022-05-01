@@ -1,7 +1,7 @@
 import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { PixelFont } from "../fonts";
-import { Bench, Cannon, CannonGreen, Flowers, Fountain, NassauImg, Serene, Sprites } from "../images";
+import { Flowers, Fountain, Serene, Sprites } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
 import Rewards from "./Rewards";
@@ -249,6 +249,16 @@ class Garden extends Scene {
                 console.log(map);
                 Scenes.scenes['map'] = map;
                 Scenes.switchScene('map');
+            }
+            // Zoom out
+            if (event.code === 'KeyZ' || event.key === 'z') {
+                this.camera.zoom = 0.03;
+                this.windowResizeHandler();
+            }
+            // Zoom in
+            if (event.code === 'KeyX' || event.key === 'x') {
+                this.camera.zoom = 0.08;
+                this.windowResizeHandler();
             }
             // Rewards event
             if (event.code === 'KeyR' || event.key === 'r') {

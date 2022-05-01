@@ -1,19 +1,16 @@
 {
-  "name": "lower-case-dashed-name-of-project",
-  "repository": "REPOSITORY-NAME-AS-IT-APPEARS-IN-GITHUB-URL",
+  "name": "princetemon",
+  "repository": "princetemon",
   "version": "0.1.0",
   "title": "Princetemon",
-  "description": "SHORT DESCRIPTION OF PROJECT HERE. ONE TO TWO SENTENCES MAX",
+  "description": "Princetemon is a top-down pixel art RPG staged on the Princeton campus. The user controls a character trying to get into Frist Campus Center and follows his adventures and challenges around campus to accomplish his goal.",
   "keywords": [
+    "RPG",
+    "pixel",
     "Princeton",
     "graphics",
     "three.js",
-    "COS 426",
-    "ivy league",
-    "keyword1",
-    "keyword2",
-    "...",
-    "this last entry CANNOT have a comma after it ->"
+    "COS 426"
   ],
   "scripts": {
     "start": "webpack-dev-server --mode development --output-public-path \"\"",

@@ -217,6 +217,16 @@ class Nassau extends Scene {
                 Scenes.scenes['map'] = map;
                 Scenes.switchScene('map');
             }
+            // Zoom out
+            if (event.code === 'KeyZ' || event.key === 'z') {
+                this.camera.zoom = 0.03;
+                this.windowResizeHandler();
+            }
+            // Zoom in
+            if (event.code === 'KeyX' || event.key === 'x') {
+                this.camera.zoom = 0.08;
+                this.windowResizeHandler();
+            }
             // Rewards event
             if (event.code === 'KeyR' || event.key === 'r') {
                 const rewards = new Rewards('nassau');

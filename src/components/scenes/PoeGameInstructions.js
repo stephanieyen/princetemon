@@ -1,4 +1,4 @@
-import { BoxGeometry, Color, FontLoader, Mesh, MeshBasicMaterial, MeshPhongMaterial, OrthographicCamera, PerspectiveCamera, Scene, TextGeometry, TextureLoader, Vector3 } from "three";
+import { BoxGeometry, FontLoader, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { PixelFont } from "../fonts";
 import { TitleBackground, WoodBlock } from "../images";
