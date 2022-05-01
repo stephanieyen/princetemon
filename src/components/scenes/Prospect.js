@@ -1,4 +1,4 @@
-import { LessStencilFunc, LinearFilter, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
+import { BoxGeometry, FontLoader, LessStencilFunc, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import {    Street, 
                 // Tower, TowerLogo,
@@ -13,16 +13,23 @@ import {    Street,
                 Charter, CharterLogo,
             Vehicles,
             Serene, 
-            Dirt
+            Dirt,
+            RealCannon,
+            Sprites
         } from "../images";
 import Player from "../player/player";
 import Car from "../player/car";
 import Maps from "./Maps";
+import { PixelFont } from "../fonts";
 
 class Prospect extends Scene {
     constructor() {
         // Call parent Scene() constructor
         super();
+
+        // Dialogue checker
+        this.dialogueHappened = false;
+
         // Adding in tiles
         // Hashmap for tiles
         this.tileset = new Map();
@@ -248,14 +255,25 @@ class Prospect extends Scene {
         this.backgrounds[401] = this.backgrounds[403] = this.backgrounds[405] = 70; // gravel background
         // this.createTile(106, Vehicles, 3, -17);
         // this.createTile(107, Vehicles, 3, -18);
+        this.countX = 1;
+        this.countY = 1;
+        this.createTile(406, RealCannon, 0, 0);
+        this.backgrounds[406] = 32;
+        this.countX = 15;
+        this.countY = 8;
+        this.createTile(407, Sprites, 4, -3);
+        this.backgrounds[407] = 8;
+
 
         // ----- Identifying walkable tiles -----
-        for (let i = 0; i <= 36; i++) { // intersection, sidewalk, road
+        for (let i = 0; i <= 40; i++) { // intersection, sidewalk, road
             this.walkable.add(i);
         }
         this.walkable.add(42); // grass
         this.walkable.add(70); // gravel
-        for (let i = 63; i <= 68; i++) { // eating club logos 
+        this.walkable.add(98); // gravel
+        this.walkable.add(99); // gravel
+        for (let i = 300; i <= 353; i++) { // eating club logos 
             this.walkable.add(i);
         }
         // path
@@ -281,9 +299,9 @@ class Prospect extends Scene {
             [  8, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,  8, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 28, 28, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,  8, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,  8, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,  8, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,  8, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,  0,  1,  2,  3, 63, 32],      // sidewalk
             [  8, 41, 41, 41, 41,348,349,350, 41, 41, 41, 41, 41,  8, 41, 41, 41, 41,342,343,344, 41, 41, 41, 41, 39, 40, 82, 83, 83, 84,336,337,338, 82, 83, 83, 84,  8, 41, 82, 83, 83, 84,330,331,332, 82, 83, 83, 84, 41,  8, 82, 83, 83, 84,324,325,326, 82, 83, 83, 84, 41, 41, 41, 41, 41, 99,318,319,320, 99, 41, 41, 41, 41, 70, 82, 83, 83, 84,312,313,314, 82, 83, 83, 84,  8, 32, 82, 83, 83, 84,306,307,308, 82, 83, 83, 84, 32,  8, 85, 86, 86, 87,300,301,302, 85, 86, 86, 87, 41, 39, 38, 68, 66, 64, 32],      // logo + bush
             [  8, 41, 42, 42, 42,351,352,353, 42, 42, 42, 41, 41,  8, 76, 77, 76, 77,345,346,347, 42, 95, 96, 42, 39, 40, 76, 77, 42, 42,339,340,341, 42, 42, 42, 71,  8, 41, 42, 42, 42, 42,333,334,335, 42, 42, 42, 42, 41,  8, 42, 42, 42, 42,327,328,329, 41, 41, 42, 42, 41, 41, 42, 42, 42, 99,321,322,323, 99, 42, 42, 42, 41, 70, 41, 42, 42, 71,315,316,317, 71, 42, 42, 41,  8, 32, 32, 42, 42, 42,309,310,311, 42, 42, 42, 32, 32,  8, 88, 89, 89, 90,303,304,305, 88, 89, 89, 90, 41, 39, 38, 69, 67, 65, 32],      // logo
-            [  8, 41, 42, 42, 42, 42, 99, 42, 42, 42, 42, 41, 41,  8, 78, 79, 78, 79, 99, 42, 42, 42, 42, 42, 42, 39, 40, 78, 79, 42, 42, 42, 99, 42, 42, 42, 42, 72,  8, 41, 42, 42, 42, 42, 42, 32, 42, 42, 95, 96, 42, 41,  8, 42, 42, 42, 42, 42, 99, 42, 42, 42, 42, 42, 41, 41, 42, 93, 42, 99, 42, 42, 42, 99, 42, 91, 42, 41, 70, 41, 42, 42, 72, 41, 99, 41, 72, 42, 42, 41,  8, 41, 42, 32, 32, 42, 42, 32, 42, 42, 32, 32, 42, 41,  8, 74, 76, 77, 42, 32, 32, 32, 42, 42, 91, 42, 41, 39, 38, 37, 40, 32, 32],      // path
+            [  8, 41, 42, 42, 42, 42, 99, 42, 42, 42, 42, 41, 41,  8, 78, 79, 78, 79, 99, 42, 42, 42, 42, 42, 42, 39, 40, 78, 79, 42, 42, 42, 99, 42, 42, 42, 42, 72,  8, 41, 42, 42, 42, 42, 42, 32, 42, 42, 95, 96, 42, 41,  8, 42, 42, 42, 42, 42, 99, 42, 42, 42, 42, 42, 41, 41, 42, 93, 42, 99, 42, 42, 42, 99, 42, 91, 42, 41, 70, 41, 42, 42, 72, 41, 99, 41, 72, 42, 42, 41,  8, 41, 42, 32, 32, 42, 42,406, 42, 42, 32, 32, 42, 41,  8, 74, 76, 77, 42, 32, 32, 32, 42, 42, 91, 42, 41, 39, 38, 37, 40, 32, 32],      // path
             [  8, 41, 42, 42, 41, 41, 99, 41, 41, 42, 42, 41, 41,  8, 80, 81, 80, 81, 99, 41, 41, 41, 42, 42, 42, 39, 40, 80, 81, 42, 41, 41, 99, 41, 41, 42, 42, 73,  8, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 42, 41,  8, 99, 99, 99, 99, 99, 99, 42, 42, 42, 42, 42, 41, 41, 42, 94, 42, 99, 99, 99, 99, 99, 42, 92, 42, 41, 70, 41, 42, 42, 73, 41, 99, 41, 73, 42, 42, 41,  8, 41, 42, 76, 77, 32, 32, 32, 32, 32, 42, 42, 42, 41,  8, 75, 78, 79, 42, 32, 32, 32, 42, 42, 92, 42, 41, 39, 38, 37, 40, 32, 32],      // path
-            [  8, 41, 76, 77,260,261,262,263,264, 76, 77, 41, 41,  8, 76, 77, 74,240,241,242,243,244, 42, 42, 42, 39, 40, 41, 42, 42,220,221,222,223,224, 42, 42, 41,  8, 41, 42, 42, 42,200,201,202,203,204, 95, 96, 42, 41,  8, 42, 42, 41,180,181,182,183,184, 42, 42, 42, 41, 41, 42, 42, 42,160,161,162,163,164, 42, 42, 42, 41, 70, 41, 42, 42,140,141,142,143,144, 42, 42, 41,  8, 41, 42, 78, 79,120,121,122,123,124, 42, 42, 42, 41,  8, 41, 80, 81,100,101,102,103,104, 42, 74, 42, 41, 39, 38, 37, 40, 32, 32],      // club front
+            [  8, 41, 76, 77,260,261,262,263,264, 76, 77, 41, 41,  8, 76, 77, 74,240,241,242,243,244, 42, 42, 42, 39, 40, 41, 42, 42,220,221,222,223,224, 42, 42, 41,407, 41, 42, 42, 42,200,201,202,203,204, 95, 96, 42, 41,  8, 42, 42, 41,180,181,182,183,184, 42, 42, 42, 41, 41, 42, 42, 42,160,161,162,163,164, 42, 42, 42, 41, 70, 41, 42, 42,140,141,142,143,144, 42, 42, 41,  8, 41, 42, 78, 79,120,121,122,123,124, 42, 42, 42, 41,  8, 41, 80, 81,100,101,102,103,104, 42, 74, 42, 41, 39, 38, 37, 40, 32, 32],      // club front
             [  8, 41, 78, 79,265,266,267,268,269, 78, 79, 41, 41,  8, 78, 79, 75,245,246,247,248,249, 42, 42, 42, 39, 40, 41, 42, 42,225,226,227,228,229, 42, 42, 41,  8, 41, 42, 42, 42,205,206,207,208,209, 76, 77, 42, 41,  8, 42, 42, 41,185,186,187,188,189, 42, 42, 42, 41, 41, 76, 77, 42,165,166,167,168,169, 42, 76, 77, 41, 70, 41, 42, 42,145,146,147,148,149, 42, 42, 41,  8, 41, 42, 80, 81,125,126,127,128,129, 42, 76, 77, 41,  8, 76, 77, 41,105,106,107,108,109, 42, 75, 42, 41, 39, 38, 37, 40, 32, 32],
             [  8, 41, 80, 81,270,271,272,273,274, 80, 81, 41, 41,  8, 80, 81, 41,250,251,252,253,254, 42, 42, 42, 39, 40, 41, 42, 42,230,231,232,233,234, 42, 42, 41,  8, 41, 42, 42, 42,210,211,212,213,214, 78, 79, 42, 41,  8, 42, 42, 42,190,191,192,193,194, 42, 42, 42, 41, 41, 78, 79, 42,170,171,172,173,174, 42, 78, 79, 41, 70, 41, 42, 42,150,151,152,153,154, 42, 42, 41,  8, 41, 42, 42, 42,130,131,132,133,134, 42, 78, 79, 41,  8, 78, 79, 74,110,111,112,113,114, 42, 42, 42, 41, 39, 38, 37, 40, 32, 32],
             [  8, 41, 42, 42,275,276,277,278,279, 42, 42, 41, 41,  8, 41, 41, 41,255,256,257,258,259, 42, 42, 42, 39, 40, 41, 42, 42,235,236,237,238,239, 42, 42, 41,  8, 41, 42, 42, 42,215,216,217,218,219, 80, 81, 42, 41,  8, 42, 42, 42,195,196,197,198,199, 42, 42, 42, 41, 41, 80, 81, 42,175,176,177,178,179, 42, 80, 81, 41, 70, 41, 42, 42,155,156,157,158,159, 42, 42, 41,  8, 41, 42, 42, 42,135,136,137,138,139, 42, 80, 81, 41,  8, 80, 81, 75,115,116,117,118,119, 42, 42, 42, 41, 39, 38, 37, 40, 32, 32],      // club back
@@ -302,7 +320,7 @@ class Prospect extends Scene {
         // Create player for scene
         this.player = new Player(Prospect);
         this.add(this.player.sprite);
-        this.player.setPosition(this.height - 1, 3, 0)
+        this.player.setPosition(this.height - 1, 4, 0)
 
         // Car
         
@@ -313,10 +331,10 @@ class Prospect extends Scene {
         // Camera
         this.camera = new PerspectiveCamera();
         // Set up camera
-        this.camera.position.set(this.height - 11, 3, 1.6);
-        this.camera.lookAt(new Vector3(this.height - 11, 3, 0));
+        this.camera.position.set(this.height - 13.5, 7, 1.6);
+        this.camera.lookAt(new Vector3(this.height - 13.5, 7, 0));
         // this.camera.zoom = 0.08;
-        this.camera.zoom = 0.04;
+        this.camera.zoom = 0.1;
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {
@@ -339,9 +357,6 @@ class Prospect extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x, playerPos.y + speed, playerPos.z, "up");
                     this.add(this.player.sprite);
-                    if (this.camera.position.y <= this.width - 5) {
-                        this.camera.position.y += speed;
-                    }
                 }
             }
             if (event.code === 'ArrowDown') {
@@ -355,9 +370,6 @@ class Prospect extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x, playerPos.y - speed, playerPos.z, "down");
                     this.add(this.player.sprite);
-                    if (this.camera.position.y >= 6) {
-                        this.camera.position.y -= speed;
-                    }
                 }
             }
             if (event.code === 'ArrowLeft') {
@@ -372,7 +384,7 @@ class Prospect extends Scene {
                         let foreground = new Sprite(this.tileset.get(index));
                         this.add(foreground);
                     }
-                    if (this.camera.position.x >= 11) {
+                    if (this.camera.position.x >= 13.5) {
                         this.camera.position.x -= speed;
                     }
                 }
@@ -390,7 +402,7 @@ class Prospect extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x + speed, playerPos.y, playerPos.z, "right");
                     this.add(this.player.sprite);
-                    if (this.camera.position.x <= this.height - 10) {
+                    if (this.camera.position.x <= this.height - 14.5) {
                         this.camera.position.x += speed;
                     }
                 }
@@ -406,7 +418,10 @@ class Prospect extends Scene {
 
             // Action button to get to minigame
             if (event.code === 'Space') {
-                if (this.inActionSpace(-1)) {
+                if (this.inActionSpace(407) && !this.dialogueHappened) {
+                    this.startDialogue();
+                }
+                if (this.inActionSpace(407) && this.dialogueHappened) {
                     Scenes.switchScene('prospectgameinstructions');
                 }
             }
@@ -455,6 +470,9 @@ class Prospect extends Scene {
                 if (index in this.backgrounds) { // check for key 
                     background = new Sprite(this.tileset.get(this.backgrounds[index]));
                 }
+                else if (index == -1) {                    
+                    background = new Sprite(this.tileset.get(8));
+                }
 
                 const sprite = new Sprite(this.tileset.get(index));
                 // Set positions based on tile mapping
@@ -476,6 +494,235 @@ class Prospect extends Scene {
             return true;
         }
         return false;
+    }
+
+
+    startDialogue() {
+        // Dialogue event handlers 
+        const playerPos = this.player.sprite.position;
+        this.camera.position.x = playerPos.x;
+        this.camera.position.y = playerPos.y - 3;
+        // Add cube to back
+        const boxGeometry = new BoxGeometry(16, 8, 0.001);
+        // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
+        const boxMaterial = new MeshBasicMaterial({color: 0xffffff});
+        var cube = new Mesh(boxGeometry, boxMaterial);
+        cube.position.set(playerPos.x, playerPos.y - 5, 0.001);
+        this.add(cube);
+        var count = 0;
+        this.textMesh;
+        const fontLoader = new FontLoader();
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "You:\n\nHey, do you know where I could get\nsome non-alcoholic water?",
+                    {
+                        font: font,
+                        size: 0.5,
+                        height: 0
+                    }
+                );
+                Scenes.scenes['prospect'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                Scenes.scenes['prospect'].textMesh.position.set(playerPos.x - 7, playerPos.y - 2.5, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes['prospect'].add(Scenes.scenes['prospect'].textMesh);
+            }
+        );  
+        this.dialogueContinue = (event) => {
+            if (event.key !== ' ') return;
+            if (count >= 9) {
+                this.remove(Scenes.scenes['prospect'].textMesh);  
+                this.remove(cube);
+                window.addEventListener('keydown', this.move, false);
+                window.removeEventListener('keydown', this.dialogueContinue, false); 
+                this.dialogueHappened = true;
+                Scenes.switchScene('prospectgameinstructions');
+            }
+            else if (count === 0){
+                Scenes.scenes['prospect'].remove(Scenes.scenes['prospect'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Guy Who Drank Too Much Water:\n\nYOU WANT SOME?!?!?!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['prospect'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['prospect'].textMesh.position.set(playerPos.x - 7, playerPos.y - 2.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['prospect'].add(Scenes.scenes['prospect'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 1){
+                Scenes.scenes['prospect'].remove(Scenes.scenes['prospect'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nWell, I did, but then you started talking\nand now I'm not so sure.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['prospect'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['prospect'].textMesh.position.set(playerPos.x - 7, playerPos.y - 2.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['prospect'].add(Scenes.scenes['prospect'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 2){
+                Scenes.scenes['prospect'].remove(Scenes.scenes['prospect'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Very Hydrated Guy:\n\nIF YOU WANT IT, YOU'RE GONNA HAVE\nTO BEAT ME FOR IT!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['prospect'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['prospect'].textMesh.position.set(playerPos.x - 7, playerPos.y - 2.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['prospect'].add(Scenes.scenes['prospect'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 3){
+                Scenes.scenes['prospect'].remove(Scenes.scenes['prospect'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nUm, what?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['prospect'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['prospect'].textMesh.position.set(playerPos.x - 7, playerPos.y - 2.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['prospect'].add(Scenes.scenes['prospect'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 4){
+                Scenes.scenes['prospect'].remove(Scenes.scenes['prospect'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Very Hydrated Guy:\n\nYOU HEARD ME!!!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['prospect'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['prospect'].textMesh.position.set(playerPos.x - 7, playerPos.y - 2.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['prospect'].add(Scenes.scenes['prospect'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 5){
+                Scenes.scenes['prospect'].remove(Scenes.scenes['prospect'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nI think everyone east of the Mississippi\nheard you, but what?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['prospect'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['prospect'].textMesh.position.set(playerPos.x - 7, playerPos.y - 2.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['prospect'].add(Scenes.scenes['prospect'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 6){
+                Scenes.scenes['prospect'].remove(Scenes.scenes['prospect'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Very Hydrated Guy:\n\nDANCE COMPETITION!!! IF YOU WIN,\nYOU GET NON-ALCOHOLIC WATER!\nIF I WIN, YOU GET TO TRY AGAIN\nUNTIL YOU WIN!!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['prospect'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['prospect'].textMesh.position.set(playerPos.x - 7, playerPos.y - 2.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['prospect'].add(Scenes.scenes['prospect'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 7){
+                Scenes.scenes['prospect'].remove(Scenes.scenes['prospect'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nUm, okay. That's actually\nquite generous of you.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['prospect'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['prospect'].textMesh.position.set(playerPos.x - 7, playerPos.y - 2.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['prospect'].add(Scenes.scenes['prospect'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 8){
+                Scenes.scenes['prospect'].remove(Scenes.scenes['prospect'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                            "Very Hydrated Guy:\n\nGOOD LUCK!!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['prospect'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['prospect'].textMesh.position.set(playerPos.x - 7, playerPos.y - 2.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['prospect'].add(Scenes.scenes['prospect'].textMesh);
+                    }
+                );  
+            }
+            count++;
+        }
+        window.removeEventListener('keydown', this.move, false);
+        window.addEventListener('keydown', this.dialogueContinue, false); 
     }
 
     // Adds events specific to Frist scene

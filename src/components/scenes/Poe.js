@@ -235,7 +235,7 @@ class Poe extends Scene {
             }
             if (event.code === 'ArrowRight') {
                 const playerPos = this.player.sprite.position;
-                if (Math.round(playerPos.x) >= this.height - 2) {
+                if (Math.round(playerPos.x) >= this.height - 3) {
                     return;
                 }
                 // Update player position and camera if tile is walkable
@@ -329,6 +329,8 @@ class Poe extends Scene {
         const boxGeometry = new BoxGeometry(20, 8, 0.001);
         // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
         const boxMaterial = new MeshBasicMaterial({color: 0xffffff});
+        this.camera.position.x = playerPos.x - 6.5;
+        this.camera.position.y = playerPos.y + 8;
 
         var cube = new Mesh(boxGeometry, boxMaterial);
         cube.position.set(playerPos.x - 3, playerPos.y + 10, 0.001);
@@ -355,7 +357,7 @@ class Poe extends Scene {
         );  
         this.dialogueContinue = (event) => {
             if (event.key !== ' ') return;
-            if (count >= 4) {
+            if (count >= 5) {
                 this.remove(Scenes.scenes['poe'].textMesh);  
                 this.remove(cube);
                 window.addEventListener('keydown', this.move, false);
@@ -387,7 +389,7 @@ class Poe extends Scene {
                     PixelFont,
                     function(font) {
                         const geometry = new TextGeometry(
-                        "You:\n\nWow, that sure is convenient and perhaps lazy writing!\nWhere can I get some?",
+                        "You:\n\nWow, that sure is convenient and perhaps lazy\nwriting! Where can I get some?",
                             {
                                 font: font,
                                 size: 0.5,
@@ -428,6 +430,26 @@ class Poe extends Scene {
                     function(font) {
                         const geometry = new TextGeometry(
                         "You:\n\nGreat, thanks...\n\nWait, what? The extremely dangerous place where\nwhat?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 4){
+                Scenes.scenes['poe'].remove(Scenes.scenes['poe'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Construction Worker:\n\nAnyways, good luck!",
                             {
                                 font: font,
                                 size: 0.5,

@@ -1,8 +1,11 @@
 import { WebGLRenderer } from "three";
 import Frist from "./Frist";
 import GameOver from "./GameOver";
+import GameOverGarden from "./GameOverGarden";
 import GameOverProspect from "./GameOverProspect";
 import Garden from "./Garden";
+import GardenGame from "./GardenGame";
+import GardenGameInstructions from "./GardenGameInstructions";
 import Nassau from "./Nassau";
 import Poe from "./Poe";
 import PoeGame from "./PoeGame";
@@ -11,6 +14,7 @@ import Prospect from "./Prospect";
 import ProspectGame from "./ProspectGame";
 import ProspectGameInstructions from "./ProspectGameInstructions";
 import Success from "./Success";
+import SuccessGarden from "./SuccessGarden";
 import SuccessProspect from "./SuccessProspect";
 import Title from "./Title";
 
@@ -19,8 +23,8 @@ class Scenes {
         this.scenes = {};
         this.currentScene = undefined;
         this.renderer = undefined;
-        // Minigame/search successes for poe, prospect, nassau, and garden
-        this.successes = [0, 0, 1, 1];
+        // Minigame/search successes for poe, prospect, and garden
+        this.successes = [0, 0, 0];
     }
 
     // Create scenes
@@ -40,7 +44,10 @@ class Scenes {
         this.scenes['poegame'] = new PoeGame();
 
         this.scenes['nassau'] = new Nassau();
+
         this.scenes['garden'] = new Garden();
+        this.scenes['gardengame'] = new GardenGame();
+        this.scenes['gardengameinstructions'] = new GardenGameInstructions();
 
         this.scenes['gameover'] = new GameOver();
         this.scenes['success'] = new Success();
@@ -48,9 +55,12 @@ class Scenes {
         this.scenes['gameoverprospect'] = new GameOverProspect();
         this.scenes['successprospect'] = new SuccessProspect();
 
+        this.scenes['gameovergarden'] = new GameOverGarden();
+        this.scenes['successgarden'] = new SuccessGarden();
+
         // Set current scene to title scene
         this.currentScene = this.scenes['title'];
-        // this.currentScene = this.scenes['poe'];
+
         this.currentScene.addEvents();
     }
 

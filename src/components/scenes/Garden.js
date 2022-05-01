@@ -1,6 +1,7 @@
-import { LinearFilter, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
+import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
-import { Bench, Cannon, CannonGreen, Flowers, Fountain, NassauImg, Serene } from "../images";
+import { PixelFont } from "../fonts";
+import { Bench, Cannon, CannonGreen, Flowers, Fountain, NassauImg, Serene, Sprites } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
 
@@ -8,6 +9,10 @@ class Garden extends Scene {
     constructor() {
         // Call parent Scene() constructor
         super();
+
+        // Dialogue checker
+        this.dialogueHappened = false;
+
         // Adding in tiles
         // Hashmap for tiles
         this.tileset = new Map();
@@ -95,6 +100,12 @@ class Garden extends Scene {
             this.walkable.add(i);
         }
 
+        // Talking sprite
+        // Number of images per row/column
+        this.countX = 15;
+        this.countY = 8;
+        this.createTile(104, Sprites, 13, -5);
+
         // Scene changing tiles list
         this.sceneChangers = new Set();
         this.sceneChangers.add(2);
@@ -115,7 +126,7 @@ class Garden extends Scene {
             [ 10, 11, 10, 11, 10, 11,  4,  5,  6,  0,  0,  0, 65,  0, 50, 51, 52, 53, 48, 49, 50, 51, 52, 53, 48, 49, 50, 51, 52,  0, 63,  0,  0,  0,  0,  0,  4,  5,  6, 10, 11, 10, 11],
             [ 14, 15, 14, 15, 14, 15,  4,  5,  6,  0,  0,  0, 64,  0, 49,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 53,  0, 64,  0,  0,  0,  0,  0,  4,  5,  6, 14, 15, 14, 15],
             [ 12, 13, 12, 13, 12, 13,  4,  5,  6,  0,  0,  0, 63,  0, 48,  0,  0,  0,  0, 23, 24, 25, 26, 27,  0,  0,  0,  0, 48,  0, 65,  0,  0,  0,  0,  0,  4,  5,  6, 12, 13, 12, 13],
-            [ 10, 11, 10, 11, 10, 11,  4,  5,  6,  0,  0,  0, 62,  0, 53,  0,  0,  0,  0, 28, 29, 30, 31, 32,  0,  0,  0,  0, 49,  0, 60,  0,  0,  0,  0,  0,  4,  5,  6, 10, 11, 10, 11],
+            [ 10, 11, 10, 11, 10, 11,  4,  5,  6,  0,  0,  0, 62,  0, 53,  0,  0,  0,104, 28, 29, 30, 31, 32,  0,  0,  0,  0, 49,  0, 60,  0,  0,  0,  0,  0,  4,  5,  6, 10, 11, 10, 11],
             [ 14, 15, 14, 15, 14, 15,  4,  5,  6,  0,  0,  0, 61,  0, 52,  0,  0,  0,  0, 33, 34, 35, 36, 37,  0,  0,  0,  0, 50,  0, 61,  0,  0,  0,  0,  0,  4,  5,  6, 14, 15, 14, 15],
             [ 12, 13, 12, 13, 12, 13,  4,  5,  6,  0,  0,  0, 60,  0, 51,  0,  0,  0,  0, 38, 39, 40, 41, 42,  0,  0,  0,  0, 51,  0, 62,  0,  0,  0,  0,  0,  4,  5,  6, 12, 13, 12, 13],
             [ 10, 11, 10, 11, 10, 11,  4,  5,  6,  0,  0,  0, 65,  0, 50,  0,  0,  0,  0, 43, 44, 45, 46, 47,  0,  0,  0,  0, 52,  0, 63,  0,  0,  0,  0,  0,  4,  5,  6, 10, 11, 10, 11],
@@ -238,6 +249,19 @@ class Garden extends Scene {
                 Scenes.scenes['map'] = map;
                 Scenes.switchScene('map');
             }
+            // Game + dialogue event
+            if (event.code === 'Space' || event.key === ' ') {
+                if (this.inActionSpace(104) && !this.dialogueHappened) {
+                    this.startDialogue();
+                }
+                if (this.dialogueHappened) {
+                    for (let i = 23; i <= 47; i++) {
+                        if (this.inActionSpace(i)) {
+                            Scenes.switchScene('gardengameinstructions')
+                        }
+                    }
+                }
+            }    
         };
     }
     // Creates texture and material from spritesheet
@@ -279,6 +303,188 @@ class Garden extends Scene {
             }
         }
     }
+
+    // Check if right under action space
+    inActionSpace(tile) {
+        const playerPos = this.player.sprite.position;
+        if (this.tiles[Math.round(playerPos.y + 1)][Math.round(playerPos.x)] === tile
+        || this.tiles[Math.round(playerPos.y - 1)][Math.round(playerPos.x)] === tile
+        || this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x + 1)] === tile
+        || this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x - 1)] === tile) {
+            return true;
+        }
+        return false;
+    }
+
+    startDialogue() {
+        // Dialogue event handlers 
+        const playerPos = this.player.sprite.position;
+        // Add cube to back
+        const boxGeometry = new BoxGeometry(16, 8, 0.001);
+        // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
+        const boxMaterial = new MeshBasicMaterial({color: 0xffffff});
+        this.camera.position.x = playerPos.x;
+        this.camera.position.y = playerPos.y + 5;
+
+        var cube = new Mesh(boxGeometry, boxMaterial);
+        cube.position.set(playerPos.x, playerPos.y + 6, 0.001);
+        this.add(cube);
+        var count = 0;
+        this.textMesh;
+        const fontLoader = new FontLoader();
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "You:\n\nHey, what are you doing?",
+                    {
+                        font: font,
+                        size: 0.5,
+                        height: 0
+                    }
+                );
+                Scenes.scenes['garden'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x000000}));
+                Scenes.scenes['garden'].textMesh.position.set(playerPos.x - 6.5, playerPos.y + 8, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes['garden'].add(Scenes.scenes['garden'].textMesh);
+            }
+        );  
+        this.dialogueContinue = (event) => {
+            if (event.key !== ' ') return;
+            if (count >= 6) {
+                this.remove(Scenes.scenes['garden'].textMesh);  
+                this.remove(cube);
+                window.addEventListener('keydown', this.move, false);
+                window.removeEventListener('keydown', this.dialogueContinue, false); 
+                this.dialogueHappened = true;
+            }
+            else if (count === 0){
+                Scenes.scenes['garden'].remove(Scenes.scenes['garden'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Fountain Girl:\n\nI just made a wish with my 1975\ngold-plated coin uncirculated without\nmint marking and I'm waiting for my\nwish to come true.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['garden'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['garden'].textMesh.position.set(playerPos.x - 6.5, playerPos.y + 8, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['garden'].add(Scenes.scenes['garden'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 1){
+                Scenes.scenes['garden'].remove(Scenes.scenes['garden'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nWow, what are the odds of that?\n\nWould you mind if I jumped in\nand grabbed that?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['garden'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['garden'].textMesh.position.set(playerPos.x - 6.5, playerPos.y + 8, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['garden'].add(Scenes.scenes['garden'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 2){
+                Scenes.scenes['garden'].remove(Scenes.scenes['garden'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Fountain Girl:\n\nNo problem! It was my wish to see\nsomeone swim with the piranhas\nthey added this morning anyways.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['garden'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['garden'].textMesh.position.set(playerPos.x - 6.5, playerPos.y + 8, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['garden'].add(Scenes.scenes['garden'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 3){
+                Scenes.scenes['garden'].remove(Scenes.scenes['garden'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nSweet!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['garden'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['garden'].textMesh.position.set(playerPos.x - 6.5, playerPos.y + 8, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['garden'].add(Scenes.scenes['garden'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 4){
+                Scenes.scenes['garden'].remove(Scenes.scenes['garden'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nWait, what did you just say about\npiranhas?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['garden'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['garden'].textMesh.position.set(playerPos.x - 6.5, playerPos.y + 8, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['garden'].add(Scenes.scenes['garden'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 5){
+                Scenes.scenes['garden'].remove(Scenes.scenes['garden'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Fountain Girl:\n\nAnyways, good luck!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['garden'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
+                        Scenes.scenes['garden'].textMesh.position.set(playerPos.x - 6.5, playerPos.y + 8, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['garden'].add(Scenes.scenes['garden'].textMesh);
+                    }
+                );  
+            }
+            count++;
+        }
+        window.removeEventListener('keydown', this.move, false);
+        window.addEventListener('keydown', this.dialogueContinue, false); 
+    }
+
+
 
     // Adds events specific to Frist scene
     addEvents() {

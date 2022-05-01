@@ -22,6 +22,9 @@ export { default as Disco } from './disco.png';
 export { default as Arrows } from './arrows.png';
 export { default as FilledArrrows } from './filled_arrows.png';
 export { default as ConstructionSprite } from './construction_sprite.png';
+export { default as Pirahna } from './pirahna.png';
+export { default as Coin } from './coin.png';
+export { default as WaterBackground } from './water_bg.png';
 
 export { default as Street } from './prospect/prospect.png';
 export { default as Vehicles } from './vehicles.png';
@@ -45,6 +48,7 @@ export { default as Cap } from './prospect/cap.png';
 export { default as CapLogo } from './prospect/cap_logo.png';
 export { default as Charter } from './prospect/Charter.png';
 export { default as CharterLogo } from './prospect/charter_logo.png';
+export { default as RealCannon } from './cannon.png';
 
 // Map pictures
 export { default as MapFrist } from './map/map_frist.png';

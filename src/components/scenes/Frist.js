@@ -320,9 +320,12 @@ class Frist extends Scene {
     startDialogue() {
         // Dialogue event handlers 
         const playerPos = this.player.sprite.position;
+        this.camera.position.x = playerPos.x;
+        this.camera.position.y = playerPos.y + 7;
         // Add cube to back
         const boxGeometry = new BoxGeometry(20, 8, 0.001);
-        const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
+        // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
+        const boxMaterial = new MeshBasicMaterial({color: 0xffffff});
         var cube = new Mesh(boxGeometry, boxMaterial);
         cube.position.set(playerPos.x, playerPos.y + 10, 0.001);
         this.add(cube);
@@ -440,7 +443,7 @@ class Frist extends Scene {
                     PixelFont,
                     function(font) {
                         const geometry = new TextGeometry(
-                        "Blue Hair Man:\n\nHe said he needed a brick and water that is\ndefinitely not alcohol.",
+                        "Blue Hair Man:\n\nHe said he needed a brick, a non-alcoholic water,\nand a wet 1975 gold-plated coin uncirculated\nwithout mint marking.",
                             {
                                 font: font,
                                 size: 0.5,
