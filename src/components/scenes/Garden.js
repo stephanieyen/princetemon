@@ -6,6 +6,9 @@ import Player from "../player/player";
 import Maps from "./Maps";
 import Rewards from "./Rewards";
 
+import { AudioListener, Audio, AudioLoader } from 'three';
+import { GardenAmbientAudio } from "../audio";
+
 class Garden extends Scene {
     constructor() {
         // Call parent Scene() constructor
@@ -170,6 +173,22 @@ class Garden extends Scene {
         this.camera.position.set(16, this.width - 11, 1.6);
         this.camera.lookAt(new Vector3(16, this.width - 11, 0));
         this.camera.zoom = 0.08;
+
+        // Add audio to scene
+        this.listener = new AudioListener();
+        this.camera.add(this.listener);
+        // create a global audio source
+        const audio = new Audio(this.listener);
+        // load a sound and set it as the Audio object's buffer
+        const audioLoader = new AudioLoader();
+        audioLoader.load(GardenAmbientAudio, function (buffer) {
+            audio.setBuffer(buffer);
+            audio.setLoop(false);
+            audio.setVolume(0.15);
+            // audio.pause();
+        });
+        this.audio = audio;
+        this.audio.play();
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {
