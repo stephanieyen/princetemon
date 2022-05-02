@@ -67,8 +67,8 @@ class Frist extends Scene {
         for (let i = 0; i <= 9; i++) {
             this.walkable.add(i);
         }
-        // Add this when rewards collected
-        // this.walkable.add(21);
+        this.walkable.add(21);
+        this.walkable.add(22);
 
         // Scene changing tiles list
         this.sceneChangers = new Set();
@@ -245,6 +245,9 @@ class Frist extends Scene {
             if (event.code === 'Space' || event.key === ' ') {
                 if (this.inActionSpace(104) && !this.dialogueHappened) {
                     this.startDialogue();
+                }
+                if (this.inActionSpace(32) && Scenes.gameComplete()) {
+                    Scenes.switchScene('indoors');
                 }
             }
             // Camera movement

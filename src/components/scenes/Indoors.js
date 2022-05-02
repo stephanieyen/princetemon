@@ -1,10 +1,8 @@
 import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { PixelFont } from "../fonts";
-import { FristBig, Serene, Sprites } from "../images";
+import { DirectorChair, Indoor, Sprites, Stairs, Tripod } from "../images";
 import Player from "../player/player";
-import Maps from "./Maps";
-import Rewards from "./Rewards";
 
 class Indoors extends Scene {
     constructor() {
@@ -21,34 +19,62 @@ class Indoors extends Scene {
         this.imageY = 432;
         this.countX = 8;
         this.countY = 27;
-        // Grass
-        this.createTile(0, Serene, 1, -25);
-        // Path
-        this.createTile(1, Serene, 2, -26);
-        this.createTile(2, Serene, 3, -26);
-        this.createTile(3, Serene, 4, -26);
-        this.createTile(4, Serene, 2, -25);
-        this.createTile(5, Serene, 3, -25);
-        this.createTile(6, Serene, 4, -25);
-        this.createTile(7, Serene, 2, -24);
-        this.createTile(8, Serene, 3, -24);
-        this.createTile(9, Serene, 4, -24);
-        // Tree
-        this.createTile(10, Serene, 0, -21);
-        this.createTile(11, Serene, 1, -21);
-        this.createTile(12, Serene, 0, -20);
-        this.createTile(13, Serene, 1, -20);
-        this.createTile(14, Serene, 0, -19);
-        this.createTile(15, Serene, 1, -19);
+        // Blank space
+        this.createTile(-1, Indoor, 7, 0);
+        // Floor
+        this.createTile(0, Indoor, 1, -25);
+        // Horizontal
+        this.createTile(1, Indoor, 4, -8);
+        this.createTile(2, Indoor, 5, -8);
+        this.createTile(3, Indoor, 6, -8);
+
+        // Corners
+        this.createTile(4, Indoor, 0, -6);
+        this.createTile(5, Indoor, 2, -6);
+        this.createTile(6, Indoor, 0, -8);
+        this.createTile(7, Indoor, 2, -8);
+
+        // Vertical 
+        this.createTile(8, Indoor, 3, -6);
+        this.createTile(9, Indoor, 3, -7);
+        this.createTile(10, Indoor, 3, -8);
+
+        // Table and desks
+        this.createTile(12, Indoor, 6, -3);
+        this.createTile(13, Indoor, 5, -3);
+
+        this.countX = 1;
+        this.countY = 1;
+        // Stairs
+        this.createTile(11, Stairs, 0, 0);
+
+        // Christopher Nolan Sprite
+        this.countX = 15;
+        this.countY = 8;
+        this.createTile(14, Sprites, 10, -7);
 
         // Walkable Tiles List
         this.walkable = new Set();
-        for (let i = 0; i <= 9; i++) {
-            this.walkable.add(i);
-        }
+        this.walkable.add(0)
+        this.walkable.add(11);
 
         // Actual tiles for level
         this.tiles = [
+            [ 4, 2, 2, 2, 2, 2, 3, 0, 1, 2, 2, 2, 2, 2, 5],
+            [ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9],
+            [ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9],
+            [ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9],
+            [ 9, 0, 0, 0, 4, 2, 3,11, 1, 2, 5, 0, 0, 0, 9],
+            [ 9, 0, 0, 0, 9, 0, 0, 0, 0, 0, 9, 0, 0, 0, 9],
+            [ 9, 0, 0, 0, 9, 0, 0, 0, 0, 0, 9, 0, 0, 0, 9],
+            [ 9, 0, 0, 0, 9, 0, 0, 0, 0, 0, 9, 0, 0, 0, 9],
+            [ 9, 0, 0, 0, 9, 0, 0,14, 0, 0, 9, 0, 0, 0, 9],
+            [ 9, 0, 0, 0, 6, 2, 2, 2, 2, 2, 7, 0, 0, 0, 9],
+            [ 9, 0, 0, 0, 0, 0,13,12,13, 0, 0, 0, 0, 0, 9],
+            [ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9],
+            [ 9,13,12,13, 0, 0, 0, 0, 0, 0, 0,13,12,13, 9],
+            [ 6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 7],
+
         ];
         this.width = this.tiles.length;
         this.height = this.tiles[0].length;
@@ -56,19 +82,17 @@ class Indoors extends Scene {
         this.createScene();
 
 
-        // Create player for scene
-        this.player = new Player(Frist);
+        // // Create player for scene
+        this.player = new Player(Indoors);
         this.add(this.player.sprite);
-        this.player.setPosition(this.height / 2, 1, 0);
+        this.player.setPosition(this.height / 2 - 0.5, 0, 0);
 
         // Camera
         this.camera = new PerspectiveCamera();
         // Set up camera
-        // this.camera.position.set(this.height / 2, 9, 1.6);
-        // this.camera.lookAt(new Vector3(this.height / 2, 9, 0));
-        this.camera.position.set(this.height / 2, 1, 1.6);
-        this.camera.lookAt(new Vector3(this.height / 2, 1, 0));
-        this.camera.zoom = 0.08;
+        this.camera.position.set(this.height / 2 - 0.5, 0, 1.6);
+        this.camera.lookAt(new Vector3(this.height / 2 - 0.5, 0, 0));
+        this.camera.zoom = 0.1;
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {
@@ -156,23 +180,17 @@ class Indoors extends Scene {
             }
             // Zoom out
             if (event.code === 'KeyZ' || event.key === 'z') {
-                this.camera.zoom = 0.03;
+                this.camera.zoom = 0.05;
                 this.windowResizeHandler();
             }
             // Zoom in
             if (event.code === 'KeyX' || event.key === 'x') {
-                this.camera.zoom = 0.08;
+                this.camera.zoom = 0.1;
                 this.windowResizeHandler();
-            }
-            // Rewards event
-            if (event.code === 'KeyR' || event.key === 'r') {
-                const rewards = new Rewards('frist');
-                Scenes.scenes['rewards'] = rewards;
-                Scenes.switchScene('rewards');
             }
             // Dialogue event
             if (event.code === 'Space' || event.key === ' ') {
-                if (this.inActionSpace(104) && !this.dialogueHappened) {
+                if (this.inActionSpace(14) && !this.dialogueHappened) {
                     this.startDialogue();
                 }
             }
@@ -208,9 +226,9 @@ class Indoors extends Scene {
         const texture = new TextureLoader().load(source);
         texture.minFilter = LinearFilter;
         // Find tile
-        texture.offset.x = (1 * offsetX) / this.countX;
+        texture.offset.x = (1 * offsetX + 0.04) / this.countX;
         texture.offset.y = (-1 *  offsetY + 0.03) / this.countY;
-        texture.repeat.x = (1 - eps * 3) / this.countX;
+        texture.repeat.x = (1 - eps * 7) / this.countX;
         texture.repeat.y = (1 - eps * 5) / this.countY;
         // texture.wrapS = texture.wrapT = RepeatWrapping;
 
@@ -225,7 +243,12 @@ class Indoors extends Scene {
             for (let j = 0; j < this.width; j++) {
                 // Set tile and set grass background
                 const index = this.tiles[j][i];
-                const background = new Sprite(this.tileset.get(0));
+                if (index === -1) {
+                    var background = new Sprite(this.tileset.get(-1));
+                }
+                else {
+                    var background = new Sprite(this.tileset.get(0));
+                }
                 const sprite = new Sprite(this.tileset.get(index));
                 // Set positions based on tile mapping
                 const xPosition = i;
@@ -246,6 +269,335 @@ class Indoors extends Scene {
         }
         return false;
     }
+
+    startDialogue() {
+        // Dialogue event handlers 
+        const playerPos = this.player.sprite.position;
+        this.camera.position.x = playerPos.x;
+        this.camera.position.y = playerPos.y + 3;
+        // Add cube to back
+        const boxGeometry = new BoxGeometry(20, 6, 0.001);
+        // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
+        const boxMaterial = new MeshBasicMaterial({color: 0xffffff});
+        var cube = new Mesh(boxGeometry, boxMaterial);
+        cube.position.set(playerPos.x, playerPos.y + 7, 0.001);
+        this.add(cube);
+        var count = 0;
+        this.textMesh;
+        const fontLoader = new FontLoader();
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "Christopher Nolan:\n\nI heard you fetched me the supplies I asked for.",
+                    {
+                        font: font,
+                        size: 0.5,
+                        height: 0
+                    }
+                );
+                Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+            }
+        );  
+        this.dialogueContinue = (event) => {
+            if (event.key !== ' ') return;
+            if (count >= 14) {
+                this.remove(Scenes.scenes['indoors'].textMesh);  
+                this.remove(cube);
+                window.addEventListener('keydown', this.move, false);
+                window.removeEventListener('keydown', this.dialogueContinue, false); 
+            }
+            else if (count === 0){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nI sure did! Here ya go!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 1){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Christopher Nolan:\n\nWOW! This is the perfect brick, the exact kind used\nback in World War whatever this movie is in.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 2){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Christopher Nolan:\n\nAnd this! This is the exact amount of alcohol\nI wanted in my water! None!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 3){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Christopher Nolan:\n\nAnd the coin! You can practically smell the\n1975 on the coin!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 4){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Christopher Nolan:\n\nYou must've gone through a lot to get these.\nEspecially since this weekend happened to be\nNational Piranha Water Rock Falling Dance\nCompetition Day.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 5){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Christopher Nolan:\n\nHow can I ever repay you?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 6){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nHave you seen my signed Felix Heide poster?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 7){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Christopher Nolan:\n\nI have not, but I can do you one better. I can\nsign my own poster for you and I want you\nto play a role in this movie.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 8){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nEh, no thanks.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 9){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Christopher Nolan:\n\nWhat do you mean no thanks?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 10){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nYeah, I don't really feel like it.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 11){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Christopher Nolan:\n\n...",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 12){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nAnyways, good luck with your Floppenheimer movie\nor whatever.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 13){
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].player.sprite);
+                Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Christopher Nolan:\n\nFloppenheimer?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['indoors'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['indoors'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 8.5, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['indoors'].add(Scenes.scenes['indoors'].textMesh);
+                    }
+                );  
+            }
+            count++;
+        }
+        window.removeEventListener('keydown', this.move, false);
+        window.addEventListener('keydown', this.dialogueContinue, false); 
+        this.dialogueHappened = true;
+    }
+
 
 
     // Adds events specific to Frist scene

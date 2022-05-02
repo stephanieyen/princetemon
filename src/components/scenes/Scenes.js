@@ -6,6 +6,7 @@ import GameOverProspect from "./GameOverProspect";
 import Garden from "./Garden";
 import GardenGame from "./GardenGame";
 import GardenGameInstructions from "./GardenGameInstructions";
+import Indoors from "./Indoors";
 import Instructions from "./Instructions";
 import Nassau from "./Nassau";
 import Poe from "./Poe";
@@ -52,6 +53,8 @@ class Scenes {
         this.scenes['gardengame'] = new GardenGame();
         this.scenes['gardengameinstructions'] = new GardenGameInstructions();
 
+        this.scenes['indoors'] = new Indoors();
+
         this.scenes['gameover'] = new GameOver();
         this.scenes['success'] = new Success();
 
@@ -62,8 +65,7 @@ class Scenes {
         this.scenes['successgarden'] = new SuccessGarden();
 
         // Set current scene to title scene
-        // this.currentScene = this.scenes['prospect'];
-        this.currentScene = this.scenes['garden'];
+        this.currentScene = this.scenes['title'];
         this.currentScene.addEvents();
     }
 
@@ -72,6 +74,10 @@ class Scenes {
         this.currentScene.removeEvents();
         this.currentScene = this.scenes[sceneKey];
         this.currentScene.addEvents();
+    }
+
+    gameComplete() {
+        return (this.successes[0] === 1 && this.successes[1] === 1 && this.successes[2] === 1);
     }
 }
 
