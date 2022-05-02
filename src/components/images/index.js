@@ -26,6 +26,7 @@ export { default as Pirahna } from './pirahna.png';
 export { default as WaterBackground } from './water_bg.png';
 export { default as Indoor } from './indoor.png';
 export { default as Stairs } from './stairs_gray.png';
+export { default as EndBackground } from './end.png';
 
 export { default as Street } from './prospect/prospect.png';
 export { default as Vehicles } from './vehicles.png';

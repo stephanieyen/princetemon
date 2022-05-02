@@ -309,6 +309,7 @@ class Indoors extends Scene {
                 this.remove(cube);
                 window.addEventListener('keydown', this.move, false);
                 window.removeEventListener('keydown', this.dialogueContinue, false); 
+                Scenes.switchScene('end');
             }
             else if (count === 0){
                 Scenes.scenes['indoors'].remove(Scenes.scenes['indoors'].textMesh);  

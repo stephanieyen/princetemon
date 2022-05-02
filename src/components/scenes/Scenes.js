@@ -1,4 +1,5 @@
 import { WebGLRenderer } from "three";
+import End from "./End";
 import Frist from "./Frist";
 import GameOver from "./GameOver";
 import GameOverGarden from "./GameOverGarden";
@@ -64,8 +65,11 @@ class Scenes {
         this.scenes['gameovergarden'] = new GameOverGarden();
         this.scenes['successgarden'] = new SuccessGarden();
 
+        this.scenes['end'] = new End();
+
         // Set current scene to title scene
         this.currentScene = this.scenes['title'];
+
         this.currentScene.addEvents();
     }
 
