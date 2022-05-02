@@ -1,1 +1,0 @@
-export { default as GardenAmbientAudio } from './garden.mp3';

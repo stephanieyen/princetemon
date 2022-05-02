@@ -5,7 +5,6 @@ import { Flowers, Fountain, Serene, Sprites } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
 import Rewards from "./Rewards";
-import AudioManager from "./AudioManager";
 
 class Garden extends Scene {
     constructor() {
@@ -159,6 +158,7 @@ class Garden extends Scene {
 
         this.createScene();
 
+
         // Create player for scene
         this.player = new Player(Garden);
         this.add(this.player.sprite);
@@ -170,14 +170,6 @@ class Garden extends Scene {
         this.camera.position.set(16, this.width - 11, 1.6);
         this.camera.lookAt(new Vector3(16, this.width - 11, 0));
         this.camera.zoom = 0.08;
-
-        // Add sound
-        this.audioManager = new AudioManager(); 
-        // this.camera.add(this.audioManager.audioListener);
-        // this.audioManager.playSound('gardenambient', undefined, 0.5);
-
-        this.camera.add(Scenes.audioListener);
-        Scenes.playSound('gardenambient', undefined, 0.5);
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {

@@ -6,14 +6,12 @@
  * handles window resizes.
  *
  */
-import { Scenes } from './components/scenes';
-// import { Audio } from './components/scenes';
+import { Scenes} from './components/scenes';
 
 // Initialize core ThreeJS components
 // const scene = new SeedScene();
-// Create scenes and audio
+// Create scenes
 Scenes.create();
-// Audio.create();
 
 // Set up renderer, canvas, and minor CSS adjustments
 Scenes.renderer.setPixelRatio(window.devicePixelRatio);
@@ -22,8 +20,6 @@ canvas.style.display = 'block'; // Removes padding below canvas
 document.body.style.margin = 0; // Removes margin around page
 document.body.style.overflow = 'hidden'; // Fix scrolling
 document.body.appendChild(canvas);
-
-// Set up sounds
 
 // // // Set up controls
 // const controls = new OrbitControls(camera, canvas);
