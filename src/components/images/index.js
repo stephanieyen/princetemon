@@ -1,8 +1,11 @@
 export { default as TitleBackground } from './title.png';
+export { default as TitleScreen } from './title_screen.png';
 export { default as WoodBlock } from './wood_block.jpg';
+
 export { default as FristBig } from './frist_big.png';
 export { default as Serene } from './serene.png';
 export { default as Sprites } from './sprites.png';
+
 export { default as PoeGameTiles } from './poe_game.png';
 export { default as Rocks } from './rocks.png';
 export { default as SpritePton } from './player_sprite.png';
@@ -12,18 +15,24 @@ export { default as Dirt } from './terrain.png';
 export { default as Crane } from './crane.png';
 export { default as Cone } from './cone.png';
 export { default as Hole } from './hole.png';
+export { default as Stick } from './stick.png';
+export { default as Wood } from './wood.png';
 export { default as NewRes } from './new_building.png';
+export { default as ConstructionSprite } from './construction_sprite.png';
+
 export { default as NassauImg } from './nassau_hall.png';
 export { default as CannonGreen } from './cannon_green.png';
+export { default as Nassau } from './nassau_hall.png';
+
 export { default as Flowers } from './flowers.png';
 export { default as Fountain } from './fountain.png'
-export { default as Nassau } from './nassau_hall.png';
 export { default as Disco } from './disco.png';
 export { default as Arrows } from './arrows.png';
 export { default as FilledArrrows } from './filled_arrows.png';
-export { default as ConstructionSprite } from './construction_sprite.png';
 export { default as Pirahna } from './pirahna.png';
 export { default as WaterBackground } from './water_bg.png';
+export { default as ProspectHouse } from './prospect_house.png';
+
 export { default as Indoor } from './indoor.png';
 export { default as Stairs } from './stairs_gray.png';
 export { default as EndBackground } from './end.png';

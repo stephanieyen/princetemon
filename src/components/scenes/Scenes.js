@@ -68,7 +68,8 @@ class Scenes {
         this.scenes['end'] = new End();
 
         // Set current scene to title scene
-        this.currentScene = this.scenes['title'];
+        // this.currentScene = this.scenes['title'];
+        this.currentScene = this.scenes['garden'];
 
         this.currentScene.addEvents();
     }

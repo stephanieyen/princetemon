@@ -1,7 +1,7 @@
 import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { PixelFont } from "../fonts";
-import { Flowers, Fountain, Serene, Sprites } from "../images";
+import { Flowers, Fountain, ProspectHouse, Serene, Sprites } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
 import Rewards from "./Rewards";
@@ -110,6 +110,18 @@ class Garden extends Scene {
         this.countY = 8;
         this.createTile(104, Sprites, 13, -5);
 
+        // Prospect House
+        this.currentIndex = 105;
+        this.countX = 9;
+        this.countY = 6;
+        // 105 - 158
+        for (let i = 0; i >= -5; i--) {
+            for (let j = 0; j <= 8; j++) {
+                this.createTile(this.currentIndex, ProspectHouse, j, i);
+                this.currentIndex++;
+            }
+        }
+
         // Scene changing tiles list
         this.sceneChangers = new Set();
         this.sceneChangers.add(2);
@@ -152,9 +164,12 @@ class Garden extends Scene {
             [  8,  8,  8,  8,  8,  8, 20,  5, 22,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 20,  5, 22,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 20,  5,  6, 14, 15, 14, 15],
             [  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6, 12, 13, 12, 13],
             [  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  3, 10, 11, 10, 11],
-            [ 14, 15, 14, 15, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15, 14, 15],
-            [ 12, 13, 12, 13, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13, 12, 13],
-            [ 10, 11, 10, 11, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11, 10, 11],
+            [ 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15,  0,105,106,107,108,109,110,111,112,113,  0, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15],
+            [ 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13,  0,114,115,116,117,118,119,120,121,122,  0, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13],
+            [ 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11,  0,123,124,125,126,127,128,129,130,131,  0, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11],
+            [ 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15,  0,132,133,134,135,136,137,138,139,140,  0, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15],
+            [ 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13,  0,141,142,143,144,145,146,147,148,149,  0, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13],
+            [ 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11,  0,150,151,152,153,154,155,156,157,158,  0, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11],
         ];
         this.width = this.tiles.length;
         this.height = this.tiles[0].length;
@@ -165,15 +180,15 @@ class Garden extends Scene {
         // Create player for scene
         this.player = new Player(Garden);
         this.add(this.player.sprite);
-        this.player.setPosition(1, this.width - 5, 0);
+        this.player.setPosition(1, this.width - 8, 0);
 
         // Camera
         this.camera = new PerspectiveCamera();
         // Set up camera
         // this.camera.position.set(16, this.width - 11, 1.6);
         // this.camera.lookAt(new Vector3(16, this.width - 11, 0));
-        this.camera.position.set(1, this.width - 5, 1.6);
-        this.camera.lookAt(new Vector3(1, this.width - 5, 0));
+        this.camera.position.set(1, this.width - 8, 1.6);
+        this.camera.lookAt(new Vector3(1, this.width - 8, 0));
         this.camera.zoom = 0.08;
 
         // Add audio to scene
