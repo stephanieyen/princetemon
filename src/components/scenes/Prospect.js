@@ -334,8 +334,10 @@ class Prospect extends Scene {
         // Camera
         this.camera = new PerspectiveCamera();
         // Set up camera
-        this.camera.position.set(this.height - 13.5, 7, 1.6);
-        this.camera.lookAt(new Vector3(this.height - 13.5, 7, 0));
+        // this.camera.position.set(this.height - 13.5, 7, 1.6);
+        // this.camera.lookAt(new Vector3(this.height - 13.5, 7, 0));
+        this.camera.position.set(this.height - 1, 7, 1.6);
+        this.camera.lookAt(new Vector3(this.height - 1, 7, 0));
         // this.camera.zoom = 0.08;
         this.camera.zoom = 0.1;
 
@@ -387,7 +389,10 @@ class Prospect extends Scene {
                         let foreground = new Sprite(this.tileset.get(index));
                         this.add(foreground);
                     }
-                    if (this.camera.position.x >= 13.5) {
+                    // if (this.camera.position.x >= 13.5) {
+                    //     this.camera.position.x -= speed;
+                    // }
+                    if (this.camera.position.x >= 0) {
                         this.camera.position.x -= speed;
                     }
                 }
@@ -405,11 +410,13 @@ class Prospect extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x + speed, playerPos.y, playerPos.z, "right");
                     this.add(this.player.sprite);
-                    if (this.camera.position.x <= this.height - 14.5) {
+                    // if (this.camera.position.x <= this.height - 14.5) {
+                    //     this.camera.position.x += speed;
+                    // }
+                    if (this.camera.position.x <= this.height) {
                         this.camera.position.x += speed;
                     }
                 }
-
             }
             // Map event
             if (event.code === 'KeyM' || event.key === 'm') {
@@ -441,6 +448,17 @@ class Prospect extends Scene {
                 }
                 if (this.inActionSpace(407) && this.dialogueHappened) {
                     Scenes.switchScene('prospectgameinstructions');
+                }
+            }
+            // Camera movement
+            if (event.code === 'KeyA' || event.key === 'a') {
+                if (this.camera.position.x >= 0) {
+                    this.camera.position.x -= speed;
+                }
+            }
+            if (event.code === 'KeyD' || event.key === 'd') {
+                if (this.camera.position.x <= this.height) {
+                    this.camera.position.x += speed;
                 }
             }
         };

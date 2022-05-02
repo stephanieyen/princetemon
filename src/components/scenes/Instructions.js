@@ -40,12 +40,12 @@ class Instructions extends Scene {
                 "Instructions",
                     {
                         font: font,
-                        size: 0.8,
+                        size: 0.6,
                         height: 0
                     }
                 );
                 const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                textMesh.position.set(-3, 2.5, 0.1);
+                textMesh.position.set(-3, 2.8, 0.1);
                 // Cannot use this.add since inside new function
                 Scenes.scenes['instructions'].add(textMesh);
             }
@@ -55,6 +55,23 @@ class Instructions extends Scene {
             function(font) {
                 const geometry = new TextGeometry(
                 "- Use the arrow keys to move",
+                    {
+                        font: font,
+                        size: 0.3,
+                        height: 0
+                    }
+                );
+                const textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                textMesh.position.set(-4.5, 2, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes['instructions'].add(textMesh);
+            }
+        );
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "- Use WASD to adjust the camera",
                     {
                         font: font,
                         size: 0.3,
@@ -122,7 +139,7 @@ class Instructions extends Scene {
             PixelFont,
             function(font) {
                 const geometry = new TextGeometry(
-                "- Press z to zoom out and x to zoom in",
+                "- Press z to zoom out and x to zoom back in",
                     {
                         font: font,
                         size: 0.3,

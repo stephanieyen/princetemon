@@ -169,8 +169,10 @@ class Poe extends Scene {
         // Camera
         this.camera = new PerspectiveCamera();
         // Set up camera
-        this.camera.position.set(this.height / 2, 9, 1.6);
-        this.camera.lookAt(new Vector3(this.height / 2, 9, 0));
+        // this.camera.position.set(this.height / 2, 9, 1.6);
+        // this.camera.lookAt(new Vector3(this.height / 2, 9, 0));
+        this.camera.position.set(this.height / 2, 1, 1.6);
+        this.camera.lookAt(new Vector3(this.height / 2, 1, 0));
         this.camera.zoom = 0.08;
 
         // Window resize handler for scene
@@ -182,7 +184,7 @@ class Poe extends Scene {
         };
         // Arrow key handler
         this.move = (event) => {
-            const speed = 0.3;
+            const speed = 0.5;
             if (event.code === 'ArrowUp') {
                 const playerPos = this.player.sprite.position;
                 // If past map, don't move
@@ -194,7 +196,10 @@ class Poe extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x, playerPos.y + speed, playerPos.z, "up");
                     this.add(this.player.sprite);
-                    if (this.camera.position.y <= this.width - 10) {
+                    // if (this.camera.position.y <= this.width - 10) {
+                    //     this.camera.position.y += speed;
+                    // }
+                    if (this.camera.position.y <= this.width) {
                         this.camera.position.y += speed;
                     }
                 }
@@ -213,7 +218,10 @@ class Poe extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x, playerPos.y - speed, playerPos.z, "down");
                     this.add(this.player.sprite);
-                    if (this.camera.position.y >= 9 + speed) {
+                    // if (this.camera.position.y >= 9 + speed) {
+                    //     this.camera.position.y -= speed;
+                    // }
+                    if (this.camera.position.y >= 0) {
                         this.camera.position.y -= speed;
                     }
                 }
@@ -229,7 +237,10 @@ class Poe extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x - speed, playerPos.y, playerPos.z, "left");
                     this.add(this.player.sprite);
-                    if (this.camera.position.x >= 17) {
+                    // if (this.camera.position.x >= 17) {
+                    //     this.camera.position.x -= speed;
+                    // }
+                    if (this.camera.position.x >= 0) {
                         this.camera.position.x -= speed;
                     }
                 }
@@ -244,7 +255,10 @@ class Poe extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x + speed, playerPos.y, playerPos.z, "right");
                     this.add(this.player.sprite);
-                    if (this.camera.position.x <= this.height - 17) {
+                    // if (this.camera.position.x <= this.height - 17) {
+                    //     this.camera.position.x += speed;
+                    // }
+                    if (this.camera.position.x <= this.height) {
                         this.camera.position.x += speed;
                     }
                 }
@@ -280,6 +294,27 @@ class Poe extends Scene {
                 }
                 if (this.inActionSpace(36) && this.dialogueHappened) {
                     Scenes.switchScene('poegameinstructions');
+                }
+            }
+            // Camera movement
+            if (event.code === 'KeyW' || event.key === 'w') {
+                if (this.camera.position.y <= this.width) {
+                    this.camera.position.y += speed;
+                }
+            }
+            if (event.code === 'KeyS' || event.key === 's') {
+                if (this.camera.position.y >= 0) {
+                    this.camera.position.y -= speed;
+                }
+            }
+            if (event.code === 'KeyA' || event.key === 'a') {
+                if (this.camera.position.x >= 0) {
+                    this.camera.position.x -= speed;
+                }
+            }
+            if (event.code === 'KeyD' || event.key === 'd') {
+                if (this.camera.position.x <= this.height) {
+                    this.camera.position.x += speed;
                 }
             }
         };

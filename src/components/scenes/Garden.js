@@ -170,8 +170,10 @@ class Garden extends Scene {
         // Camera
         this.camera = new PerspectiveCamera();
         // Set up camera
-        this.camera.position.set(16, this.width - 11, 1.6);
-        this.camera.lookAt(new Vector3(16, this.width - 11, 0));
+        // this.camera.position.set(16, this.width - 11, 1.6);
+        // this.camera.lookAt(new Vector3(16, this.width - 11, 0));
+        this.camera.position.set(1, this.width - 5, 1.6);
+        this.camera.lookAt(new Vector3(1, this.width - 5, 0));
         this.camera.zoom = 0.08;
 
         // Add audio to scene
@@ -199,7 +201,7 @@ class Garden extends Scene {
         };
         // Arrow key handler
         this.move = (event) => {
-            const speed = 0.3;
+            const speed = 0.5;
             if (event.code === 'ArrowUp') {
                 const playerPos = this.player.sprite.position;
                 // If past map, don't move
@@ -211,7 +213,10 @@ class Garden extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x, playerPos.y + speed, playerPos.z, "up");
                     this.add(this.player.sprite);
-                    if (this.camera.position.y <= this.width - 10) {
+                    // if (this.camera.position.y <= this.width - 10) {
+                    //     this.camera.position.y += speed;
+                    // }
+                    if (this.camera.position.y <= this.width) {
                         this.camera.position.y += speed;
                     }
                 }
@@ -227,7 +232,10 @@ class Garden extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x, playerPos.y - speed, playerPos.z, "down");
                     this.add(this.player.sprite);
-                    if (this.camera.position.y >= 9 + speed) {
+                    // if (this.camera.position.y >= 9 + speed) {
+                    //     this.camera.position.y -= speed;
+                    // }
+                    if (this.camera.position.y >= 0) {
                         this.camera.position.y -= speed;
                     }
                 }
@@ -245,7 +253,10 @@ class Garden extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x - speed, playerPos.y, playerPos.z, "left");
                     this.add(this.player.sprite);
-                    if (this.camera.position.x >= 17) {
+                    // if (this.camera.position.x >= 17) {
+                    //     this.camera.position.x -= speed;
+                    // }
+                    if (this.camera.position.x >= 0) {
                         this.camera.position.x -= speed;
                     }
                 }
@@ -257,7 +268,10 @@ class Garden extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x + speed, playerPos.y, playerPos.z, "right");
                     this.add(this.player.sprite);
-                    if (this.camera.position.x <= this.height - 17) {
+                    // if (this.camera.position.x <= this.height - 17) {
+                    //     this.camera.position.x += speed;
+                    // }
+                    if (this.camera.position.x <= this.height) {
                         this.camera.position.x += speed;
                     }
                 }
@@ -297,7 +311,28 @@ class Garden extends Scene {
                         }
                     }
                 }
-            }    
+            }
+            // Camera movement
+            if (event.code === 'KeyW' || event.key === 'w') {
+                if (this.camera.position.y <= this.width) {
+                    this.camera.position.y += speed;
+                }
+            }
+            if (event.code === 'KeyS' || event.key === 's') {
+                if (this.camera.position.y >= 0) {
+                    this.camera.position.y -= speed;
+                }
+            }
+            if (event.code === 'KeyA' || event.key === 'a') {
+                if (this.camera.position.x >= 0) {
+                    this.camera.position.x -= speed;
+                }
+            }
+            if (event.code === 'KeyD' || event.key === 'd') {
+                if (this.camera.position.x <= this.height) {
+                    this.camera.position.x += speed;
+                }
+            }
         };
     }
     // Creates texture and material from spritesheet
