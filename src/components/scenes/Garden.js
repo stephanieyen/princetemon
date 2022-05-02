@@ -183,12 +183,12 @@ class Garden extends Scene {
         const audioLoader = new AudioLoader();
         audioLoader.load(GardenAmbientAudio, function (buffer) {
             audio.setBuffer(buffer);
-            audio.setLoop(false);
-            audio.setVolume(0.15);
-            // audio.pause();
+            audio.setLoop(true);
+            audio.setVolume(0.5);
+            audio.play();
         });
         this.audio = audio;
-        this.audio.play();
+        // if (!this.audio.isPlaying) this.audio.play();
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {
