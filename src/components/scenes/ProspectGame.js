@@ -1,6 +1,6 @@
-import { LinearFilter, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
+import { FrontSide, LinearFilter, Mesh, MeshBasicMaterial, PerspectiveCamera, PlaneGeometry, RGBFormat, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3, VideoTexture } from "three";
 import { Scenes } from ".";
-import { Arrows, Disco, FilledArrrows } from "../images";
+import { Arrows, DancingSprite, Disco, FilledArrrows } from "../images";
 
 class ProspectGame extends Scene {
     constructor() {
@@ -72,6 +72,29 @@ class ProspectGame extends Scene {
         this.camera.position.set(9.5, 4.5, 1.6);
         this.camera.lookAt(new Vector3(9.5, 4.5, 0));
         this.camera.zoom = 0.15;
+
+        // // Gif in background
+        // //Create your video texture:
+        // console.log(DancingSprite);
+        // const videoTexture = new VideoTexture(DancingSprite);
+        // videoTexture.needsUpdate = true;
+        // videoTexture.generateMipmaps = false;
+        // videoTexture.format = RGBFormat;
+        // console.log(videoTexture);
+        // const videoMaterial = new MeshBasicMaterial({
+        //     map: videoTexture,
+        //     side: FrontSide,
+        //     toneMapped: false,
+        // });
+        // videoMaterial.needsUpdate = true;
+        // console.log(videoMaterial);
+
+        // //Create screen
+        // const screen = new PlaneGeometry(10, 10);
+        // const videoScreen = new Mesh(screen, videoMaterial);
+        // console.log("hi");
+        // this.add(videoScreen);
+        // console.log("bye");
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {

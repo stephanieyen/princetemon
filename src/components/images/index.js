@@ -24,9 +24,11 @@ export { default as NassauImg } from './nassau_hall.png';
 export { default as CannonGreen } from './cannon_green.png';
 export { default as Nassau } from './nassau_hall.png';
 
+export { default as Disco } from './disco.png';
+// export { default as DancingSprite } from './dancing_sprite.mp4';
+
 export { default as Flowers } from './flowers.png';
 export { default as Fountain } from './fountain.png'
-export { default as Disco } from './disco.png';
 export { default as Arrows } from './arrows.png';
 export { default as FilledArrrows } from './filled_arrows.png';
 export { default as Pirahna } from './pirahna.png';
@@ -36,6 +38,7 @@ export { default as ProspectHouse } from './prospect_house.png';
 export { default as Indoor } from './indoor.png';
 export { default as Stairs } from './stairs_gray.png';
 export { default as EndBackground } from './end.png';
+export { default as Nolan } from './nolan.png';
 
 export { default as Street } from './prospect/prospect.png';
 export { default as Vehicles } from './vehicles.png';

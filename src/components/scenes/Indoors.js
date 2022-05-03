@@ -1,7 +1,7 @@
 import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { PixelFont } from "../fonts";
-import { DirectorChair, Indoor, Sprites, Stairs, Tripod } from "../images";
+import { DirectorChair, Indoor, Nolan, Sprites, Stairs, Tripod } from "../images";
 import Player from "../player/player";
 
 class Indoors extends Scene {
@@ -49,9 +49,9 @@ class Indoors extends Scene {
         this.createTile(11, Stairs, 0, 0);
 
         // Christopher Nolan Sprite
-        this.countX = 15;
-        this.countY = 8;
-        this.createTile(14, Sprites, 10, -7);
+        this.countX = 3;
+        this.countY = 4;
+        this.createTile(14, Nolan, 1, -3);
 
         // Walkable Tiles List
         this.walkable = new Set();
