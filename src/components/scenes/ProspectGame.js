@@ -1,6 +1,7 @@
 import { FrontSide, LinearFilter, Mesh, MeshBasicMaterial, PerspectiveCamera, PlaneGeometry, RGBFormat, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3, VideoTexture } from "three";
 import { Scenes } from ".";
-import { Arrows, DancingSprite, Disco, FilledArrrows } from "../images";
+import { Arrows, Disco, FilledArrrows } from "../images";
+import DancingSprite from "../player/DancingSprite";
 
 class ProspectGame extends Scene {
     constructor() {
@@ -66,35 +67,18 @@ class ProspectGame extends Scene {
 
         this.createScene();
 
+        // Dancing sprite
+        this.dancer = new DancingSprite(ProspectGame);
+        this.add(this.dancer.sprite);
+        this.dancer.sprite.scale.set(5, 5, 1);
+        this.dancer.sprite.position.set(9.5, 4.5, -0.1);
+
         // Camera
         this.camera = new PerspectiveCamera();
         // Set up camera
         this.camera.position.set(9.5, 4.5, 1.6);
         this.camera.lookAt(new Vector3(9.5, 4.5, 0));
         this.camera.zoom = 0.15;
-
-        // // Gif in background
-        // //Create your video texture:
-        // console.log(DancingSprite);
-        // const videoTexture = new VideoTexture(DancingSprite);
-        // videoTexture.needsUpdate = true;
-        // videoTexture.generateMipmaps = false;
-        // videoTexture.format = RGBFormat;
-        // console.log(videoTexture);
-        // const videoMaterial = new MeshBasicMaterial({
-        //     map: videoTexture,
-        //     side: FrontSide,
-        //     toneMapped: false,
-        // });
-        // videoMaterial.needsUpdate = true;
-        // console.log(videoMaterial);
-
-        // //Create screen
-        // const screen = new PlaneGeometry(10, 10);
-        // const videoScreen = new Mesh(screen, videoMaterial);
-        // console.log("hi");
-        // this.add(videoScreen);
-        // console.log("bye");
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {
@@ -135,7 +119,6 @@ class ProspectGame extends Scene {
                 }
             }
             if (event.code === 'ArrowUp') {
-                console.log("up");
                 // Check for either arrow of direction
                 if (this.arrows[2].position.y <= 1) {
                     this.arrows[2].position.y = 10;
@@ -206,7 +189,16 @@ class ProspectGame extends Scene {
         var timeInBetween = 150;
         var timeLoop = setInterval(function() { 
             if (Scenes.scenes['prospectgame'].gameStarted && time < 2500) { 
-                if (time % timeInBetween == 0) {
+                // Animation for dancing sprite in background
+                if (time % 10 === 0) {
+                    Scenes.scenes['prospectgame'].remove(Scenes.scenes['prospectgame'].dancer.sprite);
+                    Scenes.scenes['prospectgame'].dancer.animate();
+                    Scenes.scenes['prospectgame'].add(Scenes.scenes['prospectgame'].dancer.sprite);
+                    Scenes.scenes['prospectgame'].dancer.sprite.scale.set(5, 5, 1);
+                    Scenes.scenes['prospectgame'].dancer.sprite.position.set(9.5, 4.5, -0.1);
+                }
+                // Arrow speeds
+                if (time % timeInBetween === 0) {
                     var random = Math.floor(Math.random() * 8);
                     if (Scenes.scenes['prospectgame'].speeds[random] === 0) {
                         Scenes.scenes['prospectgame'].speeds[random] = currentSpeed;

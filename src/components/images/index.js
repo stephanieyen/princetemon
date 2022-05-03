@@ -25,7 +25,8 @@ export { default as CannonGreen } from './cannon_green.png';
 export { default as Nassau } from './nassau_hall.png';
 
 export { default as Disco } from './disco.png';
-// export { default as DancingSprite } from './dancing_sprite.mp4';
+export { default as DancingSpriteSheet } from './dancing_sprite.png';
+
 
 export { default as Flowers } from './flowers.png';
 export { default as Fountain } from './fountain.png'
