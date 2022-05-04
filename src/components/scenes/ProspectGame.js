@@ -227,11 +227,11 @@ class ProspectGame extends Scene {
     // Decrease arrow positions by corresponding speed
     arrowFall() {
         for (let i = 0; i < 8; i++) {
-            this.arrows[i].position.y -= this.speeds[i];
             if (this.arrows[i].position.y <= -0.8) {
                 this.resetGame();
                 Scenes.switchScene('gameoverprospect');
             }
+            this.arrows[i].position.y -= this.speeds[i];
         } 
     }
 
