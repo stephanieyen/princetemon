@@ -1,51 +1,62 @@
 import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { PixelFont } from "../fonts";
-import { FristBig, Serene, Sprites } from "../images";
+import { FristBig, Serene, Outside, Trees, Street, 
+         Sprites } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
 import Rewards from "./Rewards";
+import PrincetemonScene from "./PrincetemonScene"; // TODO
 
 class Frist extends Scene {
     constructor() {
         // Call parent Scene() constructor
         super();
+
         // Dialogue checker
         this.dialogueHappened = false;
 
         // Adding in tiles
-        // Hashmap for tiles
-        this.tileset = new Map();
-        // Outdoors tileset details
-        this.imageX = 128;
-        this.imageY = 432;
+        this.tileset = new Map(); // hashmap for tiles
+        this.backgrounds = new Object(); // dictionary for backgrounds 
+        this.walkable = new Set(); // set for walkable tiles
+        this.sceneChangers = new Set(); // set for scene-changing tiles
+
+        // --- Serene/outdoor tiles ---
         this.countX = 8;
         this.countY = 27;
         // Grass
         this.createTile(0, Serene, 1, -25);
         // Path
-        this.createTile(1, Serene, 2, -26);
+        this.createTile(1, Serene, 2, -26); // row
         this.createTile(2, Serene, 3, -26);
         this.createTile(3, Serene, 4, -26);
-        this.createTile(4, Serene, 2, -25);
+        this.createTile(4, Serene, 2, -25); // row
         this.createTile(5, Serene, 3, -25);
         this.createTile(6, Serene, 4, -25);
-        this.createTile(7, Serene, 2, -24);
+        this.createTile(7, Serene, 2, -24); // row
         this.createTile(8, Serene, 3, -24);
         this.createTile(9, Serene, 4, -24);
-        // Tree
-        this.createTile(10, Serene, 0, -21);
-        this.createTile(11, Serene, 1, -21);
-        this.createTile(12, Serene, 0, -20);
-        this.createTile(13, Serene, 1, -20);
-        this.createTile(14, Serene, 0, -19);
-        this.createTile(15, Serene, 1, -19);
+        // Path corners
+        this.createTile(10, Serene, 3, -22); // bottom <> right
+        this.createTile(11, Serene, 3, -23); // top <> right
+        this.createTile(12, Serene, 2, -22); // bottom <> left
+        this.createTile(13, Serene, 2, -23); // top <> left
 
-        // Frist tile set
+        // // Tree
+        // this.createTile(10, Serene, 0, -21);
+        // this.createTile(11, Serene, 1, -21);
+        // this.createTile(12, Serene, 0, -20);
+        // this.createTile(13, Serene, 1, -20);
+        // this.createTile(14, Serene, 0, -19);
+        // this.createTile(15, Serene, 1, -19);
+        // Sidewalk path
+        // this.createTile(105, Serene, 5, -16); // left side
+        // this.createTile(106, Serene, 6, -15); // right side
+        // this.createTile(105, Serene, 6, -16); // no borders
+
+        // --- Frist tile set ---
         var currentIndex = 16;
-
-        this.imageX = 176;
-        this.imageY = 128;
         this.countX = 11;
         this.countY = 8;
         // 16 - 103
@@ -56,53 +67,235 @@ class Frist extends Scene {
             }
         }
 
-        // Talking sprite
-        // Number of images per row/column
+        // --- Outside tiles ---
+        this.countX = 8; // right is 7
+        this.countY = 13; // top is -12
+        // 200s
+        // TESTING
+        // this.createTile(106, Outside, 4, -12); // fence top corner
+        // this.createTile(107, Outside, 4, -11); // fence top
+        // this.createTile(108, Outside, 6, -9); // fence top right corner
+        // this.createTile(109, Outside, 4, -8); // fence side
+        // this.createTile(110, Outside, 6, -10); // fence right
+        // this.createTile(111, Outside, 5, -13);
+        // this.createTile(112, Outside, 6, -13);
+        // this.createTile(113, Outside, 7, -13);
+        // this.createTile(114, Outside, 8, -13);
+        // this.createTile(115, Outside, 0, -12);
+
+        // Flowers
+        this.createTile(106, Outside, 1, -12); // pink flower
+        this.createTile(107, Outside, 2, -12); // blue flower
+        this.createTile(108, Outside, 3, -12); // yellow flower
+        this.createTile(109, Outside, 4, -12); // white flower 
+        this.createTile(110, Outside, 6, -12); // bush
+        this.createTile(111, Outside, 2, -11); // one flower
+        this.createTile(112, Outside, 2, -10); // four flowers
+        this.createTile(113, Outside, 4, -11); // rock + grass
+
+        // Fence
+        this.createTile(114, Outside, 4, -9); // fence top corner
+        this.createTile(115, Outside, 5, -9); // fence top
+        this.createTile(116, Outside, 4, -8); // fence side
+
+        // Row of flowers
+        this.createTile(117, Outside, 6, -4); // fence side
+        this.createTile(118, Outside, 7, -4); // fence side
+
+        // --- Street tiles ---
+        this.countX = 29;
+        this.countY = 29;
+        // // Table
+        // Sidewalk
+        // this.createTile(105, Street, 23, -24);
+        // this.createTile(105, Street, 20, -24); 
+        // Flowers
+        // Bench facing left
+        this.createTile(120, Street, 24, -22);
+        this.createTile(121, Street, 24, -23);
+        // Bench facing right
+        this.createTile(122, Street, 23, -22);
+        this.createTile(123, Street, 23, -23);
+        // Bench aerial
+        this.createTile(124, Street, 21, -22);
+        this.createTile(125, Street, 22, -22);
+
+        // --- Trees tiles ---
+        // Convention: bottom to top, left to right
+        this.countX = 8;
+        this.countY = 16;
+
+        // Trees (2x3)
+        // Light green [10-15] - main tree 
+        // // NOTE: Top to bottom (by accident)
+        // this.createTile(10, Trees, 6, -10); // top
+        // this.createTile(11, Trees, 7, -10);
+        // this.createTile(12, Trees, 6, -9); // middle (leaves)
+        // this.createTile(13, Trees, 7, -9); 
+        // this.createTile(14, Trees, 6, -8); // bottom (trunk)
+        // this.createTile(15, Trees, 7, -8); 
+        // [144-149]
+        var currentIndex = 144; // let
+        for (let i = -8; i >= -10; i--) { // bottom (trunk) -> middle (leaves) -> top
+            for (let j = 6; j <= 7; j++) {
+                this.createTile(currentIndex, Trees, j, i);
+                currentIndex++;
+            }
+        }
+        // Dark green [150-155]
+        // var currentIndex = 150;
+        for (let i = -2; i >= -4; i--) { // bottom (trunk) -> middle (leaves) -> top
+            for (let j = 6; j <= 7; j++) {
+                this.createTile(currentIndex, Trees, j, i);
+                currentIndex++;
+            }
+        }
+        // Dark blue [156-161]
+        for (let i = -5; i >= -7; i--) { // bottom (trunk) -> middle (leaves) -> top
+            for (let j = 6; j <= 7; j++) {
+                this.createTile(currentIndex, Trees, j, i);
+                currentIndex++;
+            }
+        }
+        // Dark blue w/ more shadows [162-168]
+        for (let i = -11; i >= -13; i--) { // bottom (trunk) -> middle (leaves) -> top
+            for (let j = 6; j <= 7; j++) {
+                this.createTile(currentIndex, Trees, j, i);
+                currentIndex++;
+            }
+        }
+        // Short green (2x2)
+        this.createTile(169, Trees, 6, -14); 
+        this.createTile(170, Trees, 7, -14); 
+        this.createTile(171, Trees, 6, -15); 
+        this.createTile(172, Trees, 7, -15); 
+                
+        // Blocks of trees (5x3)
+        var currentIndex = 200;
+        // Dark blue [200-214]
+        for (let i = -10; i >= -12; i--) { // bottom (trunk) -> middle (leaves) -> top
+            for (let j = 1; j <= 5; j++) {
+                this.createTile(currentIndex, Trees, j, i);
+                currentIndex++;
+            }
+        }
+        // Dark blue w/ more shadows [215-229]
+        for (let i = -4; i >= -6; i--) { // bottom (trunk) -> middle (leaves) -> top
+            for (let j = 1; j <= 5; j++) {
+                this.createTile(currentIndex, Trees, j, i);
+                currentIndex++;
+            }
+        }
+        // Dark green [230-244]
+        for (let i = -7; i >= -9; i--) { // bottom (trunk) -> middle (leaves) -> top
+            for (let j = 1; j <= 5; j++) {
+                this.createTile(currentIndex, Trees, j, i);
+                currentIndex++;
+            }
+        }
+        // Light green [245-259]
+        for (let i = -1; i >= -3; i--) { // bottom (trunk) -> middle (leaves) -> top
+            for (let j = 1; j <= 5; j++) {
+                this.createTile(currentIndex, Trees, j, i);
+                currentIndex++;
+            }
+        }
+        
+        // this.createTile(200, Trees, 1, -10); // bottom (trunk)
+        // this.createTile(201, Trees, 2, -10); 
+        // this.createTile(202, Trees, 3, -10); 
+        // this.createTile(203, Trees, 4, -10); 
+        // this.createTile(204, Trees, 5, -10); 
+        // this.createTile(205, Trees, 1, -11); // middle (leaves)
+        // this.createTile(206, Trees, 2, -11); 
+        // this.createTile(207, Trees, 3, -11); 
+        // this.createTile(208, Trees, 4, -11); 
+        // this.createTile(209, Trees, 5, -11); 
+        // this.createTile(210, Trees, 1, -12); // top
+        // this.createTile(211, Trees, 2, -12); 
+        // this.createTile(212, Trees, 3, -12); 
+        // this.createTile(213, Trees, 4, -12); 
+        // this.createTile(214, Trees, 5, -12); 
+
+        // --- Talking sprite ---
         this.countX = 15;
         this.countY = 8;
         this.createTile(104, Sprites, 1, -7);
 
-        // Walkable Tiles List
-        this.walkable = new Set();
-        for (let i = 0; i <= 9; i++) {
+        // ----- Identifying walkable tiles -----
+        for (let i = 0; i <= 9; i++) { // path
             this.walkable.add(i);
         }
+        // Frist entrance
         this.walkable.add(21);
         this.walkable.add(22);
 
-        // Scene changing tiles list
+        // ----- Identifying scene-changing tiles -----
         this.sceneChangers = new Set();
 
         // Actual tiles for level
+        // this.tiles = [
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  4,  5,  6, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13,  4,  5,  6, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11,  4,  5,  6, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  4,  5,  6, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13,  4,  5,  6, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11,  4,  5,  6, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  0,  0,  0,  0,  4,  5,  6,104,  0,  0,  0, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
+        //     [ 8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8],
+        //     [ 5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5],
+        //     [ 2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11, 93, 94, 95, 96, 97, 98, 99,100,101,102,103, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        //     [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        // ];
         this.tiles = [
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  4,  5,  6, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13,  4,  5,  6, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11,  4,  5,  6, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  4,  5,  6, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13,  4,  5,  6, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11,  4,  5,  6, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  0,  0,  0,  0,  4,  5,  6,104,  0,  0,  0, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
-            [ 8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8],
-            [ 5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5],
-            [ 2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11, 93, 94, 95, 96, 97, 98, 99,100,101,102,103, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [144,145,245,246,247,248,249,  0,  0,  0,  0,  0,  0,  0,  0,144,145,  4,  5,  6,144,145,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [146,147,250,251,252,253,254,  0,  0,  0,  0,  0,  0,  0,  0,146,147,  4,  5,  6,146,147,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [148,149,255,256,257,258,259,  0,  0,  0,  0,  0,  0,  0,  0,148,149,  4,  5,  6,148,149,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [144,145,230,231,232,233,234,  0,  0,  0,  0,  0,  0,  0,  0,144,145,  4,  5,  6,144,145,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [146,147,235,236,237,238,239,  0,  0,  0,  0,  0,  0,  0,  0,146,147,  4,  5,  6,146,147,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [148,149,240,241,242,243,244,  0,  0,  0,  0,  0,  0,  0,  0,148,149,  4,  5,  6,148,149,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [169,170,230,231,232,233,234,  0,  7,  8,  8,  8,  8,  8,  8,  8,  8, 12,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [171,172,235,236,237,238,239,  0,  4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [169,170,240,241,242,243,244,  0,  4,  5, 11,  2,  2,  2,  2,  2,  2, 13,  5,  6,104,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+            [171,172,169,170,169,170,  0,  0,  4,  5,  6,169,170, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,169,170,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
+            [117,118,171,172,171,172,  0,  0,  4,  5,  6,171,172, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,171,172,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
+            [ 8,  8,   8,  8,  8,  8,  8,  8, 12,  5, 10,  8,  8, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8],
+            [ 5,  5,   5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5],
+            [ 2,  2,   2, 13,  5, 11,  2,  2,  2,  2,  2,  2,  2, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70,  2,  2,  13, 5, 11,  2,  2,  2,  2,  2,  2,  2],
+            [117,118,110, 4,  5,  6,245,246,247,248,249,150,151, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81,144,145,  4,  5,  6,108,109,108,109,108,109,108],   // flowers
+            [150,151,110, 4,  5,  6,250,251,252,253,254,152,153, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92,146,147,  4,  5,  6,230,231,232,233,234,108,109],   // tree row
+            [152,153,110, 4,  5,  6,255,256,257,258,259,154,155, 93, 94, 95, 96, 97, 98, 99,100,101,102,103,148,149,  4,  5,  6,235,236,237,238,239,169,170],   // short tree row
+            [154,155,110, 4,  5,  6,245,246,247,248,249,150,151,116,  5,  5,  5,  5,  5,  5,  5,  5,  5,116,150,151,  4,  5,  6,240,241,242,243,244,171,172],
+            [156,157,110, 4,  5,  6,250,251,252,253,254,152,153,114,115,115,115,115,115,115,115,115,115,114,152,153,  4,  5,  6,156,157,200,201,202,203,204],   // tree row
+            [158,159,110, 4,  5,  6,255,256,257,258,259,154,155,  0,124,125,  0,  0,  0,  0,  0,124,125,  0,154,155,  4,  5,  6,158,159,205,206,207,208,209],
+            [160,161,110, 4,  5,  6,169,170,169,170,169,170,113,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,169,170,  4,  5,  6,160,161,210,211,212,213,214],
+            [162,163,110, 4,  5,  6,171,172,171,172,171,172,113,  0,  0,110,  0,  0,110,  0,  0,110,  0,  0,171,172,  4,  5,  6,162,163,215,216,217,218,219],   // tree row
+            [164,165,110, 4,  5, 10,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  12, 5,  6,164,165,220,221,222,223,224],
+            [166,167,110, 4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6,166,167,225,226,227,228,229],
+            [162,163,110, 1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 13,  5, 11,  2,  2,  2,  2,  2,  2,  2,  2,  3,162,163,215,216,217,218,219],   // tree row
+            [164,165,110, 0,  0,  0,  0,  0,  0,  0,  0,169,170,169,170,169,170,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,164,165,220,221,222,223,224],
+            [166,167,110, 0,  0,  0,  0,  0,  0,  0,  0,171,172,171,172,171,172,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,166,167,225,226,227,228,229],
+
         ];
+
+        //    .   .   .   .   .   .   .   .   .   .   .   105,105,105,105,105,105,105,105,105,105,105. 106,107,108,109,110,111,112,113,114,115,116
+        
         this.width = this.tiles.length;
         this.height = this.tiles[0].length;
 
@@ -293,13 +486,19 @@ class Frist extends Scene {
         // Add tile to tileset
         this.tileset.set(index, material);
     }
-    // Creates scene based on tiles and tile mapping
+    // // Creates scene based on tiles and tile mapping
     createScene() {
         for (let i = 0; i < this.height; i++) {
             for (let j = 0; j < this.width; j++) {
                 // Set tile and set grass background
                 const index = this.tiles[j][i];
-                const background = new Sprite(this.tileset.get(0));
+                let background = new Sprite(this.tileset.get(0));
+
+                // Apply backgrounds
+                if (index in this.backgrounds) { // check for key 
+                    background = new Sprite(this.tileset.get(this.backgrounds[index]));
+                }
+
                 const sprite = new Sprite(this.tileset.get(index));
                 // Set positions based on tile mapping
                 const xPosition = i;

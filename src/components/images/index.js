@@ -4,6 +4,8 @@ export { default as WoodBlock } from './wood_block.jpg';
 
 export { default as FristBig } from './frist_big.png';
 export { default as Serene } from './serene.png';
+export { default as Outside } from './outside.png';
+export { default as Trees } from './trees.png';
 export { default as Sprites } from './sprites.png';
 
 export { default as PoeGameTiles } from './poe_game.png';

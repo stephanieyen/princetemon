@@ -191,21 +191,21 @@ class Garden extends Scene {
         this.camera.lookAt(new Vector3(1, this.width - 8, 0));
         this.camera.zoom = 0.08;
 
-        // Add audio to scene
-        this.listener = new AudioListener();
-        this.camera.add(this.listener);
-        // create a global audio source
-        const audio = new Audio(this.listener);
-        // load a sound and set it as the Audio object's buffer
-        const audioLoader = new AudioLoader();
-        audioLoader.load(GardenAmbientAudio, function (buffer) {
-            audio.setBuffer(buffer);
-            audio.setLoop(true);
-            audio.setVolume(0.5);
-            audio.play();
-        });
-        this.audio = audio;
-        // if (!this.audio.isPlaying) this.audio.play();
+        // // Add audio to scene
+        // this.listener = new AudioListener();
+        // this.camera.add(this.listener);
+        // // create a global audio source
+        // const audio = new Audio(this.listener);
+        // // load a sound and set it as the Audio object's buffer
+        // const audioLoader = new AudioLoader();
+        // audioLoader.load(GardenAmbientAudio, function (buffer) {
+        //     audio.setBuffer(buffer);
+        //     audio.setLoop(true);
+        //     audio.setVolume(0.5);
+        //     audio.play();
+        // });
+        // this.audio = audio;
+        // // if (!this.audio.isPlaying) this.audio.play();
 
         // Window resize handler for scene
         this.windowResizeHandler = () => {

@@ -10,10 +10,7 @@ import {    Street,
                 Cottage, CottageLogo,
                 Cap, CapLogo,
                 Charter, CharterLogo,
-            Vehicles,
-            Serene, 
-            Dirt,
-            RealCannon,
+            Serene, Dirt, Vehicles, RealCannon,
             Sprites
         } from "../images";
 import Player from "../player/player";
@@ -31,22 +28,15 @@ class Prospect extends Scene {
         this.dialogueHappened = false;
 
         // Adding in tiles
-        // Hashmap for tiles
-        this.tileset = new Map();
-        this.backgrounds = new Object(); // {} 
-        this.walkable = new Set();
-        this.walkunder = new Set(); 
+        this.tileset = new Map(); // hashmap for tiles
+        this.backgrounds = new Object(); // dictionary for backgrounds 
+        this.walkable = new Set(); // set for walkable tiles
+        this.sceneChangers = new Set(); // set for scene-changing tiles
 
-        // Serene tileset
-        this.countX = 8;
-        this.countY = 27;
         // Sign for game
         this.createTile(-1, Serene, 5, -20);
-
-        // Street tileset details
-        this.imageX = 464;
-        this.imageY = 464;
-        // Number of images per row/column
+        
+        // --- Street tiles --- 
         this.countX = 29;
         this.countY = 29;
         // Intersection
@@ -147,7 +137,7 @@ class Prospect extends Scene {
         this.backgrounds[66] = this.backgrounds[67] = 40;
         this.backgrounds[68] = this.backgrounds[69] = 37;
 
-        // --- Dirt tile set ---
+        // --- Dirt tiles ---
         this.countX = 3; 
         this.countY = 3;
         // Gravel
@@ -157,7 +147,7 @@ class Prospect extends Scene {
         // Red
         this.createTile(99, Dirt, 2, 0);
 
-        //  --- Street tile set (cont) --- 
+        //  --- Street tiles (cont) --- 
         // Convention: bottom to top, left to right
         this.countX = 29;
         this.countY = 29;
@@ -175,12 +165,6 @@ class Prospect extends Scene {
         this.createTile(79, Street, 9, -12);
         this.createTile(80, Street, 8, -13);
         this.createTile(81, Street, 9, -13);
-
-        
-        // this.backgrounds[73] = 70; // gravel background
-        // this.backgrounds[74] = 32; // sidewalk background
-        // this.backgrounds[75] = 41; // bush background
-        // Flowers. 10 -18
         // Wall 
         this.createTile(82, Street, 10, -11);
         this.createTile(83, Street, 11, -11);
@@ -201,14 +185,7 @@ class Prospect extends Scene {
         // Bench aerial
         this.createTile(95, Street, 21, -22);
         this.createTile(96, Street, 22, -22);
-        
-        // --- Serene tile set ---
-        // this.countX = 8;
-        // this.countY = 27;
-        // Path
-        // this.createTile(43, Serene, 2, -25);
-        // this.createTile(44, Serene, 3, -25);
-        // this.createTile(45, Serene, 4, -25);
+        // Flowers
 
         // --- Eating clubs tile sets ---
         // From right to left of the Street
@@ -242,7 +219,7 @@ class Prospect extends Scene {
             this.backgrounds[i] = -2;
         }
 
-        // --- Vehicle tile set ---
+        // --- Vehicle tiles ---
         // Cars
         this.countX = 22;
         this.countY = 19;
@@ -258,10 +235,14 @@ class Prospect extends Scene {
         this.backgrounds[401] = this.backgrounds[403] = this.backgrounds[405] = 70; // gravel background
         // this.createTile(106, Vehicles, 3, -17);
         // this.createTile(107, Vehicles, 3, -18);
+
+        // --- Misc ---
+        // Cannon
         this.countX = 1;
         this.countY = 1;
         this.createTile(406, RealCannon, 0, 0);
         this.backgrounds[406] = 32;
+        // Bouncer sprite
         this.countX = 15;
         this.countY = 8;
         this.createTile(407, Sprites, 4, -3);
@@ -274,21 +255,13 @@ class Prospect extends Scene {
         }
         this.walkable.add(42); // grass
         this.walkable.add(70); // gravel
-        this.walkable.add(98); // gravel
-        this.walkable.add(99); // gravel
+        this.walkable.add(98); // grey
+        this.walkable.add(99); // red
         for (let i = 300; i <= 353; i++) { // eating club logos 
             this.walkable.add(i);
         }
-        // path
 
-        // Walkable but sprite goes under
-        // tree
-        this.walkable.add(72);
-        this.walkunder.add(72);
-        // light
-        // this.walkunder.add(75);
         // ----- Identifying scene-changing tiles -----
-        this.sceneChangers = new Set();
         this.sceneChangers.add(32); // sidewalk
 
         // Actual tiles for level
@@ -326,10 +299,9 @@ class Prospect extends Scene {
         this.player.setPosition(this.height - 1, 4, 0)
 
         // Car
-        
-        this.car = new Car(Prospect);
-        this.add(this.car.getSprite());
-        this.car.setPosition(this.height - 3, 4, 0);
+        // this.car = new Car(Prospect);
+        // this.add(this.car.getSprite());
+        // this.car.setPosition(this.height - 3, 4, 0);
 
         // Camera
         this.camera = new PerspectiveCamera();
@@ -384,11 +356,6 @@ class Prospect extends Scene {
                     this.remove(this.player.sprite);
                     this.player.setPosition(playerPos.x - speed, playerPos.y, playerPos.z, "left");
                     this.add(this.player.sprite);
-                    let index = this.tiles[Math.round(playerPos.y)][Math.round(playerPos.x - speed - 0.3)];
-                    if (this.walkunder.has(index)) {
-                        let foreground = new Sprite(this.tileset.get(index));
-                        this.add(foreground);
-                    }
                     // if (this.camera.position.x >= 13.5) {
                     //     this.camera.position.x -= speed;
                     // }
