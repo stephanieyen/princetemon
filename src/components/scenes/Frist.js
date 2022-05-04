@@ -223,7 +223,7 @@ class Frist extends Scene {
         this.createTile(104, Sprites, 1, -7);
 
         // ----- Identifying walkable tiles -----
-        for (let i = 0; i <= 9; i++) { // path
+        for (let i = 0; i <= 13; i++) { // path
             this.walkable.add(i);
         }
         // Frist entrance
@@ -475,10 +475,10 @@ class Frist extends Scene {
         const texture = new TextureLoader().load(source);
         texture.minFilter = LinearFilter;
         // Find tile
-        texture.offset.x = (1 * offsetX) / this.countX;
+        texture.offset.x = (1 * offsetX + 0.03) / this.countX;
         texture.offset.y = (-1 *  offsetY + 0.03) / this.countY;
-        texture.repeat.x = (1 - eps * 3) / this.countX;
-        texture.repeat.y = (1 - eps * 5) / this.countY;
+        texture.repeat.x = (1 - eps * 7) / this.countX;
+        texture.repeat.y = (1 - eps * 7) / this.countY;
         // texture.wrapS = texture.wrapT = RepeatWrapping;
 
         const material = new SpriteMaterial({map: texture});
@@ -547,7 +547,7 @@ class Frist extends Scene {
                     }
                 );
                 Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 12, 0.1);
                 // Cannot use this.add since inside new function
                 Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
             }
@@ -574,7 +574,7 @@ class Frist extends Scene {
                             }
                         );
                         Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 12, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
                     }
@@ -594,7 +594,7 @@ class Frist extends Scene {
                             }
                         );
                         Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 12, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
                     }
@@ -614,7 +614,7 @@ class Frist extends Scene {
                             }
                         );
                         Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 12, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
                     }
@@ -634,7 +634,7 @@ class Frist extends Scene {
                             }
                         );
                         Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 12, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
                     }
@@ -654,7 +654,7 @@ class Frist extends Scene {
                             }
                         );
                         Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 12, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
                     }
@@ -674,7 +674,7 @@ class Frist extends Scene {
                             }
                         );
                         Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 12, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
                     }
@@ -694,7 +694,7 @@ class Frist extends Scene {
                             }
                         );
                         Scenes.scenes['frist'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
-                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8, playerPos.y + 12, 0.1);
+                        Scenes.scenes['frist'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 12, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['frist'].add(Scenes.scenes['frist'].textMesh);
                     }

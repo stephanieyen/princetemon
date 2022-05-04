@@ -375,11 +375,11 @@ class Poe extends Scene {
         const boxGeometry = new BoxGeometry(20, 8, 0.001);
         // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
         const boxMaterial = new MeshBasicMaterial({color: 0xffffff});
-        this.camera.position.x = playerPos.x - 6.5;
-        this.camera.position.y = playerPos.y + 8;
+        this.camera.position.x = playerPos.x - 3.5;
+        this.camera.position.y = playerPos.y + 3;
 
         var cube = new Mesh(boxGeometry, boxMaterial);
-        cube.position.set(playerPos.x - 3, playerPos.y + 10, 0.001);
+        cube.position.set(playerPos.x - 1.5, playerPos.y + 7, 0.001);
         this.add(cube);
         var count = 0;
         this.textMesh;
@@ -396,7 +396,7 @@ class Poe extends Scene {
                     }
                 );
                 Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x000000}));
-                Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 10, playerPos.y + 9, 0.1);
                 // Cannot use this.add since inside new function
                 Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
             }
@@ -423,7 +423,7 @@ class Poe extends Scene {
                             }
                         );
                         Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
-                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 10, playerPos.y + 9, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
                     }
@@ -443,7 +443,7 @@ class Poe extends Scene {
                             }
                         );
                         Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
-                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 10, playerPos.y + 9, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
                     }
@@ -463,7 +463,7 @@ class Poe extends Scene {
                             }
                         );
                         Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
-                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 10, playerPos.y + 9, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
                     }
@@ -483,7 +483,7 @@ class Poe extends Scene {
                             }
                         );
                         Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
-                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 10, playerPos.y + 9, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
                     }
@@ -503,7 +503,7 @@ class Poe extends Scene {
                             }
                         );
                         Scenes.scenes['poe'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0x00000}));
-                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 12, playerPos.y + 12, 0.1);
+                        Scenes.scenes['poe'].textMesh.position.set(playerPos.x - 10, playerPos.y + 9, 0.1);
                         // Cannot use this.add since inside new function
                         Scenes.scenes['poe'].add(Scenes.scenes['poe'].textMesh);
                     }

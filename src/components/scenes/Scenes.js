@@ -69,6 +69,7 @@ class Scenes {
 
         // Set current scene to title scene
         this.currentScene = this.scenes['title'];
+
         this.currentScene.addEvents();
     }
 

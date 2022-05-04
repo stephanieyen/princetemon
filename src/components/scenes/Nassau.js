@@ -1,6 +1,7 @@
-import { LinearFilter, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextureLoader, Vector3 } from "three";
+import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
-import { Cannon, CannonGreen, NassauImg, Serene } from "../images";
+import { PixelFont } from "../fonts";
+import { Dogs, NassauImg, Serene, Sprites, Stroller } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
 import Rewards from "./Rewards";
@@ -9,6 +10,9 @@ class Nassau extends Scene {
     constructor() {
         // Call parent Scene() constructor
         super();
+
+        this.dialogueHappened = false;
+
         // Adding in tiles
         // Hashmap for tiles
         this.tileset = new Map();
@@ -44,6 +48,7 @@ class Nassau extends Scene {
         this.createTile(15, Serene, 1, -19);
 
         // Nassau Hall
+        // 23 - 88
         this.countX = 11;
         this.countY = 6;
         var currentIndex = 23;
@@ -54,16 +59,37 @@ class Nassau extends Scene {
             }
         }
 
-        // Cannon
-        this.countX = 1;
+        // Dogs
+        // 89 - 94
+        this.countX = 3;
         this.countY = 2;
-        var currentIndex = 89;
         for (let i = 0; i >= -1; i--) {
-            for (let j = 0; j <= 0; j++) {
-                this.createTile(currentIndex, CannonGreen, j, i);
+            for (let j = 0; j <= 2; j++) {
+                this.createTile(currentIndex, Dogs, j, i);
                 currentIndex++;
             }
         }
+
+        // Baby
+        this.countX = 1;
+        this.countY = 1;
+        this.createTile(95, Stroller, 0, 0);
+
+        // Sprites
+        this.countX = 15;
+        this.countY = 8;
+        // Red hair
+        this.createTile(96, Sprites, 1, -3);
+        // Yellow hair
+        this.createTile(97, Sprites, 7, -3);
+        // Green hair
+        this.createTile(98, Sprites, 10, -3);
+        // White hair girl
+        this.createTile(99, Sprites, 13, -3);
+        // White hair boy
+        this.createTile(100, Sprites, 10, -7);
+        // Pink hair
+        this.createTile(101, Sprites, 7, -7);
 
         // Walkable Tiles List
         this.walkable = new Set();
@@ -85,39 +111,39 @@ class Nassau extends Scene {
         this.tiles = [            
             [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
             [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-            [  0,  0,  0,  7,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  9,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5, 21,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 19,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  7,  8,  8,  8,  8,  8,  8,  8,  8,  8,  9,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 14, 15,  0,  0,  0,  0,  4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6,  0,  0,  0,  0, 14, 15,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 12, 13,  0,  0,  0,  0,  4,  5,  5,  5,  5, 89,  5,  5,  5,  5,  6,  0,  0,  0,  0, 12, 13,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 10, 11,  0,  0,  0,  0,  4,  5,  5,  5,  5, 90,  5,  5,  5,  5,  6,  0,  0,  0,  0, 10, 11,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  3,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12, 13,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 11,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5, 22,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 20,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5, 21,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 19,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 14, 15, 14, 15, 14, 15, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 14, 15, 14, 15, 14, 15,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 12, 13, 12, 13, 12, 13, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 12, 13, 12, 13, 12, 13,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 10, 11, 10, 11, 10, 11, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 10, 11, 10, 11, 10, 11,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 14, 15, 14, 15, 14, 15, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 14, 15, 14, 15, 14, 15,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 12, 13, 12, 13, 12, 13, 12, 13, 69, 70, 71, 72, 73, 74, 75, 12, 13, 12, 13, 12, 13, 12, 13,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 10, 11, 10, 11, 10, 11, 10, 11, 80, 81, 82, 83, 84, 85, 86, 10, 11, 10, 11, 10, 11, 10, 11,  4,  5,  6,  0,  0,  0],
-            [  0,  0,  0,  4,  5,  6, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14,  4,  5,  6,  0,  0,  0],
+            [  0, 14, 15,  4,  5,  6, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15,  4,  5,  6, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15,  4,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5,  6, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13,  4,  5,  6, 12, 13, 12, 13, 12, 13, 12, 13, 12, 13,  4,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5,  6, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11,  4,  5,  6, 10, 11, 10, 11, 10, 11, 10, 11, 10, 11,  4,  5,  6, 10, 11,  0],
+            [  0, 14, 15,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0, 14, 15,  0,  0,  0,  0,  4,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0, 14, 15,  4,  5,  6,  0,  0,  0,  0, 12, 13,  0,  0,  0,  0,  4,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5,  6,  0, 14, 15,  0,  0,  0,  0,  0, 12, 13,  4,  5,  6,  0,  0,  0,  0, 10, 11,  0,  0,  0,  0,  4,  5,  6, 10, 11,  0],
+            [  0, 14, 15,  4,  5,  6,  0, 12, 13,  0,  0,  0,  0,  0, 10, 11,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5,  6,  0, 10, 11,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0, 90,101, 94,  0,  0,  0,  4,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 10, 11,  0],
+            [  0, 14, 15,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0, 14, 15,  0,  4,  5,  6, 14, 15,  0,  0,  0,  0,  0,  0, 14, 15,  4,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5,  6,  0,  0,  0,  0, 91,  0,  0, 12, 13,  0,  4,  5,  6, 12, 13,  0,  0,  0,  0,  0,  0, 12, 13,  4,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5,  6,  0,  0,  0,  0, 96,  0,  0, 10, 11,  0,  4,  5,  6, 10, 11,  0,  0,  0,  0,  0,  0, 10, 11,  4,  5,  6, 10, 11,  0],
+            [  0, 14, 15,  4,  5, 22,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 20,  5, 22,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 20,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5, 21,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 19,  5, 21,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 19,  5,  6, 10, 11,  0],
+            [  0, 14, 15,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0, 14, 15,  0,  4,  5,  6, 12, 13,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5,  6,  0,  0,  0, 14, 15,  0,  0, 12, 13,  0,  4,  5,  6, 10, 11,  0,  0,  0,  0,  0, 14, 15,  0,  4,  5,  6, 10, 11,  0],
+            [  0, 14, 15,  4,  5,  6,  0,  0,  0, 12, 13,  0,  0, 10, 11,  0,  4,  5,  6,  0,  0,  0,  0, 92, 93,  0, 12, 13,  0,  4,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5,  6, 14, 15,  0, 10, 11, 95,  0,  0,  0,  0,  4,  5,  6,  0,  0, 14, 15, 97, 98,  0, 10, 11,  0,  4,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5,  6, 12, 13,  0,  0,  0, 99,100,  0,  0,  0,  4,  5,  6,  0,  0, 12, 13,  0,  0,  0,  0,  0,  0,  4,  5,  6, 10, 11,  0],
+            [  0, 14, 15,  4,  5,  6, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  0,  0, 10, 11,  0,  0,  0,  0,  0,  0,  4,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5, 22,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 20,  5, 22,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 20,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  6, 10, 11,  0],
+            [  0, 14, 15,  4,  5, 21,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 19,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5,  6, 14, 15, 14, 15, 14, 15, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 14, 15, 14, 15, 14, 15,  4,  5,  6, 10, 11,  0],
+            [  0, 14, 15,  4,  5,  6, 12, 13, 12, 13, 12, 13, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 12, 13, 12, 13, 12, 13,  4,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5,  6, 10, 11, 10, 11, 10, 11, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 10, 11, 10, 11, 10, 11,  4,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5,  6, 14, 15, 14, 15, 14, 15, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 14, 15, 14, 15, 14, 15,  4,  5,  6, 10, 11,  0],
+            [  0, 14, 15,  4,  5,  6, 12, 13, 12, 13, 12, 13, 12, 13, 69, 70, 71, 72, 73, 74, 75, 12, 13, 12, 13, 12, 13, 12, 13,  4,  5,  6, 14, 15,  0],
+            [  0, 12, 13,  4,  5,  6, 10, 11, 10, 11, 10, 11, 10, 11, 80, 81, 82, 83, 84, 85, 86, 10, 11, 10, 11, 10, 11, 10, 11,  4,  5,  6, 12, 13,  0],
+            [  0, 10, 11,  4,  5,  6, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14, 15, 14,  4,  5,  6, 10, 11,  0],
 
         ];
         this.width = this.tiles.length;
@@ -225,6 +251,12 @@ class Nassau extends Scene {
 
                 }
             }
+            // Dialogue event
+            if (event.code === 'Space' || event.key === ' ') {
+                if (this.inActionSpace(101) && !this.dialogueHappened) {
+                    this.startDialogue();
+                }
+            }
             // Map event
             if (event.code === 'KeyM' || event.key === 'm') {
                 const map = new Maps('nassau');
@@ -297,7 +329,7 @@ class Nassau extends Scene {
             for (let j = 0; j < this.width; j++) {
                 // Set tile and set grass background
                 const index = this.tiles[j][i];
-                if (index <= 88) {
+                if (index <= 101) {
                     if (index === 56 || index === 65) {
                         var background = new Sprite(this.tileset.get(14));
                         var backbackground = new Sprite(this.tileset.get(0));
@@ -316,9 +348,6 @@ class Nassau extends Scene {
                         var background = new Sprite(this.tileset.get(0));
                     }
                 }
-                else {
-                    var background = new Sprite(this.tileset.get(5));
-                }
                 const sprite = new Sprite(this.tileset.get(index));
                 // Set positions based on tile mapping
                 const xPosition = i;
@@ -330,6 +359,204 @@ class Nassau extends Scene {
             }
         }
     }
+
+    // Check if right under action space
+    inActionSpace(tile) {
+        const playerPos = this.player.sprite.position;
+        if (this.tiles[Math.round(playerPos.y + 1)][Math.round(playerPos.x)] === tile) {
+            return true;
+        }
+        return false;
+    }
+
+    startDialogue() {
+        // Dialogue event handlers 
+        const playerPos = this.player.sprite.position;
+        this.camera.position.x = playerPos.x;
+        this.camera.position.y = playerPos.y + 7;
+        // Add cube to back
+        const boxGeometry = new BoxGeometry(20, 8, 0.001);
+        // const boxMaterial = new MeshBasicMaterial({color: 0x9b673c});
+        const boxMaterial = new MeshBasicMaterial({color: 0xffffff});
+        var cube = new Mesh(boxGeometry, boxMaterial);
+        cube.position.set(playerPos.x, playerPos.y + 7, 0.001);
+        this.add(cube);
+        var count = 0;
+        this.textMesh;
+        const fontLoader = new FontLoader();
+        fontLoader.load(
+            PixelFont,
+            function(font) {
+                const geometry = new TextGeometry(
+                "You:\n\nHey, I like your dogs.",
+                    {
+                        font: font,
+                        size: 0.5,
+                        height: 0
+                    }
+                );
+                Scenes.scenes['nassau'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                Scenes.scenes['nassau'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 9, 0.1);
+                // Cannot use this.add since inside new function
+                Scenes.scenes['nassau'].add(Scenes.scenes['nassau'].textMesh);
+            }
+        );  
+        this.dialogueContinue = (event) => {
+            if (event.key !== ' ') return;
+            if (count >= 7) {
+                this.remove(Scenes.scenes['nassau'].textMesh);  
+                this.remove(cube);
+                window.addEventListener('keydown', this.move, false);
+                window.removeEventListener('keydown', this.dialogueContinue, false); 
+            }
+            else if (count === 0){
+                Scenes.scenes['nassau'].remove(Scenes.scenes['nassau'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Dog Lady:\n\nThanks, I made them myself.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['nassau'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['nassau'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 9, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['nassau'].add(Scenes.scenes['nassau'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 1){
+                Scenes.scenes['nassau'].remove(Scenes.scenes['nassau'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nHave you seen any of the three items I'm\nlooking for?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['nassau'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['nassau'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 9, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['nassau'].add(Scenes.scenes['nassau'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 2){
+                Scenes.scenes['nassau'].remove(Scenes.scenes['nassau'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Dog Lady:\n\nWhat items are they?",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['nassau'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['nassau'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 9, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['nassau'].add(Scenes.scenes['nassau'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 3){
+                Scenes.scenes['nassau'].remove(Scenes.scenes['nassau'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\n(too lazy to type them all out again but the\npoint is you say them and she hears them)",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['nassau'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['nassau'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 9, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['nassau'].add(Scenes.scenes['nassau'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 4){
+                Scenes.scenes['nassau'].remove(Scenes.scenes['nassau'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Dog Lady:\n\nHmmm, I don't think any of those\nare near Nassau.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['nassau'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['nassau'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 9, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['nassau'].add(Scenes.scenes['nassau'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 5){
+                Scenes.scenes['nassau'].remove(Scenes.scenes['nassau'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "You:\n\nAw, man.",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['nassau'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['nassau'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 9, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['nassau'].add(Scenes.scenes['nassau'].textMesh);
+                    }
+                );  
+            }
+            else if (count === 6){
+                Scenes.scenes['nassau'].remove(Scenes.scenes['nassau'].textMesh);  
+                fontLoader.load(
+                    PixelFont,
+                    function(font) {
+                        const geometry = new TextGeometry(
+                        "Dog Lady:\n\nSorry! If you ever want to come back and\npet the dogs, I'll be standing here all year.\n\nAnyways, good luck!",
+                            {
+                                font: font,
+                                size: 0.5,
+                                height: 0
+                            }
+                        );
+                        Scenes.scenes['nassau'].textMesh = new Mesh(geometry, new MeshPhongMaterial({color: 0xffffff}));
+                        Scenes.scenes['nassau'].textMesh.position.set(playerPos.x - 8.5, playerPos.y + 9, 0.1);
+                        // Cannot use this.add since inside new function
+                        Scenes.scenes['nassau'].add(Scenes.scenes['nassau'].textMesh);
+                    }
+                );  
+            }
+            count++;
+        }
+        window.removeEventListener('keydown', this.move, false);
+        window.addEventListener('keydown', this.dialogueContinue, false); 
+        this.dialogueHappened = true;
+        // Allow user to switch maps once dialogue completed
+    }
+
 
     // Adds events specific to Frist scene
     addEvents() {

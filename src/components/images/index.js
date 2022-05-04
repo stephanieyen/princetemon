@@ -25,6 +25,8 @@ export { default as ConstructionSprite } from './construction_sprite.png';
 export { default as NassauImg } from './nassau_hall.png';
 export { default as CannonGreen } from './cannon_green.png';
 export { default as Nassau } from './nassau_hall.png';
+export { default as Stroller } from './stroller.png';
+export { default as Dogs } from './dogs.png';
 
 export { default as Disco } from './disco.png';
 export { default as DancingSpriteSheet } from './dancing_sprite.png';
