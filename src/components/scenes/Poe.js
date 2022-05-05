@@ -1,7 +1,7 @@
 import { BoxGeometry, FontLoader, LinearFilter, Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene, Sprite, SpriteMaterial, TextGeometry, TextureLoader, Vector3 } from "three";
 import { Scenes } from ".";
 import { PixelFont } from "../fonts";
-import { Bench, Cone, ConstructionSprite, Crane, Dirt, NewRes, Serene, Stick, Wood } from "../images";
+import { Bench, Cone, ConstructionSprite, Crane, Dirt, NewRes, Serene, Stick, Wood, Trees } from "../images";
 import Player from "../player/player";
 import Maps from "./Maps";
 import Rewards from "./Rewards";
@@ -15,11 +15,12 @@ class Poe extends Scene {
         this.dialogueHappened = false;
 
         // Adding in tiles
-        // Hashmap for tiles
-        this.tileset = new Map();
-        // Outdoors tileset details
-        this.imageX = 128;
-        this.imageY = 432;
+        this.tileset = new Map(); // hashmap for tiles
+        // this.backgrounds = new Object(); // dictionary for backgrounds 
+        this.walkable = new Set(); // set for walkable tiles
+        this.sceneChangers = new Set(); // set for scene-changing tiles
+
+        // --- Serene/outdoor tiles ---
         this.countX = 8;
         this.countY = 27;
         // Grass
@@ -53,15 +54,13 @@ class Poe extends Scene {
         // Sign for game
         this.createTile(36, Serene, 5, -20);
 
-        // Tileset details
-        this.imageX = 192;
-        this.imageY = 192;
+        // --- Dirt tiles ---
         this.countX = 3;
         this.countY = 3;
         // Better dirt
         this.createTile(10, Dirt, 1, -2);
 
-        // Tileset details
+        // --- Crane tile set ---
         this.countX = 3;
         this.countY = 3;
         // Crane
@@ -75,29 +74,25 @@ class Poe extends Scene {
         this.createTile(44, Crane, 1, -2);
         this.createTile(45, Crane, 2, -2);
 
-        // Bench
-        this.imageX = 112;
-        this.imageY = 32;
+        // --- Misc ---
         this.countX = 7;
         this.countY = 2;
+        // Bench
         this.createTile(32, Bench, 1, -1);
-
         // Wood
         this.countX = 1;
         this.countY = 1;
         this.createTile(46, Wood, 0, 0);
         // Stick
         this.createTile(47, Stick, 0, 0);
-
         // Cone
-        this.countX = 1;
-        this.countY = 1;
         this.createTile(80, Cone, 0, 0);
 
-        // New Buildings 48 - 79
+        // --- New College tile set ---
         this.countX = 8;
         this.countY = 4;
-        let currentIndex = 48;
+        var currentIndex = 48; 
+        // 48-79
         for (let i = 0; i >= -3; i--) {
             for (let j = 0; j <= 7; j++) {
                 this.createTile(currentIndex, NewRes, j, i);
@@ -105,19 +100,30 @@ class Poe extends Scene {
             }
         }
 
-        // Talking Sprite
+        // --- Trees tiles ---
+        // Convention: bottom to top, left to right
+        this.countX = 8;
+        this.countY = 16;
+        // Blocks of trees (5x3)
+        var currentIndex = 200;
+        // Dark blue [200-214]
+        for (let i = -10; i >= -12; i--) { // bottom (trunk) -> middle (leaves) -> top
+            for (let j = 1; j <= 5; j++) {
+                this.createTile(currentIndex, Trees, j, i);
+                currentIndex++;
+            }
+        }
+
+        // --- Talking sprite ---
         this.countX = 3;
         this.countY = 4;
         this.createTile(104, ConstructionSprite, 1, -3);
 
-
-        // Walkable Tiles List
-        this.walkable = new Set();
+        // ----- Identifying walkable tiles -----
         for (let i = 0; i <= 22; i++) {
             this.walkable.add(i);
         }
-        this.sceneChangers = new Set();
-        // Scene changing tiles list
+        // ----- Identifying scene-changing tiles -----
         this.sceneChangers.add(4);
         this.sceneChangers.add(5);
         this.sceneChangers.add(6);
@@ -147,9 +153,9 @@ class Poe extends Scene {
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 80, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 80, 10, 80, 10, 80, 10, 80, 10, 80],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 80, 10, 46, 10, 47, 10, 47, 10, 46, 10],
             [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 80, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 48, 49, 50, 51, 52, 53, 54, 55],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 80, 10, 56, 57, 58, 59, 60, 61, 62, 63],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 32,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 36, 10, 10, 10, 10, 10, 10, 10, 10, 10, 64, 65, 66, 67, 68, 69, 70, 71],
-            [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 80, 10, 72, 73, 74, 75, 76, 77, 78, 79],
+            [200,201,202,203,204,200,201,202,203,204,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 80, 10, 56, 57, 58, 59, 60, 61, 62, 63],
+            [205,206,207,208,209,205,206,207,208,209,  0, 32,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 36, 10, 10, 10, 10, 10, 10, 10, 10, 10, 64, 65, 66, 67, 68, 69, 70, 71],
+            [210,211,212,213,214,210,211,212,213,214,  0,  0,  0,  4,  5,  6, 26, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 80, 10, 72, 73, 74, 75, 76, 77, 78, 79],
         ];
         this.width = this.tiles.length;
         this.height = this.tiles[0].length;
@@ -337,14 +343,14 @@ class Poe extends Scene {
     createScene() {
         for (let i = 0; i < this.height; i++) {
             for (let j = 0; j < this.width; j++) {
-                // Set tile and set grass background
+                // Set tile and apply backgrounds
                 const index = this.tiles[j][i];
                 var background;
-                if (index <= 35) {
-                    background = new Sprite(this.tileset.get(0));
+                if (index <= 35 || index >= 200) {
+                    background = new Sprite(this.tileset.get(0)); // grass
                 }
                 else {
-                    background = new Sprite(this.tileset.get(10));
+                    background = new Sprite(this.tileset.get(10)); // dirt
                 }
                 const sprite = new Sprite(this.tileset.get(index));
                 // Set positions based on tile mapping

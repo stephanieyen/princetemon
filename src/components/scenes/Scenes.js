@@ -56,8 +56,8 @@ class Scenes {
 
         this.scenes['indoors'] = new Indoors();
 
-        this.scenes['gameover'] = new GameOver();
-        this.scenes['success'] = new Success();
+        this.scenes['gameover'] = new GameOver(); // Poe
+        this.scenes['success'] = new Success(); // Poe
 
         this.scenes['gameoverprospect'] = new GameOverProspect();
         this.scenes['successprospect'] = new SuccessProspect();
