@@ -439,7 +439,7 @@ class Frist extends Scene {
                 if (this.inActionSpace(104) && !this.dialogueHappened) {
                     this.startDialogue();
                 }
-                if (this.inActionSpace(32) && Scenes.gameComplete()) {
+                if ((this.inActionSpace(32) || this.inActionSpace(31) || this.inActionSpace(33)) && Scenes.gameComplete()) {
                     Scenes.switchScene('indoors');
                 }
             }

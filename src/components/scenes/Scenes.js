@@ -27,7 +27,7 @@ class Scenes {
         this.currentScene = undefined;
         this.renderer = undefined;
         // Minigame/search successes for poe, prospect, and garden
-        this.successes = [0, 0, 0];
+        this.successes = [1, 1, 1];
     }
 
     // Create scenes
