@@ -261,7 +261,6 @@ class Poe extends Scene {
             // Map event
             if (event.code === 'KeyM' || event.key === 'm') {
                 const map = new Maps('poe');
-                console.log(map);
                 Scenes.scenes['map'] = map;
                 Scenes.switchScene('map');
             }
